@@ -85,6 +85,8 @@ const commands = [
   { label: "Validate the schema", cmd: "npx shadcn registry validate" },
 ];
 
+const heroKeys = Array.from({ length: 54 }, (_, index) => index);
+
 export default function Home() {
   const terminalCardRef = useRef<HTMLDivElement>(null);
 
@@ -149,44 +151,51 @@ export default function Home() {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="border-b">
-        <div className="mx-auto max-w-5xl px-6 py-24 md:py-32">
+      <section className="hero-raycast-bg relative overflow-hidden border-b">
+        <div className="hero-raycast-grid" aria-hidden="true" />
+        <div className="hero-raycast-keys" aria-hidden="true">
+          {heroKeys.map((key) => (
+            <span key={key} />
+          ))}
+        </div>
+
+        <div className="relative z-10 mx-auto max-w-5xl px-6 py-24 md:py-32">
           <div className="flex flex-col items-center text-center">
             <Link
               href="/docs"
-              className="group inline-flex items-center gap-2 rounded-full border bg-card px-4 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-accent"
+              className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-4 py-1.5 text-xs text-zinc-400 shadow-sm shadow-black/20 transition-colors hover:bg-white/[0.09]"
             >
-              <span className="font-medium text-foreground">v0.7.0</span>
-              <span className="h-3 w-px bg-border" />
+              <span className="font-medium text-zinc-100">v0.7.0</span>
+              <span className="h-3 w-px bg-white/10" />
               <span>Live previews + AI skills</span>
               <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
             </Link>
 
-            <h1 className="mt-8 max-w-3xl text-4xl font-bold tracking-tight md:text-6xl">
+            <h1 className="mt-8 max-w-3xl text-4xl font-bold tracking-tight text-zinc-50 md:text-6xl">
               Scaffold a complete shadcn registry.
             </h1>
 
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-zinc-400">
               One command. Framework, docs, starter components, live previews,
-              AI skills — ready to develop and deploy.
+              AI skills, ready to develop and deploy.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-              <div className="inline-flex items-center gap-3 rounded-md border bg-card px-4 py-2 font-mono text-sm">
-                <span className="text-muted-foreground">$</span>
+              <div className="inline-flex items-center gap-3 rounded-md border border-white/10 bg-white/[0.06] px-4 py-2 font-mono text-sm text-zinc-100 shadow-sm shadow-black/20">
+                <span className="text-zinc-500">$</span>
                 <code>npx create-scn-stack</code>
                 <CopyButton text="npx create-scn-stack" />
               </div>
               <Link
                 href="/docs"
-                className="group inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                className="group inline-flex items-center gap-2 rounded-md bg-zinc-50 px-5 py-2.5 text-sm font-medium text-zinc-950 transition-colors hover:bg-zinc-200"
               >
                 Get Started
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
               <Link
                 href="/builder"
-                className="inline-flex items-center gap-2 rounded-md border bg-card px-5 py-2.5 text-sm font-medium transition-colors hover:bg-accent"
+                className="inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/[0.06] px-5 py-2.5 text-sm font-medium text-zinc-100 transition-colors hover:bg-white/[0.09]"
               >
                 Builder
               </Link>

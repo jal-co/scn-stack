@@ -84,6 +84,86 @@
 }
 
 @layer components {
+  .hero-raycast-bg {
+    background:
+      radial-gradient(
+        circle at 50% -18%,
+        oklch(0.64 0.22 29 / 55%),
+        oklch(0.4 0.16 24 / 24%) 22%,
+        transparent 48%
+      ),
+      radial-gradient(
+        ellipse at 50% 18%,
+        oklch(0.44 0.12 21 / 32%),
+        transparent 58%
+      ),
+      linear-gradient(180deg, oklch(0.17 0.018 25), oklch(0.12 0.012 25) 70%);
+  }
+
+  .hero-raycast-bg::before {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    content: "";
+    background:
+      linear-gradient(180deg, transparent 0%, oklch(0.1 0.01 25 / 72%) 100%),
+      radial-gradient(circle at 50% 4%, transparent 0 18%, oklch(0.11 0.01 25 / 76%) 68%);
+    pointer-events: none;
+  }
+
+  .hero-raycast-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image:
+      linear-gradient(oklch(0.96 0.01 30 / 5%) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(0.96 0.01 30 / 5%) 1px, transparent 1px);
+    background-position: center top;
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse at center 18%, black 0%, transparent 68%);
+    pointer-events: none;
+  }
+
+  .hero-raycast-keys {
+    position: absolute;
+    right: 50%;
+    bottom: -88px;
+    z-index: 0;
+    display: grid;
+    width: min(980px, 92vw);
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: 12px;
+    opacity: 0.28;
+    pointer-events: none;
+    transform: translateX(50%) rotateX(58deg) rotateZ(-8deg);
+    transform-origin: center bottom;
+  }
+
+  .hero-raycast-keys span {
+    height: 54px;
+    border: 1px solid oklch(0.95 0.02 30 / 9%);
+    border-radius: 14px;
+    background:
+      linear-gradient(180deg, oklch(0.36 0.045 24 / 42%), oklch(0.18 0.02 25 / 30%)),
+      oklch(0.16 0.012 25 / 36%);
+    box-shadow:
+      0 1px 0 oklch(0.98 0.01 30 / 8%) inset,
+      0 18px 38px oklch(0.08 0.01 25 / 24%);
+  }
+
+  .hero-raycast-keys span:nth-child(3n) {
+    transform: translateY(18px);
+  }
+
+  .hero-raycast-keys span:nth-child(4n) {
+    opacity: 0.62;
+  }
+
+  .hero-raycast-keys span:nth-child(9n + 1),
+  .hero-raycast-keys span:nth-child(9n) {
+    opacity: 0.34;
+  }
+
   .terminal-card-scene {
     perspective: 1000px;
     perspective-origin: 50% 28%;
@@ -138,6 +218,17 @@
   }
 
   @media (max-width: 767px) {
+    .hero-raycast-keys {
+      width: 760px;
+      gap: 8px;
+      opacity: 0.2;
+    }
+
+    .hero-raycast-keys span {
+      height: 42px;
+      border-radius: 10px;
+    }
+
     .terminal-card-shell,
     .terminal-card-shell:hover {
       transform: rotateX(var(--terminal-rotate-x))
