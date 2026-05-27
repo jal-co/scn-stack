@@ -16,6 +16,7 @@ export interface CliArgs {
   components?: StarterComponents;
   namespace?: string;
   pm?: PackageManager;
+  skills?: boolean;
   yes?: boolean;
   help?: boolean;
 }
@@ -81,6 +82,12 @@ export function parseArgs(argv: string[]): CliArgs {
         if (next && PMS.has(next)) args.pm = next as PackageManager;
         i++;
         break;
+      case "--skills":
+        args.skills = true;
+        break;
+      case "--no-skills":
+        args.skills = false;
+        break;
       default:
         // Positional: first non-flag arg is the project name
         if (!arg.startsWith("-") && !args.name) {
@@ -115,6 +122,8 @@ export function printHelp(): void {
     --components <set>      essentials | minimal | none
     --namespace <ns>        Namespace (e.g., @my-ui)
     --pm <pm>               pnpm | npm | yarn | bun
+    --skills                Include AI skills (shadcn skill + registry skill)
+    --no-skills             Skip AI skills
     -y, --yes               Skip prompts, use defaults
     -h, --help              Show this help
 
@@ -125,6 +134,7 @@ export function printHelp(): void {
     npx create-scn-stack
     npx create-scn-stack my-ui --yes
     npx create-scn-stack my-ui --framework nextjs --docs fumadocs
+    npx create-scn-stack my-ui --yes --skills
     npx create-scn-stack add-component input
     npx create-scn-stack add-component dialog -d "A modal dialog component."
 `);

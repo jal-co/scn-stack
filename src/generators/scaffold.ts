@@ -19,6 +19,7 @@ import { generateReactRouter } from "./frameworks/react-router.js";
 import { generateTanstackStart } from "./frameworks/tanstack-start.js";
 import { generateFumadocs } from "./docs/fumadocs.js";
 import { generateStarlight } from "./docs/starlight.js";
+import { generateSkill } from "./skills.js";
 
 export async function scaffold(config: ProjectConfig): Promise<void> {
   const targetDir = resolve(process.cwd(), config.directory);
@@ -99,12 +100,19 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
     s.stop("Documentation configured.");
   }
 
-  // 5. Generate README
+  // 5. Generate skills
+  if (config.installRegistrySkill) {
+    s.start("Adding registry skill...");
+    generateSkill(config);
+    s.stop("Registry skill added.");
+  }
+
+  // 6. Generate README
   s.start("Generating README...");
   generateReadme(config);
   s.stop("README generated.");
 
-  // 6. Install dependencies
+  // 7. Install dependencies
   s.start(`Installing dependencies with ${config.packageManager}...`);
   try {
     runCommand(getInstallCommand(config.packageManager), targetDir, true);
@@ -113,7 +121,22 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
     s.stop("Failed to install dependencies. You can install them manually.");
   }
 
-  // 7. Initialize git
+  // 8. Install shadcn skill
+  if (config.installShadcnSkill) {
+    s.start("Installing shadcn skill...");
+    try {
+      runCommand(
+        `${getDlxCommand(config.packageManager)} skills add shadcn/ui`,
+        targetDir,
+        true
+      );
+      s.stop("shadcn skill installed.");
+    } catch {
+      s.stop("shadcn skill installation skipped (you can install later with: pnpm dlx skills add shadcn/ui).");
+    }
+  }
+
+  // 9. Initialize git
   s.start("Initializing git repository...");
   try {
     runCommand("git init", targetDir, true);
