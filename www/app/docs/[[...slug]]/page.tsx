@@ -1,6 +1,5 @@
 import { source } from "@/lib/source";
 import { notFound } from "next/navigation";
-import defaultMdxComponents from "fumadocs-ui/mdx";
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -31,7 +30,7 @@ export default async function Page(props: {
 
           {/* MDX content */}
           <div className="prose prose-neutral dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-h2:text-xl prose-h2:font-semibold prose-h2:tracking-tight prose-h3:text-lg prose-h3:font-medium prose-code:rounded prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:before:content-[''] prose-code:after:content-[''] prose-pre:border prose-pre:bg-muted/50 prose-a:text-foreground prose-a:underline prose-a:underline-offset-4">
-            <MDX components={{ ...defaultMdxComponents }} />
+            <MDX />
           </div>
         </div>
       </div>
