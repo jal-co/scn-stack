@@ -59,7 +59,7 @@ export function DocsSidebar() {
         <div key={group.title} className="flex flex-col gap-0.5">
           <p
             className={cn(
-              "px-2 pb-1 text-xs font-bold uppercase tracking-wide text-foreground",
+              "px-2 pb-1 font-mono text-[10px] font-medium uppercase tracking-widest text-muted-foreground",
               i === 0 ? "pt-0" : "pt-4"
             )}
           >
@@ -72,9 +72,9 @@ export function DocsSidebar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative flex items-center rounded-md px-2 py-1.5 text-sm transition-colors hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+                  "relative flex items-center px-2 py-1.5 text-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
                   isActive
-                    ? "bg-accent font-medium text-accent-foreground"
+                    ? "bg-accent font-medium text-foreground"
                     : "text-muted-foreground"
                 )}
               >
