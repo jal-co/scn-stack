@@ -1,9 +1,9 @@
-# create-scn-registry
+# scn-stack
 
 Scaffold a complete [shadcn component registry](https://ui.shadcn.com/docs/registry) with documentation in minutes.
 
 ```bash
-npx create-scn-registry
+npx create-scn-stack
 ```
 
 > Like `create-t3-app`, but for shadcn registries.
@@ -19,6 +19,7 @@ Setting one up from scratch means wiring together a framework, registry config, 
 - 🏗️ **Interactive CLI** — guided setup with sensible defaults
 - ⚡ **Framework choice** — Next.js, Vite, React Router, TanStack Start
 - 📖 **Docs engine** — Fumadocs (recommended), Starlight, or none
+- 🎨 **Style** — New York or Default shadcn style
 - 🧩 **Starter components** — Button, Card, Badge with auto-generated doc pages
 - 📦 **Registry ready** — `registry.json`, `shadcn build`, namespace support
 - 🚀 **Deploy anywhere** — Vercel, Netlify, Cloudflare, self-hosted
@@ -26,17 +27,20 @@ Setting one up from scratch means wiring together a framework, registry config, 
 ## Quick Start
 
 ```bash
-npx create-scn-registry
+npx create-scn-stack
 ```
 
 You'll be asked:
 
-1. **Registry name** — e.g., `acme`
-2. **Framework** — Next.js (default), Vite, React Router, TanStack Start
-3. **Docs engine** — Fumadocs (default), Starlight, None
-4. **Starter components** — essentials, minimal, or empty
-5. **Namespace** — e.g., `@acme`
-6. **Package manager** — pnpm, npm, yarn, bun
+1. **Registry name** — identifier for your registry (e.g., `my-ui`)
+2. **Project location** — folder to create the registry in
+3. **Style** — New York or Default
+4. **Homepage** — URL where the registry will be hosted
+5. **Framework** — Next.js (default), Vite, React Router, TanStack Start
+6. **Docs engine** — Fumadocs (default), Starlight, None
+7. **Starter components** — essentials, minimal, or empty
+8. **Namespace** — e.g., `@my-ui`
+9. **Package manager** — pnpm, npm, yarn, bun
 
 Then:
 
