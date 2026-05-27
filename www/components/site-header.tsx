@@ -3,8 +3,9 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Package, Menu, X, Github } from "lucide-react";
+import { Package, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { GitHubStarsButtonClient } from "./github-stars-client";
 
 const navItems = [
   { href: "/docs", label: "Docs" },
@@ -14,8 +15,16 @@ const navItems = [
 const mobileNavItems = [
   { href: "/", label: "Home" },
   ...navItems,
-  { href: "https://github.com/jal-co/scn-stack", label: "GitHub", external: true },
-  { href: "https://www.npmjs.com/package/create-scn-stack", label: "npm", external: true },
+  {
+    href: "https://github.com/jal-co/scn-stack",
+    label: "GitHub",
+    external: true,
+  },
+  {
+    href: "https://www.npmjs.com/package/create-scn-stack",
+    label: "npm",
+    external: true,
+  },
 ];
 
 export function SiteHeader() {
@@ -84,15 +93,7 @@ export function SiteHeader() {
         >
           npm
         </a>
-        <a
-          href="https://github.com/jal-co/scn-stack"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-        >
-          <Github className="h-4 w-4" />
-          <span className="hidden sm:inline">GitHub</span>
-        </a>
+        <GitHubStarsButtonClient />
       </div>
 
       {/* Mobile nav overlay */}
@@ -110,7 +111,10 @@ export function SiteHeader() {
                 const isActive = !isExternal && pathname === item.href;
                 const Component = isExternal ? "a" : Link;
                 const extraProps = isExternal
-                  ? { target: "_blank" as const, rel: "noopener noreferrer" }
+                  ? {
+                      target: "_blank" as const,
+                      rel: "noopener noreferrer",
+                    }
                   : {};
 
                 return (

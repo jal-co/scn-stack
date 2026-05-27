@@ -7,45 +7,64 @@ description: What gets generated and where everything goes.
 
 After running `npx create-scn-stack`, you'll get a fully configured project. Here's the structure for a **Next.js + Fumadocs** setup with essentials:
 
-```
-my-ui/
-├── app/
-│   ├── layout.tsx               # Root layout with Fumadocs provider
-│   ├── page.tsx                 # Landing page
-│   ├── globals.css              # Tailwind v4 + shadcn CSS variables
-│   └── docs/
-│       ├── layout.tsx           # Docs sidebar layout
-│       └── [[...slug]]/
-│           └── page.tsx         # Dynamic docs page
-├── content/docs/                # Documentation content (MDX)
-│   ├── meta.json                # Navigation structure
-│   ├── index.mdx                # Getting started
-│   ├── installation.mdx         # Install instructions
-│   └── components/
-│       ├── meta.json            # Component nav order
-│       ├── button.mdx           # Button documentation
-│       ├── card.mdx             # Card documentation
-│       └── badge.mdx            # Badge documentation
-├── registry/new-york/ui/        # Component source files
-│   ├── button.tsx               # Button with CVA variants
-│   ├── card.tsx                 # Card compound component
-│   └── badge.tsx                # Badge with CVA variants
-├── lib/
-│   ├── source.ts                # Fumadocs content loader
-│   └── utils.ts                 # cn() utility
-├── public/r/                    # Built registry output (generated)
-│   ├── registry.json
-│   ├── button.json
-│   ├── card.json
-│   └── badge.json
-├── registry.json                # Registry definition (source of truth)
-├── components.json              # shadcn configuration
-├── source.config.ts             # Fumadocs MDX config
-├── next.config.ts               # Next.js + MDX plugin
-├── tsconfig.json                # TypeScript config
-├── postcss.config.mjs           # Tailwind v4 PostCSS
-└── package.json                 # Scripts and dependencies
-```
+<FileTree
+  tree={[
+    { name: "app", children: [
+      { name: "layout.tsx" },
+      { name: "page.tsx" },
+      { name: "globals.css" },
+      { name: "docs", children: [
+        { name: "layout.tsx" },
+        { name: "[[...slug]]", children: [
+          { name: "page.tsx" },
+        ]},
+      ]},
+    ]},
+    { name: "content", children: [
+      { name: "docs", children: [
+        { name: "meta.json" },
+        { name: "index.mdx" },
+        { name: "installation.mdx" },
+        { name: "components", children: [
+          { name: "meta.json" },
+          { name: "button.mdx" },
+          { name: "card.mdx" },
+          { name: "badge.mdx" },
+        ]},
+      ]},
+    ]},
+    { name: "registry", children: [
+      { name: "new-york", children: [
+        { name: "ui", children: [
+          { name: "button.tsx" },
+          { name: "card.tsx" },
+          { name: "badge.tsx" },
+        ]},
+      ]},
+    ]},
+    { name: "lib", children: [
+      { name: "source.ts" },
+      { name: "utils.ts" },
+    ]},
+    { name: "public", children: [
+      { name: "r", children: [
+        { name: "registry.json" },
+        { name: "button.json" },
+        { name: "card.json" },
+        { name: "badge.json" },
+      ]},
+    ]},
+    { name: "registry.json" },
+    { name: "components.json" },
+    { name: "source.config.ts" },
+    { name: "next.config.ts" },
+    { name: "tsconfig.json" },
+    { name: "postcss.config.mjs" },
+    { name: "package.json" },
+  ]}
+  iconStyle="colored"
+  highlight={["registry.json", "components.json", "registry/new-york/ui/button.tsx"]}
+/>
 
 ## Key Files
 
