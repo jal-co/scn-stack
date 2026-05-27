@@ -1,0 +1,115 @@
+---
+title: Mintlify
+description: Hosted documentation platform — works with any framework.
+---
+
+## Overview
+
+[Mintlify](https://mintlify.com) is a hosted documentation platform used by Stripe, Twilio, Resend, and hundreds of developer tools companies. It's the simplest docs option — just MDX content + a config file, no framework code.
+
+## What You Get
+
+Mintlify generates a `docs/` directory in your project with:
+
+<FileTree
+  tree={[
+    { name: "docs", children: [
+      { name: "mint.json" },
+      { name: "introduction.mdx" },
+      { name: "installation.mdx" },
+      { name: "components", children: [
+        { name: "button.mdx" },
+        { name: "card.mdx" },
+        { name: "badge.mdx" },
+      ]},
+      { name: "logo", children: [
+        { name: "dark.svg" },
+        { name: "light.svg" },
+      ]},
+      { name: "favicon.svg" },
+    ]},
+  ]}
+  iconStyle="colored"
+/>
+
+## How It Works
+
+Unlike Fumadocs and Starlight, Mintlify is a **hosted service** — your docs are rendered by Mintlify's platform, not your own server. You push MDX files to your repo, and Mintlify auto-deploys them.
+
+1. Sign up at [mintlify.com/start](https://mintlify.com/start)
+2. Connect your GitHub repo
+3. Point Mintlify at the `docs/` directory
+4. Push changes → docs auto-deploy to `yourproject.mintlify.app`
+
+## When to Use Mintlify
+
+- You want the **fastest setup** — zero framework code, just content
+- You want **hosted deployment** — no Vercel/Netlify needed for docs
+- You're using a **non-Next.js framework** and want beautiful docs
+- You want built-in **search, analytics, and API reference**
+- Your team prefers a **web editor** over code
+
+## Configuration
+
+The `mint.json` file controls navigation, branding, and layout:
+
+```json
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "my-ui",
+  "colors": {
+    "primary": "#171717",
+    "light": "#FAFAFA",
+    "dark": "#171717"
+  },
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": ["introduction", "installation"]
+    },
+    {
+      "group": "Components",
+      "pages": ["components/button", "components/card"]
+    }
+  ]
+}
+```
+
+## Local Preview
+
+```bash
+npm i -g mint
+cd docs
+mint dev
+```
+
+## Adding a Doc Page
+
+Create a new `.mdx` file in `docs/components/`:
+
+```mdx
+---
+title: My Component
+description: A description of your component.
+---
+
+## Installation
+
+\`\`\`bash
+npx shadcn add @my-ui/my-component
+\`\`\`
+```
+
+Add it to the `navigation` array in `mint.json`.
+
+## Comparison
+
+| Feature | Fumadocs | Mintlify | Starlight |
+|---------|----------|----------|-----------|
+| Self-hosted | ✅ | ❌ (hosted) | ✅ |
+| Requires Next.js | ✅ | ❌ | ❌ |
+| Component previews | ✅ (inline) | Via iframe | Via iframe |
+| Search | Plugin | Built-in | Built-in |
+| Web editor | ❌ | ✅ | ❌ |
+| API reference | ❌ | ✅ | ❌ |
+| Free tier | ✅ (OSS) | ✅ (limited) | ✅ (OSS) |

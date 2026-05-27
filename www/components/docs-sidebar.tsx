@@ -42,6 +42,7 @@ const docsNav: NavGroup[] = [
     title: "Docs Engines",
     items: [
       { title: "Fumadocs", href: "/docs/docs-engines/fumadocs" },
+      { title: "Mintlify", href: "/docs/docs-engines/mintlify" },
       { title: "Starlight", href: "/docs/docs-engines/starlight" },
     ],
   },

@@ -1,4 +1,4 @@
 {
   "title": "Docs Engines",
-  "pages": ["fumadocs", "starlight"]
+  "pages": ["fumadocs", "mintlify", "starlight"]
 }

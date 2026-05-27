@@ -22,7 +22,7 @@ export interface CliArgs {
 }
 
 const FRAMEWORKS = new Set(["nextjs", "vite", "react-router", "tanstack-start"]);
-const DOCS = new Set(["fumadocs", "starlight", "none"]);
+const DOCS = new Set(["fumadocs", "mintlify", "starlight", "none"]);
 const COMPONENTS = new Set(["essentials", "minimal", "none"]);
 const STYLES = new Set(["new-york", "default"]);
 const PMS = new Set(["pnpm", "npm", "yarn", "bun"]);
@@ -118,7 +118,7 @@ export function printHelp(): void {
     --style <style>         new-york | default (default: new-york)
     --homepage <url>        Registry homepage URL
     --framework <fw>        nextjs | vite | react-router | tanstack-start
-    --docs <engine>         fumadocs | starlight | none
+    --docs <engine>         fumadocs | mintlify | starlight | none
     --components <set>      essentials | minimal | none
     --namespace <ns>        Namespace (e.g., @my-ui)
     --pm <pm>               pnpm | npm | yarn | bun

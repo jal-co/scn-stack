@@ -1,5 +1,5 @@
 export type Framework = "nextjs" | "vite" | "react-router" | "tanstack-start";
-export type DocsEngine = "fumadocs" | "starlight" | "none";
+export type DocsEngine = "fumadocs" | "mintlify" | "starlight" | "none";
 export type StarterComponents = "essentials" | "minimal" | "none";
 export type PackageManager = "pnpm" | "npm" | "yarn" | "bun";
 export type Style = "new-york" | "default";
