@@ -21,17 +21,24 @@ Fumadocs requires **Next.js**. If you select a different framework, the CLI will
 
 ## File Structure
 
-```
-content/docs/
-├── meta.json                 # Top-level navigation
-├── index.mdx                 # Getting Started page
-├── installation.mdx          # Installation guide
-└── components/
-    ├── meta.json             # Component nav order
-    ├── button.mdx            # Button docs
-    ├── card.mdx              # Card docs
-    └── badge.mdx             # Badge docs
-```
+<FileTree
+  tree={[
+    { name: "content", children: [
+      { name: "docs", children: [
+        { name: "meta.json" },
+        { name: "index.mdx" },
+        { name: "installation.mdx" },
+        { name: "components", children: [
+          { name: "meta.json" },
+          { name: "button.mdx" },
+          { name: "card.mdx" },
+          { name: "badge.mdx" },
+        ]},
+      ]},
+    ]},
+  ]}
+  iconStyle="colored"
+/>
 
 ## Adding a Doc Page
 

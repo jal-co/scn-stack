@@ -11,21 +11,32 @@ description: Astro-based documentation for non-Next.js projects.
 
 Starlight generates a **separate docs site** in a `docs/` subdirectory of your project:
 
-```
-my-ui/
-├── docs/                            # Starlight docs site
-│   ├── package.json
-│   ├── astro.config.mjs
-│   └── src/content/docs/
-│       ├── getting-started.md
-│       ├── installation.md
-│       └── components/
-│           ├── button.md
-│           ├── card.md
-│           └── badge.md
-├── registry.json                    # Your registry
-└── ...
-```
+<FileTree
+  tree={[
+    { name: "my-ui", children: [
+      { name: "docs", children: [
+        { name: "package.json" },
+        { name: "astro.config.mjs" },
+        { name: "src", children: [
+          { name: "content", children: [
+            { name: "docs", children: [
+              { name: "getting-started.md" },
+              { name: "installation.md" },
+              { name: "components", children: [
+                { name: "button.md" },
+                { name: "card.md" },
+                { name: "badge.md" },
+              ]},
+            ]},
+          ]},
+        ]},
+      ]},
+      { name: "registry.json" },
+      { name: "package.json" },
+    ]},
+  ]}
+  iconStyle="colored"
+/>
 
 ## Development
 
@@ -33,7 +44,7 @@ The docs site runs separately from your main app:
 
 ```bash
 cd docs
-pnpm dev    # Start Starlight dev server (usually port 4321)
+pnpm dev
 ```
 
 ## Deployment

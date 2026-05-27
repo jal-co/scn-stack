@@ -82,3 +82,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Strip shiki per-line background highlights */
+[data-slot="code-block"] pre code span {
+  background-color: transparent !important;
+}
+[data-slot="code-line"] code span {
+  background-color: transparent !important;
+}

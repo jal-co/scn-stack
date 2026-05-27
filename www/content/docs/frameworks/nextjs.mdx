@@ -19,29 +19,41 @@ Next.js is the **recommended framework** for scn-stack. It's what the official [
 
 Your registry is served as **static files** via `public/r/`. When you run `pnpm registry:build`, the shadcn CLI reads your `registry.json` and generates JSON files:
 
-```
-public/r/
-├── registry.json    # Registry catalog
-├── button.json      # Individual component
-├── card.json
-└── badge.json
-```
+<FileTree
+  tree={[
+    { name: "public", children: [
+      { name: "r", children: [
+        { name: "registry.json" },
+        { name: "button.json" },
+        { name: "card.json" },
+        { name: "badge.json" },
+      ]},
+    ]},
+  ]}
+  iconStyle="colored"
+/>
 
 Next.js serves everything in `public/` automatically — no route handlers needed.
 
 ## Development
 
 ```bash
-pnpm dev          # Start with Turbopack
-pnpm build        # Production build (includes registry build)
-pnpm registry:build  # Build registry JSON only
+pnpm dev
+```
+
+```bash
+pnpm build
+```
+
+```bash
+pnpm registry:build
 ```
 
 ## Deployment
 
 Deploy to any platform that supports Next.js:
 
-- **Vercel** — `vercel` (zero config)
+- **Vercel** — zero config
 - **Netlify** — `netlify deploy`
 - **Cloudflare Pages** — via `@cloudflare/next-on-pages`
 - **Self-hosted** — `pnpm build && pnpm start`
