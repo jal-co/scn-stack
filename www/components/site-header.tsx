@@ -3,28 +3,17 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Package, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { GitHubStarsButtonClient } from "./github-stars-client";
 
 const navItems = [
   { href: "/docs", label: "Docs" },
   { href: "/builder", label: "Builder" },
 ];
 
-const mobileNavItems = [
-  { href: "/", label: "Home" },
-  ...navItems,
-  {
-    href: "https://github.com/jal-co/scn-stack",
-    label: "GitHub",
-    external: true,
-  },
-  {
-    href: "https://www.npmjs.com/package/create-scn-stack",
-    label: "npm",
-    external: true,
-  },
+const externalLinks = [
+  { href: "https://github.com/jal-co/scn-stack", label: "GitHub" },
+  { href: "https://www.npmjs.com/package/create-scn-stack", label: "npm" },
 ];
 
 export function SiteHeader() {
@@ -45,91 +34,83 @@ export function SiteHeader() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 flex h-14 items-center gap-2 border-b bg-background/95 px-4 backdrop-blur-sm sm:px-6">
-      {/* Mobile menu button */}
+    <header className="sticky top-0 z-50 flex h-12 items-center justify-between border-b bg-background/95 px-6 backdrop-blur-sm">
+      {/* Left: logo + nav */}
+      <div className="flex items-center gap-6">
+        <Link
+          href="/"
+          className="font-mono text-xs font-bold uppercase tracking-[0.2em]"
+        >
+          scn-stack
+        </Link>
+        <nav className="hidden items-center gap-4 md:flex">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "font-mono text-[11px] uppercase tracking-[0.15em] transition-colors hover:text-foreground",
+                pathname.startsWith(item.href)
+                  ? "text-foreground"
+                  : "text-muted-foreground"
+              )}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+      </div>
+
+      {/* Right: external links */}
+      <div className="hidden items-center gap-4 md:flex">
+        {externalLinks.map((item) => (
+          <a
+            key={item.href}
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-[11px] uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {item.label}
+          </a>
+        ))}
+      </div>
+
+      {/* Mobile toggle */}
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 md:hidden"
-        aria-label={open ? "Close navigation" : "Open navigation"}
+        className="text-muted-foreground md:hidden"
+        aria-label={open ? "Close" : "Menu"}
       >
-        {open ? <X className="size-5" /> : <Menu className="size-5" />}
+        {open ? <X className="size-4" /> : <Menu className="size-4" />}
       </button>
 
-      {/* Logo */}
-      <Link
-        href="/"
-        className="flex items-center gap-2 text-sm font-semibold tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-      >
-        <Package className="h-4 w-4" />
-        <span className="hidden font-mono text-xs font-bold uppercase tracking-widest sm:inline">
-          scn-stack
-        </span>
-      </Link>
-
-      {/* Desktop nav */}
-      <nav className="ml-4 hidden items-center gap-1 text-sm md:flex">
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={cn(
-              "px-3 py-1.5 font-mono text-xs uppercase tracking-widest transition-colors hover:text-foreground",
-              pathname.startsWith(item.href)
-                ? "text-foreground"
-                : "text-muted-foreground"
-            )}
-          >
-            {item.label}
-          </Link>
-        ))}
-      </nav>
-
-      {/* Right side */}
-      <div className="ml-auto flex items-center gap-1.5">
-        <a
-          href="https://www.npmjs.com/package/create-scn-stack"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden px-3 py-1.5 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
-        >
-          npm
-        </a>
-        <GitHubStarsButtonClient />
-      </div>
-
-      {/* Mobile nav overlay */}
+      {/* Mobile nav */}
       {open && (
         <>
           <div
-            className="fixed inset-0 top-14 z-40 bg-black/40 md:hidden"
+            className="fixed inset-0 top-12 z-40 bg-black/40 md:hidden"
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />
-          <nav className="fixed inset-x-0 top-14 z-50 max-h-[calc(100vh-3.5rem)] overflow-y-auto border-b bg-background p-4 shadow-lg md:hidden">
-            <div className="flex flex-col gap-1">
-              {mobileNavItems.map((item) => {
-                const isExternal = "external" in item && item.external;
-                const isActive = !isExternal && pathname === item.href;
+          <nav className="fixed inset-x-0 top-12 z-50 border-b bg-background p-6 md:hidden">
+            <div className="flex flex-col gap-3">
+              {[
+                { href: "/", label: "Home" },
+                ...navItems,
+                ...externalLinks,
+              ].map((item) => {
+                const isExternal = item.href.startsWith("http");
                 const Component = isExternal ? "a" : Link;
-                const extraProps = isExternal
-                  ? {
-                      target: "_blank" as const,
-                      rel: "noopener noreferrer",
-                    }
-                  : {};
-
                 return (
                   <Component
                     key={item.href}
                     href={item.href}
-                    className={cn(
-                      "flex items-center rounded-md px-3 py-2.5 text-sm transition-colors hover:bg-accent hover:text-accent-foreground",
-                      isActive
-                        ? "bg-accent font-medium text-accent-foreground"
-                        : "text-muted-foreground"
-                    )}
-                    {...extraProps}
+                    className="font-mono text-xs uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:text-foreground"
+                    {...(isExternal
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
                   >
                     {item.label}
                   </Component>

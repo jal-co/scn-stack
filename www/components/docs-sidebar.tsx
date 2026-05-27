@@ -54,13 +54,13 @@ export function DocsSidebar() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-col gap-1 px-4 py-4">
+    <nav className="flex flex-col gap-0.5 px-6 py-6">
       {docsNav.map((group, i) => (
         <div key={group.title} className="flex flex-col gap-0.5">
           <p
             className={cn(
-              "px-2 pb-1 font-mono text-[10px] font-medium uppercase tracking-widest text-muted-foreground",
-              i === 0 ? "pt-0" : "pt-4"
+              "px-0 pb-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground",
+              i === 0 ? "pt-0" : "pt-5"
             )}
           >
             {group.title}
@@ -72,9 +72,9 @@ export function DocsSidebar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative flex items-center px-2 py-1.5 text-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+                  "py-1.5 text-sm transition-colors hover:text-foreground",
                   isActive
-                    ? "bg-accent font-medium text-foreground"
+                    ? "font-medium text-foreground"
                     : "text-muted-foreground"
                 )}
               >
