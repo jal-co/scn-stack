@@ -4,6 +4,7 @@ import type {
   StarterComponents,
   PackageManager,
   Style,
+  BaseLibrary,
 } from "./types.js";
 
 export interface CliArgs {
@@ -14,6 +15,8 @@ export interface CliArgs {
   framework?: Framework;
   docs?: DocsEngine;
   components?: StarterComponents;
+  base?: BaseLibrary;
+  monorepo?: boolean;
   namespace?: string;
   pm?: PackageManager;
   skills?: boolean;
@@ -26,6 +29,7 @@ const DOCS = new Set(["fumadocs", "mintlify", "starlight", "none"]);
 const COMPONENTS = new Set(["essentials", "minimal", "none"]);
 const STYLES = new Set(["new-york", "default"]);
 const PMS = new Set(["pnpm", "npm", "yarn", "bun"]);
+const BASES = new Set(["radix", "base"]);
 
 export function parseArgs(argv: string[]): CliArgs {
   const args: CliArgs = {};
@@ -82,6 +86,16 @@ export function parseArgs(argv: string[]): CliArgs {
         if (next && PMS.has(next)) args.pm = next as PackageManager;
         i++;
         break;
+      case "--base":
+        if (next && BASES.has(next)) args.base = next as BaseLibrary;
+        i++;
+        break;
+      case "--monorepo":
+        args.monorepo = true;
+        break;
+      case "--no-monorepo":
+        args.monorepo = false;
+        break;
       case "--skills":
         args.skills = true;
         break;
@@ -121,6 +135,9 @@ export function printHelp(): void {
     --docs <engine>         fumadocs | mintlify | starlight | none
     --components <set>      essentials | minimal | none
     --namespace <ns>        Namespace (e.g., @my-ui)
+    --base <lib>            radix | base (default: radix)
+    --monorepo              Create a monorepo structure
+    --no-monorepo           Single project (default)
     --pm <pm>               pnpm | npm | yarn | bun
     --skills                Include AI skills (shadcn skill + registry skill)
     --no-skills             Skip AI skills

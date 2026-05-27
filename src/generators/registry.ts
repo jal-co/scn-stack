@@ -119,7 +119,11 @@ export function generateComponentsJson(config: ProjectConfig): void {
       hooks: "@/hooks",
     },
     iconLibrary: "lucide",
+    base: config.baseLibrary === "base" ? "base" : undefined,
   };
+
+  // Remove undefined keys
+  if (!componentsJson.base) delete componentsJson.base;
 
   if (config.useNamespace && config.namespace) {
     componentsJson.registries = {

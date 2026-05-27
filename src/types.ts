@@ -3,6 +3,7 @@ export type DocsEngine = "fumadocs" | "mintlify" | "starlight" | "none";
 export type StarterComponents = "essentials" | "minimal" | "none";
 export type PackageManager = "pnpm" | "npm" | "yarn" | "bun";
 export type Style = "new-york" | "default";
+export type BaseLibrary = "radix" | "base";
 
 export interface ProjectConfig {
   name: string;
@@ -12,6 +13,8 @@ export interface ProjectConfig {
   framework: Framework;
   docsEngine: DocsEngine;
   starterComponents: StarterComponents;
+  baseLibrary: BaseLibrary;
+  monorepo: boolean;
   useNamespace: boolean;
   namespace: string;
   packageManager: PackageManager;

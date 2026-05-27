@@ -1,6 +1,7 @@
 import * as p from "@clack/prompts";
 import pc from "picocolors";
 import type {
+  BaseLibrary,
   DocsEngine,
   Framework,
   PackageManager,
@@ -76,6 +77,8 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
       framework,
       docsEngine,
       starterComponents: args.components || DEFAULTS.starterComponents,
+      baseLibrary: args.base || "radix",
+      monorepo: args.monorepo || false,
       useNamespace: true,
       namespace,
       packageManager: args.pm || DEFAULTS.packageManager,
@@ -90,10 +93,12 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
         `${pc.dim("Name:")}        ${config.name}`,
         `${pc.dim("Directory:")}   ${config.directory}`,
         `${pc.dim("Style:")}       ${config.style}`,
+        `${pc.dim("Base:")}        ${config.baseLibrary}`,
         `${pc.dim("Homepage:")}    ${config.homepage}`,
         `${pc.dim("Framework:")}   ${config.framework}`,
         `${pc.dim("Docs:")}        ${config.docsEngine}`,
         `${pc.dim("Components:")}  ${config.starterComponents}`,
+        `${pc.dim("Monorepo:")}    ${config.monorepo ? "yes" : "no"}`,
         `${pc.dim("Namespace:")}   ${config.namespace}`,
         `${pc.dim("PM:")}          ${config.packageManager}`,
         `${pc.dim("Skills:")}      ${installSkills ? "yes" : "no"}`,
@@ -136,6 +141,25 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
                   hint: "recommended",
                 },
                 { value: "default" as Style, label: "Default" },
+              ],
+            }),
+
+      baseLibrary: () =>
+        args.base
+          ? Promise.resolve(args.base)
+          : p.select({
+              message: "Base library",
+              options: [
+                {
+                  value: "radix" as BaseLibrary,
+                  label: "Radix UI",
+                  hint: "recommended",
+                },
+                {
+                  value: "base" as BaseLibrary,
+                  label: "Base UI",
+                  hint: "by MUI",
+                },
               ],
             }),
 
@@ -261,6 +285,14 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
               ],
             }),
 
+      monorepo: () =>
+        args.monorepo !== undefined
+          ? Promise.resolve(args.monorepo)
+          : p.confirm({
+              message: "Create a monorepo?",
+              initialValue: false,
+            }),
+
       installSkills: () =>
         args.skills !== undefined
           ? Promise.resolve(args.skills)
@@ -288,6 +320,8 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
     framework: project.framework as Framework,
     docsEngine: project.docsEngine as DocsEngine,
     starterComponents: project.starterComponents as StarterComponents,
+    baseLibrary: project.baseLibrary as BaseLibrary,
+    monorepo: project.monorepo as boolean,
     useNamespace: project.useNamespace as boolean,
     namespace: (project.namespace as string) || "",
     packageManager: project.packageManager as PackageManager,
