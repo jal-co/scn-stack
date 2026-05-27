@@ -83,11 +83,14 @@
   }
 }
 
-/* Strip shiki per-line background highlights */
-[data-slot="code-block"] pre code span {
-  background-color: transparent !important;
-}
-[data-slot="code-line"] code span {
+/* Strip ALL shiki backgrounds inside code components */
+[data-slot="code-block"] pre,
+[data-slot="code-block"] pre *,
+[data-slot="code-block"] div > div,
+[data-slot="code-line"] code,
+[data-slot="code-line"] code * {
+  --shiki-light-bg: transparent !important;
+  --shiki-dark-bg: transparent !important;
   background-color: transparent !important;
 }
 
