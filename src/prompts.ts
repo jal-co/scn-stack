@@ -66,6 +66,8 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
     }
     const namespace = args.namespace || `@${name}`;
 
+    const installSkills = args.skills !== false;
+
     const config: ProjectConfig = {
       name,
       registryName: name,
@@ -78,6 +80,8 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
       namespace,
       packageManager: args.pm || DEFAULTS.packageManager,
       directory: args.directory || `./${name}`,
+      installShadcnSkill: installSkills,
+      installRegistrySkill: installSkills,
     };
 
     p.log.info(`Using defaults for ${pc.cyan(config.name)}`);
@@ -92,6 +96,7 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
         `${pc.dim("Components:")}  ${config.starterComponents}`,
         `${pc.dim("Namespace:")}   ${config.namespace}`,
         `${pc.dim("PM:")}          ${config.packageManager}`,
+        `${pc.dim("Skills:")}      ${installSkills ? "yes" : "no"}`,
       ].join("\n")
     );
 
@@ -250,6 +255,14 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
                 { value: "bun" as PackageManager, label: "bun" },
               ],
             }),
+
+      installSkills: () =>
+        args.skills !== undefined
+          ? Promise.resolve(args.skills)
+          : p.confirm({
+              message: "Add AI skills? (shadcn skill + registry skill)",
+              initialValue: true,
+            }),
     },
     {
       onCancel: () => {
@@ -258,6 +271,8 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
       },
     }
   );
+
+  const skills = project.installSkills as boolean;
 
   const config: ProjectConfig = {
     name: project.name as string,
@@ -272,6 +287,8 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
     namespace: (project.namespace as string) || "",
     packageManager: project.packageManager as PackageManager,
     directory: project.directory as string,
+    installShadcnSkill: skills,
+    installRegistrySkill: skills,
   };
 
   return config;

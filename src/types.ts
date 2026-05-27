@@ -16,4 +16,6 @@ export interface ProjectConfig {
   namespace: string;
   packageManager: PackageManager;
   directory: string;
+  installShadcnSkill: boolean;
+  installRegistrySkill: boolean;
 }
