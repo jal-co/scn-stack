@@ -9,6 +9,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
+import { SiteHeader } from "@/components/site-header";
 
 function TerminalBlock() {
   return (
@@ -139,39 +140,7 @@ const features = [
 export default function Home() {
   return (
     <div className="flex min-h-svh flex-col">
-      {/* Nav */}
-      <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-sm">
-        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-2 font-semibold">
-            <Package className="h-5 w-5" />
-            scn-stack
-          </Link>
-          <nav className="flex items-center gap-6">
-            <Link
-              href="/docs"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Docs
-            </Link>
-            <a
-              href="https://github.com/jal-co/scn-stack"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GitHub
-            </a>
-            <a
-              href="https://www.npmjs.com/package/create-scn-stack"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              npm
-            </a>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* Hero */}
       <section className="flex flex-1 flex-col items-center justify-center gap-8 px-4 py-20 text-center md:py-32">
