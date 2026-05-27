@@ -87,17 +87,11 @@
   .hero-raycast-bg {
     background:
       radial-gradient(
-        circle at 50% -18%,
-        oklch(0.64 0.22 29 / 55%),
-        oklch(0.4 0.16 24 / 24%) 22%,
-        transparent 48%
+        circle at 50% 28%,
+        oklch(0.2 0.035 25 / 72%),
+        transparent 42%
       ),
-      radial-gradient(
-        ellipse at 50% 18%,
-        oklch(0.44 0.12 21 / 32%),
-        transparent 58%
-      ),
-      linear-gradient(180deg, oklch(0.17 0.018 25), oklch(0.12 0.012 25) 70%);
+      linear-gradient(180deg, oklch(0.08 0.008 25), oklch(0.1 0.012 25) 55%, oklch(0.07 0.008 25));
   }
 
   .hero-raycast-bg::before {
@@ -106,62 +100,88 @@
     z-index: 0;
     content: "";
     background:
-      linear-gradient(180deg, transparent 0%, oklch(0.1 0.01 25 / 72%) 100%),
-      radial-gradient(circle at 50% 4%, transparent 0 18%, oklch(0.11 0.01 25 / 76%) 68%);
+      radial-gradient(ellipse at 50% 28%, transparent 0 30%, oklch(0.06 0.008 25 / 84%) 70%),
+      linear-gradient(180deg, transparent 0%, oklch(0.06 0.008 25 / 64%) 100%);
     pointer-events: none;
   }
 
-  .hero-raycast-grid {
+  .hero-raycast-bg::after {
     position: absolute;
-    inset: 0;
+    inset: -20% 0 0;
     z-index: 0;
-    background-image:
-      linear-gradient(oklch(0.96 0.01 30 / 5%) 1px, transparent 1px),
-      linear-gradient(90deg, oklch(0.96 0.01 30 / 5%) 1px, transparent 1px);
-    background-position: center top;
-    background-size: 64px 64px;
-    mask-image: radial-gradient(ellipse at center 18%, black 0%, transparent 68%);
+    content: "";
+    background-image: radial-gradient(oklch(0.72 0.24 28 / 12%) 1px, transparent 1px);
+    background-size: 3px 3px;
+    mask-image: radial-gradient(ellipse at center 48%, black 0 22%, transparent 68%);
+    mix-blend-mode: screen;
+    opacity: 0.72;
     pointer-events: none;
   }
 
-  .hero-raycast-keys {
+  .hero-raycast-beams {
     position: absolute;
-    right: 50%;
-    bottom: -88px;
+    top: 58px;
+    left: 50%;
     z-index: 0;
-    display: grid;
-    width: min(980px, 92vw);
-    grid-template-columns: repeat(9, minmax(0, 1fr));
-    gap: 12px;
-    opacity: 0.28;
+    width: min(920px, 84vw);
+    height: 720px;
     pointer-events: none;
-    transform: translateX(50%) rotateX(58deg) rotateZ(-8deg);
-    transform-origin: center bottom;
+    transform: translateX(-50%);
   }
 
-  .hero-raycast-keys span {
-    height: 54px;
-    border: 1px solid oklch(0.95 0.02 30 / 9%);
-    border-radius: 14px;
+  .hero-raycast-beams span {
+    position: absolute;
+    top: -132px;
+    left: 50%;
+    width: 146px;
+    height: 860px;
+    border-radius: 999px;
     background:
-      linear-gradient(180deg, oklch(0.36 0.045 24 / 42%), oklch(0.18 0.02 25 / 30%)),
-      oklch(0.16 0.012 25 / 36%);
+      linear-gradient(
+        180deg,
+        oklch(0.8 0.25 26 / 0%) 0%,
+        oklch(0.68 0.25 26 / 54%) 28%,
+        oklch(0.57 0.24 24 / 86%) 58%,
+        oklch(0.45 0.2 24 / 0%) 100%
+      );
+    filter: blur(0.4px);
+    mix-blend-mode: screen;
+    opacity: 0.76;
     box-shadow:
-      0 1px 0 oklch(0.98 0.01 30 / 8%) inset,
-      0 18px 38px oklch(0.08 0.01 25 / 24%);
+      0 0 44px oklch(0.64 0.25 25 / 32%),
+      22px 0 76px oklch(0.72 0.24 28 / 18%) inset,
+      -26px 0 54px oklch(0.18 0.08 250 / 24%) inset;
+    transform: translateX(-50%) rotate(-34deg);
+    transform-origin: center;
   }
 
-  .hero-raycast-keys span:nth-child(3n) {
-    transform: translateY(18px);
+  .hero-raycast-beams span:nth-child(1) {
+    margin-left: -250px;
+    opacity: 0.46;
   }
 
-  .hero-raycast-keys span:nth-child(4n) {
-    opacity: 0.62;
+  .hero-raycast-beams span:nth-child(2) {
+    margin-left: -118px;
+    width: 180px;
+    opacity: 0.88;
   }
 
-  .hero-raycast-keys span:nth-child(9n + 1),
-  .hero-raycast-keys span:nth-child(9n) {
-    opacity: 0.34;
+  .hero-raycast-beams span:nth-child(3) {
+    margin-left: 38px;
+    width: 205px;
+    opacity: 0.9;
+  }
+
+  .hero-raycast-beams span:nth-child(4) {
+    margin-left: 212px;
+    width: 138px;
+    opacity: 0.48;
+  }
+
+  .hero-raycast-beams span:nth-child(5) {
+    margin-left: 384px;
+    width: 96px;
+    opacity: 0.22;
   }
 
   .terminal-card-scene {
@@ -218,15 +238,15 @@
   }
 
   @media (max-width: 767px) {
-    .hero-raycast-keys {
-      width: 760px;
-      gap: 8px;
-      opacity: 0.2;
+    .hero-raycast-beams {
+      top: 96px;
+      width: 560px;
+      height: 620px;
     }
 
-    .hero-raycast-keys span {
-      height: 42px;
-      border-radius: 10px;
+    .hero-raycast-beams span {
+      width: 92px;
+      height: 700px;
     }
 
     .terminal-card-shell,

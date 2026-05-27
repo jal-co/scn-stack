@@ -85,7 +85,7 @@ const commands = [
   { label: "Validate the schema", cmd: "npx shadcn registry validate" },
 ];
 
-const heroKeys = Array.from({ length: 54 }, (_, index) => index);
+const heroBeams = Array.from({ length: 5 }, (_, index) => index);
 
 export default function Home() {
   const terminalCardRef = useRef<HTMLDivElement>(null);
@@ -152,10 +152,9 @@ export default function Home() {
 
       {/* Hero */}
       <section className="hero-raycast-bg relative overflow-hidden border-b">
-        <div className="hero-raycast-grid" aria-hidden="true" />
-        <div className="hero-raycast-keys" aria-hidden="true">
-          {heroKeys.map((key) => (
-            <span key={key} />
+        <div className="hero-raycast-beams" aria-hidden="true">
+          {heroBeams.map((beam) => (
+            <span key={beam} />
           ))}
         </div>
 
