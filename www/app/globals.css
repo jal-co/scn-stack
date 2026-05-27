@@ -90,3 +90,18 @@
 [data-slot="code-line"] code span {
   background-color: transparent !important;
 }
+
+/* Normalize prose spacing for code components */
+.prose [data-slot="code-block"],
+.prose [data-slot="code-line"],
+.prose [data-slot="code-block-command"],
+.prose [data-slot="file-tree"] {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Consecutive code components: tighter spacing */
+.prose [data-slot="code-line"] + [data-slot="code-line"],
+.prose [data-slot="code-block"] + [data-slot="code-block"] {
+  margin-top: 0.375rem;
+}

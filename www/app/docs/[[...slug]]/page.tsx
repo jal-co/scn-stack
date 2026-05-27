@@ -30,7 +30,7 @@ export default async function Page(props: {
           </div>
 
           {/* MDX content */}
-          <div className="prose prose-neutral dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-h2:text-xl prose-h2:font-semibold prose-h2:tracking-tight prose-h3:text-lg prose-h3:font-medium prose-code:rounded prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:before:content-[''] prose-code:after:content-[''] prose-pre:border prose-pre:bg-muted/50 prose-a:text-foreground prose-a:underline prose-a:underline-offset-4">
+          <div className="prose prose-neutral dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-h2:text-xl prose-h2:font-semibold prose-h2:tracking-tight prose-h3:text-lg prose-h3:font-medium prose-code:rounded prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:before:content-[''] prose-code:after:content-[''] prose-pre:border-0 prose-pre:bg-transparent prose-pre:p-0 prose-pre:m-0 prose-a:text-foreground prose-a:underline prose-a:underline-offset-4">
             <MDX components={mdxComponents} />
           </div>
         </div>

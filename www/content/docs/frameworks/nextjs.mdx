@@ -38,15 +38,9 @@ Next.js serves everything in `public/` automatically — no route handlers neede
 ## Development
 
 ```bash
-pnpm dev
-```
-
-```bash
-pnpm build
-```
-
-```bash
-pnpm registry:build
+pnpm dev              # Start with Turbopack
+pnpm build            # Production build (includes registry build)
+pnpm registry:build   # Build registry JSON only
 ```
 
 ## Deployment
