@@ -6,6 +6,7 @@ import type {
   PackageManager,
   ProjectConfig,
   StarterComponents,
+  Style,
 } from "./types.js";
 import { detectPackageManager } from "./utils.js";
 
@@ -18,10 +19,25 @@ function validateRegistryName(value: string | undefined): string | undefined {
   return undefined;
 }
 
+function validateProjectLocation(
+  value: string | undefined
+): string | undefined {
+  if (!value) return "Project location is required.";
+  return undefined;
+}
+
+function validateHomepage(value: string | undefined): string | undefined {
+  if (!value) return undefined; // optional
+  if (!/^https?:\/\/.+/.test(value)) {
+    return "Must be a valid URL starting with https://";
+  }
+  return undefined;
+}
+
 function validateNamespace(value: string | undefined): string | undefined {
   if (!value) return "Namespace is required.";
   if (!/^@[a-z][a-z0-9-]*$/.test(value)) {
-    return 'Must start with @ followed by a lowercase letter (e.g., @acme).';
+    return "Must start with @ followed by a lowercase letter (e.g., @acme).";
   }
   return undefined;
 }
@@ -33,14 +49,43 @@ export async function runPrompts(): Promise<ProjectConfig> {
     {
       name: () =>
         p.text({
-          message: "What is your registry name?",
+          message: "Registry name",
           placeholder: "my-ui",
           validate: validateRegistryName,
         }),
 
+      directory: ({ results }) =>
+        p.text({
+          message: "Project location",
+          placeholder: `./${results.name as string}`,
+          defaultValue: `./${results.name as string}`,
+          validate: validateProjectLocation,
+        }),
+
+      style: () =>
+        p.select({
+          message: "Style",
+          options: [
+            {
+              value: "new-york" as Style,
+              label: "New York",
+              hint: "recommended",
+            },
+            { value: "default" as Style, label: "Default" },
+          ],
+        }),
+
+      homepage: ({ results }) =>
+        p.text({
+          message: "Homepage",
+          placeholder: `https://${results.name as string}.com`,
+          defaultValue: `https://${results.name as string}.com`,
+          validate: validateHomepage,
+        }),
+
       framework: () =>
         p.select({
-          message: "What framework would you like to use?",
+          message: "Framework",
           options: [
             {
               value: "nextjs" as Framework,
@@ -55,7 +100,7 @@ export async function runPrompts(): Promise<ProjectConfig> {
 
       docsEngine: () =>
         p.select({
-          message: "Would you like to add a documentation site?",
+          message: "Documentation",
           options: [
             {
               value: "fumadocs" as DocsEngine,
@@ -77,7 +122,7 @@ export async function runPrompts(): Promise<ProjectConfig> {
 
       starterComponents: () =>
         p.select({
-          message: "Which starter components would you like?",
+          message: "Starter components",
           options: [
             {
               value: "essentials" as StarterComponents,
@@ -99,14 +144,14 @@ export async function runPrompts(): Promise<ProjectConfig> {
 
       useNamespace: () =>
         p.confirm({
-          message: "Would you like to add a namespace?",
+          message: "Add a namespace?",
           initialValue: true,
         }),
 
       namespace: ({ results }) => {
         if (!results.useNamespace) return Promise.resolve("" as string);
         return p.text({
-          message: "What namespace?",
+          message: "Namespace",
           placeholder: `@${results.name as string}`,
           defaultValue: `@${results.name as string}`,
           validate: validateNamespace,
@@ -115,7 +160,7 @@ export async function runPrompts(): Promise<ProjectConfig> {
 
       packageManager: () =>
         p.select({
-          message: "Which package manager?",
+          message: "Package manager",
           initialValue: detectPackageManager(),
           options: [
             { value: "pnpm" as PackageManager, label: "pnpm" },
@@ -136,13 +181,15 @@ export async function runPrompts(): Promise<ProjectConfig> {
   const config: ProjectConfig = {
     name: project.name,
     registryName: project.name,
+    style: project.style,
+    homepage: (project.homepage as string) || `https://${project.name}.com`,
     framework: project.framework,
     docsEngine: project.docsEngine,
     starterComponents: project.starterComponents,
     useNamespace: project.useNamespace,
     namespace: (project.namespace as string) || "",
     packageManager: project.packageManager,
-    directory: project.name,
+    directory: project.directory as string,
   };
 
   return config;

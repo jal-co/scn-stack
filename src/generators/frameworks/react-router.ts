@@ -207,7 +207,7 @@ export default function App() {
   // app/routes/home.tsx
   const installCmd = config.useNamespace
     ? `${dlx} shadcn@latest add ${config.namespace}/button`
-    : `${dlx} shadcn@latest add https://${config.registryName}.com/r/button.json`;
+    : `${dlx} shadcn@latest add ${config.homepage}/r/button.json`;
 
   writeFile(
     join(dir, "app/routes/home.tsx"),

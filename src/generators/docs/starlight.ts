@@ -96,7 +96,7 @@ export default defineConfig({
   // docs/src/content/docs/getting-started.md
   const installPrefix = config.useNamespace
     ? `${config.namespace}/`
-    : `https://${name}.com/r/`;
+    : `${config.homepage}/r/`;
   const installSuffix = config.useNamespace ? "" : ".json";
 
   writeFile(
@@ -111,7 +111,7 @@ description: Get started with ${name} — a custom shadcn component registry.
 Add the ${name} registry to your project:
 
 \`\`\`bash
-npx shadcn@latest registry add ${config.useNamespace ? `${config.namespace}=https://${name}.com/r/{name}.json` : `https://${name}.com/r/{name}.json`}
+npx shadcn@latest registry add ${config.useNamespace ? `${config.namespace}=${config.homepage}/r/{name}.json` : `${config.homepage}/r/{name}.json`}
 \`\`\`
 
 Then install any component:
@@ -145,13 +145,13 @@ npx shadcn@latest init
 ## Add the Registry
 
 \`\`\`bash
-npx shadcn@latest registry add ${config.useNamespace ? `${config.namespace}=https://${name}.com/r/{name}.json` : `https://${name}.com/r/{name}.json`}
+npx shadcn@latest registry add ${config.useNamespace ? `${config.namespace}=${config.homepage}/r/{name}.json` : `${config.homepage}/r/{name}.json`}
 \`\`\`
 
 ## Browse Components
 
 \`\`\`bash
-npx shadcn@latest list ${config.useNamespace ? config.namespace : `https://${name}.com/r/registry.json`}
+npx shadcn@latest list ${config.useNamespace ? config.namespace : `${config.homepage}/r/registry.json`}
 \`\`\`
 `
   );

@@ -173,7 +173,7 @@ function generateReadme(config: ProjectConfig): void {
 
   const installCmd = config.useNamespace
     ? `${dlx} shadcn@latest add ${config.namespace}/button`
-    : `${dlx} shadcn@latest add https://${name}.com/r/button.json`;
+    : `${dlx} shadcn@latest add ${config.homepage}/r/button.json`;
 
   const namespaceSection = config.useNamespace
     ? `
@@ -182,7 +182,7 @@ function generateReadme(config: ProjectConfig): void {
 This registry uses the \`${config.namespace}\` namespace. Users can add it to their project:
 
 \`\`\`bash
-${dlx} shadcn@latest registry add ${config.namespace}=https://${name}.com/r/{name}.json
+${dlx} shadcn@latest registry add ${config.namespace}=${config.homepage}/r/{name}.json
 \`\`\`
 
 Then install components:

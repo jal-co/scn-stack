@@ -26,7 +26,7 @@ function getComponentItems(config: ProjectConfig): RegistryItem[] {
       dependencies: ["class-variance-authority"],
       files: [
         {
-          path: "registry/new-york/ui/button.tsx",
+          path: `registry/${config.style}/ui/button.tsx`,
           type: "registry:ui",
         },
       ],
@@ -42,7 +42,7 @@ function getComponentItems(config: ProjectConfig): RegistryItem[] {
         description: "A card component with header, content, and footer.",
         files: [
           {
-            path: "registry/new-york/ui/card.tsx",
+            path: `registry/${config.style}/ui/card.tsx`,
             type: "registry:ui",
           },
         ],
@@ -55,7 +55,7 @@ function getComponentItems(config: ProjectConfig): RegistryItem[] {
         dependencies: ["class-variance-authority"],
         files: [
           {
-            path: "registry/new-york/ui/badge.tsx",
+            path: `registry/${config.style}/ui/badge.tsx`,
             type: "registry:ui",
           },
         ],
@@ -72,7 +72,7 @@ export function generateRegistryJson(config: ProjectConfig): void {
   const registry = {
     $schema: "https://ui.shadcn.com/schema/registry.json",
     name: config.registryName,
-    homepage: `https://${config.registryName}.com`,
+    homepage: config.homepage,
     items,
   };
 
@@ -85,7 +85,7 @@ export function generateRegistryJson(config: ProjectConfig): void {
 export function generateComponentsJson(config: ProjectConfig): void {
   const componentsJson: Record<string, unknown> = {
     $schema: "https://ui.shadcn.com/schema.json",
-    style: "new-york",
+    style: config.style,
     rsc: config.framework === "nextjs",
     tsx: true,
     tailwind: {
@@ -107,7 +107,7 @@ export function generateComponentsJson(config: ProjectConfig): void {
 
   if (config.useNamespace && config.namespace) {
     componentsJson.registries = {
-      [config.namespace]: `https://${config.registryName}.com/r/{name}.json`,
+      [config.namespace]: `${config.homepage}/r/{name}.json`,
     };
   }
 

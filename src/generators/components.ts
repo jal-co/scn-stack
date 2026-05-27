@@ -189,13 +189,13 @@ export function generateComponents(config: ProjectConfig): void {
     config.starterComponents === "minimal"
   ) {
     writeFile(
-      join(dir, "registry/new-york/ui/button.tsx"),
+      join(dir, `registry/${config.style}/ui/button.tsx`),
       BUTTON_COMPONENT
     );
   }
 
   if (config.starterComponents === "essentials") {
-    writeFile(join(dir, "registry/new-york/ui/card.tsx"), CARD_COMPONENT);
-    writeFile(join(dir, "registry/new-york/ui/badge.tsx"), BADGE_COMPONENT);
+    writeFile(join(dir, `registry/${config.style}/ui/card.tsx`), CARD_COMPONENT);
+    writeFile(join(dir, `registry/${config.style}/ui/badge.tsx`), BADGE_COMPONENT);
   }
 }
