@@ -1,4 +1,4 @@
-import type { ComponentProps } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { CodeBlockCommand } from "@/components/code-block-command";
 import { CodeBlock } from "@/components/code-block";
 import { CodeLine } from "@/components/code-line";
@@ -19,51 +19,71 @@ function extractText(node: unknown): string {
   return "";
 }
 
-/**
- * Custom MDX pre/code handler.
- * - Shell install/create commands → CodeBlockCommand with PM switching
- * - Single-line code → CodeLine with syntax highlighting
- * - Multi-line code → CodeBlock with syntax highlighting + copy
- */
-function CustomPre({ children, ...props }: ComponentProps<"pre">) {
+function getCodeInfo(children: ReactNode): {
+  code: string;
+  lang: string;
+} | null {
+  // Handle: <pre><code className="language-xxx">...</code></pre>
   if (
     children &&
     typeof children === "object" &&
-    "props" in (children as { props?: Record<string, unknown> })
+    "props" in (children as Record<string, unknown>)
   ) {
-    const codeProps = (children as { props: Record<string, unknown> }).props;
-    const className = (codeProps.className as string) || "";
+    const childProps = (children as { props: Record<string, unknown> }).props;
+    const className = (childProps.className as string) || "";
     const langMatch = className.match(/language-(\w+)/);
     const lang = langMatch?.[1] || "";
-    const code = extractText(codeProps.children).trim();
+    const code = extractText(childProps.children).trim();
+    if (code) {
+      return { code, lang };
+    }
+  }
+  // Handle: raw text children in <pre>
+  const raw = extractText(children).trim();
+  if (raw) {
+    return { code: raw, lang: "" };
+  }
+  return null;
+}
+
+/**
+ * Custom MDX pre/code handler.
+ * Routes all fenced code blocks to the appropriate jalco-ui component.
+ */
+function CustomPre({ children, ...props }: ComponentProps<"pre">) {
+  const info = getCodeInfo(children);
+
+  if (info) {
+    const { code, lang } = info;
 
     // Shell package manager commands → CodeBlockCommand with PM tabs
     if (lang === "bash" || lang === "sh" || lang === "shell") {
-      if (
-        code.match(
-          /^(npm |npx |pnpm |yarn |bun |bunx |shadcn )/m
-        )
-      ) {
+      if (code.match(/^(npm |npx |pnpm |yarn |bun |bunx |shadcn )/m)) {
         const converted = convertNpmCommand(code);
         return <CodeBlockCommand {...converted} />;
       }
-      // Other shell commands → CodeBlock
       return <CodeBlock code={code} language="bash" compact />;
     }
 
-    // Single-line code → CodeLine
+    // Single-line non-JSON/TSX → CodeLine
     const lines = code.split("\n").filter(Boolean);
-    if (lines.length === 1 && !lang.match(/^(json|tsx|typescript)$/)) {
-      return <CodeLine code={code} language={lang || "typescript"} />;
+    if (lines.length === 1 && !lang.match(/^(json|tsx|typescript|mdx)$/)) {
+      return <CodeLine code={code} language={lang || "text"} />;
     }
 
-    // Multi-line code → CodeBlock with syntax highlighting
+    // Everything else → CodeBlock
     return <CodeBlock code={code} language={lang || "text"} compact />;
+  }
+
+  // Fallback — try extracting raw text as last resort
+  const rawText = extractText(children).trim();
+  if (rawText) {
+    return <CodeBlock code={rawText} language="text" compact />;
   }
 
   return (
     <pre
-      className="overflow-x-auto rounded-lg border bg-muted/50 p-4 text-sm"
+      className="overflow-x-auto rounded-xl border bg-muted/50 p-4 text-sm"
       {...props}
     >
       {children}
@@ -72,6 +92,7 @@ function CustomPre({ children, ...props }: ComponentProps<"pre">) {
 }
 
 function CustomCode({ children, className, ...props }: ComponentProps<"code">) {
+  // If inside a <pre>, let CustomPre handle it
   if (className?.includes("language-")) {
     return (
       <code className={className} {...props}>
@@ -79,9 +100,10 @@ function CustomCode({ children, className, ...props }: ComponentProps<"code">) {
       </code>
     );
   }
+  // Inline code
   return (
     <code
-      className="rounded bg-muted px-1.5 py-0.5 text-sm font-mono"
+      className="rounded border border-border/60 bg-muted/50 px-1.5 py-0.5 text-[0.85em] font-mono"
       {...props}
     >
       {children}
