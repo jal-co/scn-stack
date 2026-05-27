@@ -1,0 +1,31 @@
+---
+title: Vite
+description: Using scn-stack with Vite for lightweight React projects.
+---
+
+## Overview
+
+Vite is a great choice for lightweight registry projects that don't need SSR. Fast builds, simple configuration.
+
+## What You Get
+
+- **Vite 6** with React plugin
+- **Tailwind v4** with `@tailwindcss/vite`
+- **React Router DOM** for client-side routing
+- **shadcn v3** registry build system
+
+## Registry Serving
+
+Same static file approach as Next.js. Run `pnpm registry:build` to generate `public/r/*.json` files. Vite serves the `public/` directory in both dev and production.
+
+## Documentation
+
+Since Fumadocs requires Next.js, choosing Vite with docs will use **Starlight** instead — generating a separate Astro docs site in a `docs/` subdirectory.
+
+## Development
+
+```bash
+pnpm dev             # Start Vite dev server
+pnpm build           # Production build
+pnpm registry:build  # Build registry JSON
+```

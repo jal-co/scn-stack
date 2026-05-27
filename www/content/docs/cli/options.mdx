@@ -1,0 +1,57 @@
+---
+title: Options Reference
+description: All CLI prompts and configuration options.
+---
+
+## Prompts
+
+When you run `npx create-scn-stack`, you'll be guided through these options:
+
+| Prompt | Description | Default |
+|--------|-------------|---------|
+| **Registry name** | Identifier for your registry (used as `@name/component`) | `my-ui` |
+| **Project location** | Folder to create the registry in | `./<registry-name>` |
+| **Style** | shadcn/ui style variant | `New York` |
+| **Homepage** | URL where the registry will be hosted | `https://<name>.com` |
+| **Framework** | Web framework for the project | `Next.js` |
+| **Documentation** | Docs engine to include | `Fumadocs` |
+| **Starter components** | Pre-built example components | `Button, Card, Badge` |
+| **Namespace** | Registry namespace for `@name/component` installs | `@<name>` |
+| **Package manager** | Package manager to use | Auto-detected |
+
+## Framework Options
+
+| Framework | Description |
+|-----------|-------------|
+| **Next.js** | App Router with Tailwind v4. Recommended for most registries. |
+| **Vite** | React + Vite with Tailwind v4. Lightweight, fast builds. |
+| **React Router** | React Router v7 with SSR support. |
+| **TanStack Start** | TanStack Start with file-based routing. |
+
+## Docs Engine Options
+
+| Engine | Description |
+|--------|-------------|
+| **Fumadocs** | The standard for shadcn registries. Full-featured docs with MDX, search, and dark mode. Requires Next.js. |
+| **Starlight** | Astro-based docs. Generates a separate `docs/` directory. Works with any framework. |
+| **None** | Registry only, no documentation site. |
+
+## Style Options
+
+| Style | Description |
+|-------|-------------|
+| **New York** | The default shadcn/ui style. Smaller, more compact components. |
+| **Default** | The original shadcn/ui style. Slightly larger components. |
+
+## Starter Components
+
+| Set | Components |
+|-----|------------|
+| **Essentials** | `Button` (with variants), `Card` (header/content/footer), `Badge` (with variants) |
+| **Minimal** | `Button` only |
+| **None** | Empty registry — add your own components |
+
+Each starter component includes:
+- Source file in `registry/<style>/ui/`
+- Entry in `registry.json`
+- Documentation page (if docs engine is selected)

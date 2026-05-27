@@ -1,0 +1,47 @@
+---
+title: Next.js
+description: Using scn-stack with Next.js — the recommended framework.
+---
+
+## Overview
+
+Next.js is the **recommended framework** for scn-stack. It's what the official [shadcn registry template](https://github.com/shadcn-ui/registry-template) uses, and it's required for Fumadocs.
+
+## What You Get
+
+- **Next.js 16** with App Router and Turbopack
+- **Tailwind v4** with `@tailwindcss/postcss`
+- **shadcn v3** registry build system
+- **Fumadocs v16** (if selected) with full docs site
+- **Geist** font family
+
+## Registry Serving
+
+Your registry is served as **static files** via `public/r/`. When you run `pnpm registry:build`, the shadcn CLI reads your `registry.json` and generates JSON files:
+
+```
+public/r/
+├── registry.json    # Registry catalog
+├── button.json      # Individual component
+├── card.json
+└── badge.json
+```
+
+Next.js serves everything in `public/` automatically — no route handlers needed.
+
+## Development
+
+```bash
+pnpm dev          # Start with Turbopack
+pnpm build        # Production build (includes registry build)
+pnpm registry:build  # Build registry JSON only
+```
+
+## Deployment
+
+Deploy to any platform that supports Next.js:
+
+- **Vercel** — `vercel` (zero config)
+- **Netlify** — `netlify deploy`
+- **Cloudflare Pages** — via `@cloudflare/next-on-pages`
+- **Self-hosted** — `pnpm build && pnpm start`
