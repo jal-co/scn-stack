@@ -1,9 +1,9 @@
-# create-shadcn-registry
+# create-scn-registry
 
 Scaffold a complete [shadcn component registry](https://ui.shadcn.com/docs/registry) with documentation in minutes.
 
 ```bash
-npx create-shadcn-registry
+npx create-scn-registry
 ```
 
 > Like `create-t3-app`, but for shadcn registries.
@@ -26,7 +26,7 @@ Setting one up from scratch means wiring together a framework, registry config, 
 ## Quick Start
 
 ```bash
-npx create-shadcn-registry
+npx create-scn-registry
 ```
 
 You'll be asked:
@@ -52,10 +52,10 @@ Your registry is live at `http://localhost:3000` with docs and components ready 
 ```
 my-registry/
 ├── registry.json                  # Registry definition
-├── registry/default/              # Component source files
-│   ├── button/button.tsx
-│   ├── card/card.tsx
-│   └── badge/badge.tsx
+├── registry/new-york/ui/          # Component source files
+│   ├── button.tsx
+│   ├── card.tsx
+│   └── badge.tsx
 ├── content/docs/                  # Documentation (MDX)
 │   ├── index.mdx
 │   ├── installation.mdx
@@ -64,9 +64,6 @@ my-registry/
 │       ├── card.mdx
 │       └── badge.mdx
 ├── app/                           # Framework app
-│   ├── r/                         # Registry API endpoints
-│   │   ├── registry.json/route.ts
-│   │   └── [name].json/route.ts
 │   └── docs/                      # Docs routes
 ├── public/r/                      # Built registry output
 └── components.json                # shadcn config

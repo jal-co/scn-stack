@@ -8,80 +8,80 @@ Scaffolding CLI for creating shadcn component registries. Like `create-t3-app` b
 
 ## Setup
 
-- [ ] Create GitHub repo (public, jal-co)
-- [ ] Initialize Node.js/TypeScript project
-- [ ] Set up build toolchain (tsup for bundling CLI)
+- [x] Create GitHub repo (public, jal-co)
+- [x] Initialize Node.js/TypeScript project
+- [x] Set up build toolchain (tsup for bundling CLI)
 - [ ] CI: lint + build check on push
 
 ## CLI Core
 
-- [ ] Interactive prompts (clack for modern UX)
-  - [ ] Registry name (e.g., `acme`)
-  - [ ] Framework selection
-  - [ ] Docs engine selection
-  - [ ] Starter components selection
-  - [ ] Namespace toggle + name (e.g., `@acme`)
-  - [ ] Package manager detection / selection
-- [ ] Template copying system (file-based templates)
-- [ ] String replacement / templating engine
-- [ ] Package manager install command execution
-- [ ] Input validation (registry name, namespace format)
+- [x] Interactive prompts (clack for modern UX)
+  - [x] Registry name (e.g., `acme`)
+  - [x] Framework selection
+  - [x] Docs engine selection
+  - [x] Starter components selection
+  - [x] Namespace toggle + name (e.g., `@acme`)
+  - [x] Package manager detection / selection
+- [x] Template generation system (code-based generators)
+- [x] Package manager install command execution
+- [x] Input validation (registry name, namespace format)
 
 ## Framework Templates
 
-- [ ] **Next.js** — App Router, Tailwind v4 (recommended default)
-- [ ] **Vite** — React + Tailwind v4
-- [ ] **React Router** — v7, Tailwind v4
-- [ ] **TanStack Start** — Tailwind v4
+- [x] **Next.js** — App Router, Tailwind v4 (recommended default)
+- [x] **Vite** — React + Tailwind v4
+- [x] **React Router** — v7, Tailwind v4
+- [x] **TanStack Start** — Tailwind v4
 
 Each framework template includes:
 
-- [ ] `registry.json` with schema
-- [ ] `components.json` (shadcn config)
-- [ ] Registry serving (static via `shadcn build` + dynamic route handlers)
-- [ ] Tailwind v4 + PostCSS config
-- [ ] TypeScript config
-- [ ] Dev / build / registry:build scripts in `package.json`
+- [x] `registry.json` with schema (matching official shadcn conventions)
+- [x] `components.json` with `iconLibrary`, style, aliases
+- [x] Registry serving via static build (`shadcn build` → `public/r/`)
+- [x] Tailwind v4 + PostCSS config (matching registry template)
+- [x] TypeScript config
+- [x] Dev / build / registry:build scripts in `package.json`
 
 ## Docs Engine Templates
 
-- [ ] **Fumadocs** (default) — de facto standard for shadcn registries
-  - [ ] `source.config.ts`
-  - [ ] Docs layout + routes
-  - [ ] MDX content structure (`content/docs/`)
-  - [ ] Getting started page
-  - [ ] Installation page
-  - [ ] Component doc pages (auto-generated per starter component)
-  - [ ] Code preview / usage examples on each page
-- [ ] **Starlight** (Astro-based alternative)
-  - [ ] Astro + Starlight config
-  - [ ] Markdown content structure
-  - [ ] Component doc pages
-- [ ] **None** — registry-only, no docs site
+- [x] **Fumadocs** (default) — standard for shadcn registries
+  - [x] `source.config.ts`
+  - [x] `lib/source.ts` with `collections/server` import
+  - [x] Docs layout + routes (`DocsLayout`, `DocsPage`)
+  - [x] `RootProvider` from `fumadocs-ui/provider/next`
+  - [x] MDX content structure (`content/docs/`)
+  - [x] Getting started page
+  - [x] Installation page
+  - [x] Component doc pages (auto-generated per starter component)
+  - [x] Navigation via `meta.json`
+- [x] **Starlight** (Astro-based alternative)
+  - [x] Astro + Starlight config
+  - [x] Markdown content structure
+  - [x] Component doc pages
+- [x] **None** — registry-only, no docs site
 
 ## Registry Scaffolding
 
-- [ ] `registry.json` generation (valid against `https://ui.shadcn.com/schema/registry.json`)
-- [ ] `components.json` generation
-- [ ] Static build setup (`shadcn build` → `public/r/`)
-- [ ] Dynamic route handlers (`loadRegistry` / `loadRegistryItem` from `shadcn/registry`)
-- [ ] Namespace configuration (`@name` in components.json registries field)
-- [ ] Registry item structure: `registry/default/<component>/`
+- [x] `registry.json` generation (valid against `https://ui.shadcn.com/schema/registry.json`)
+- [x] `components.json` generation
+- [x] Static build setup (`shadcn build` → `public/r/`)
+- [x] Namespace configuration (`@name` in components.json registries field)
+- [x] Registry item structure: `registry/new-york/ui/`
 
 ## Starter Components
 
 Example `registry:ui` items that ship out of the box:
 
-- [ ] **Button** — basic button with variants (default, destructive, outline, ghost)
-- [ ] **Card** — card with header, content, footer
-- [ ] **Badge** — inline badge with variants
+- [x] **Button** — basic button with variants (default, destructive, outline, ghost)
+- [x] **Card** — card with header, content, footer
+- [x] **Badge** — inline badge with variants
 
 Each starter component includes:
 
-- [ ] Component source file (`registry/default/<name>/<name>.tsx`)
-- [ ] Registry item definition in `registry.json`
-- [ ] Matching doc page (if docs engine selected)
-- [ ] Usage example in doc page
+- [x] Component source file (`registry/new-york/ui/<name>.tsx`)
+- [x] Registry item definition in `registry.json`
+- [x] Matching doc page (if docs engine selected)
+- [x] Usage example in doc page
 
 Selection options in CLI:
 
@@ -91,11 +91,11 @@ Selection options in CLI:
 
 ## DX Polish
 
-- [ ] Generated `README.md` — customized with registry name, namespace, install instructions
-- [ ] `package.json` scripts: `dev`, `build`, `registry:build`, `registry:serve`
-- [ ] `.gitignore` (node_modules, .next, dist, etc.)
-- [ ] Post-install terminal output (next steps, dev command, docs URL)
-- [ ] Landing page (simple hero with registry name + install command)
+- [x] Generated `README.md` — customized with registry name, namespace, install instructions
+- [x] `package.json` scripts: `dev`, `build`, `registry:build`
+- [x] `.gitignore` (node_modules, .next, dist, etc.)
+- [x] Post-install terminal output (next steps, dev command, docs URL)
+- [x] Landing page (simple hero with registry name + install command)
 - [ ] `llms.txt` generation (for AI discoverability)
 
 ## Publishing
@@ -103,8 +103,7 @@ Selection options in CLI:
 - [ ] npm package: `create-shadcn-registry`
 - [ ] `npx create-shadcn-registry` works out of the box
 - [ ] `npm create shadcn-registry` alias
-- [ ] GitHub README with usage instructions
-- [ ] Demo GIF / screenshot in README
+- [x] GitHub README with usage instructions
 
 ## Future (v1.1+)
 
