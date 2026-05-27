@@ -18,6 +18,7 @@ import { generateVite } from "./frameworks/vite.js";
 import { generateReactRouter } from "./frameworks/react-router.js";
 import { generateTanstackStart } from "./frameworks/tanstack-start.js";
 import { generateFumadocs } from "./docs/fumadocs.js";
+import { generateMintlify } from "./docs/mintlify.js";
 import { generateStarlight } from "./docs/starlight.js";
 import { generateSkill } from "./skills.js";
 
@@ -79,7 +80,13 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
 
   // 4. Generate docs
   if (config.docsEngine !== "none") {
-    s.start(`Setting up ${config.docsEngine === "fumadocs" ? "Fumadocs" : "Starlight"} documentation...`);
+    const docsLabel =
+      config.docsEngine === "fumadocs"
+        ? "Fumadocs"
+        : config.docsEngine === "mintlify"
+          ? "Mintlify"
+          : "Starlight";
+    s.start(`Setting up ${docsLabel} documentation...`);
 
     switch (config.docsEngine) {
       case "fumadocs":
@@ -91,6 +98,9 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
         } else {
           generateFumadocs(config);
         }
+        break;
+      case "mintlify":
+        generateMintlify(config);
         break;
       case "starlight":
         generateStarlight(config);
@@ -184,8 +194,17 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
     "Next steps"
   );
 
+  const docsLabel =
+    config.docsEngine === "fumadocs"
+      ? "Fumadocs"
+      : config.docsEngine === "mintlify"
+        ? "Mintlify"
+        : config.docsEngine === "starlight"
+          ? "Starlight"
+          : "";
+
   p.outro(
-    `${pc.green("✓")} ${pc.bold(config.name)} created with ${frameworkLabel}${config.docsEngine !== "none" ? ` + ${config.docsEngine === "fumadocs" ? "Fumadocs" : "Starlight"}` : ""}. Happy building! 🎉`
+    `${pc.green("✓")} ${pc.bold(config.name)} created with ${frameworkLabel}${docsLabel ? ` + ${docsLabel}` : ""}. Happy building! 🎉`
   );
 }
 
@@ -248,15 +267,21 @@ This generates static JSON files in \`public/r/\` for each registry item.
 ├── registry.json              # Registry definition
 ├── registry/default/          # Component source files
 ├── public/r/                  # Built registry output (generated)
-${config.docsEngine === "fumadocs" ? "├── content/docs/              # Documentation (MDX)\n" : ""}${config.docsEngine === "starlight" ? "├── docs/                      # Starlight documentation site\n" : ""}└── components.json            # shadcn config
+${config.docsEngine === "fumadocs" ? "├── content/docs/              # Documentation (MDX)\n" : ""}${config.docsEngine === "mintlify" ? "├── docs/                      # Mintlify documentation\n" : ""}${config.docsEngine === "starlight" ? "├── docs/                      # Starlight documentation site\n" : ""}└── components.json            # shadcn config
 \`\`\`
 
 ## Adding Components
 
-1. Create your component in \`registry/default/<name>/<name>.tsx\`
-2. Add the item definition to \`registry.json\`
-3. Run \`${getRunCommand(config.packageManager, "registry:build")}\` to generate the registry output
-${config.docsEngine !== "none" ? `4. Add a documentation page in ${config.docsEngine === "fumadocs" ? "`content/docs/components/<name>.mdx`" : "`docs/src/content/docs/components/<name>.md`"}` : ""}
+\`\`\`bash
+npx create-scn-stack add-component <name> -d "Description"
+\`\`\`
+
+Or manually:
+
+1. Create your component in \`registry/<style>/ui/<name>.tsx\`
+2. Add the item to \`registry/<style>/ui/registry.json\`
+3. Run \`${getRunCommand(config.packageManager, "registry:build")}\`
+${config.docsEngine === "fumadocs" ? "4. Add a doc page in `content/docs/components/<name>.mdx`" : config.docsEngine === "mintlify" ? "4. Add a doc page in `docs/components/<name>.mdx`" : config.docsEngine === "starlight" ? "4. Add a doc page in `docs/src/content/docs/components/<name>.md`" : ""}
 
 ## License
 

@@ -187,6 +187,11 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
                       : "requires Next.js",
                 },
                 {
+                  value: "mintlify" as DocsEngine,
+                  label: "Mintlify",
+                  hint: "hosted — works with any framework",
+                },
+                {
                   value: "starlight" as DocsEngine,
                   label: "Starlight",
                   hint: "Astro-based",

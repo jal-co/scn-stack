@@ -17,7 +17,7 @@ import { SiteHeader } from "@/components/site-header";
 import { cn } from "@/lib/utils";
 
 type Framework = "nextjs" | "vite" | "react-router" | "tanstack-start";
-type DocsEngine = "fumadocs" | "starlight" | "none";
+type DocsEngine = "fumadocs" | "mintlify" | "starlight" | "none";
 type StarterComponents = "essentials" | "minimal" | "none";
 type Style = "new-york" | "default";
 type PackageManager = "pnpm" | "npm" | "yarn" | "bun";
@@ -177,7 +177,7 @@ export function Builder() {
       }
       // Fumadocs requires Next.js
       if (key === "framework" && value !== "nextjs" && prev.docsEngine === "fumadocs") {
-        next.docsEngine = "starlight";
+        next.docsEngine = "mintlify";
       }
       if (key === "docsEngine" && value === "fumadocs" && prev.framework !== "nextjs") {
         next.framework = "nextjs";
@@ -280,13 +280,21 @@ export function Builder() {
           {/* Docs Engine */}
           <div className="flex flex-col gap-3">
             <SectionHeader icon={BookOpen} title="Documentation" />
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               <OptionCard
                 selected={config.docsEngine === "fumadocs"}
                 onClick={() => update("docsEngine", "fumadocs")}
                 title="Fumadocs"
                 description="Requires Next.js"
                 badge="recommended"
+                icon="/icons/fumadocs.svg"
+              />
+              <OptionCard
+                selected={config.docsEngine === "mintlify"}
+                onClick={() => update("docsEngine", "mintlify")}
+                title="Mintlify"
+                description="Hosted platform"
+                icon="https://svgl.app/library/mintlify.svg"
               />
               <OptionCard
                 selected={config.docsEngine === "starlight"}
@@ -402,9 +410,11 @@ export function Builder() {
                 <span className="font-medium text-foreground">
                   {config.docsEngine === "fumadocs"
                     ? "Fumadocs"
-                    : config.docsEngine === "starlight"
-                      ? "Starlight"
-                      : "No docs"}
+                    : config.docsEngine === "mintlify"
+                      ? "Mintlify"
+                      : config.docsEngine === "starlight"
+                        ? "Starlight"
+                        : "No docs"}
                 </span>{" "}
                 +{" "}
                 <span className="font-medium text-foreground">
