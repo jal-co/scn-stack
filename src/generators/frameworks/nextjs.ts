@@ -23,7 +23,7 @@ export function generateNextjs(config: ProjectConfig): void {
       next: "^16.2.0",
       react: "^19.2.0",
       "react-dom": "^19.2.0",
-      shadcn: "^3.0.0",
+      shadcn: "^4.0.0",
       "class-variance-authority": "^0.7.1",
       clsx: "^2.1.1",
       "lucide-react": "^0.487.0",

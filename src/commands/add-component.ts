@@ -131,26 +131,54 @@ export type { ${componentName}Props }
   writeFile(join(componentDir, `${name}.tsx`), componentSource);
   s.stop("Component created.");
 
-  // 2. Add to registry.json
-  s.start("Updating registry.json...");
+  // 2. Add to registry — use include pattern if available, else root
+  s.start("Updating registry...");
 
-  const newItem = {
-    name,
-    type: "registry:ui",
-    title: componentTitle,
-    description: description || `A ${name} component.`,
-    files: [
-      {
-        path: `registry/${style}/ui/${name}.tsx`,
-        type: "registry:ui",
-      },
-    ],
-  };
+  const uiRegistryPath = join(cwd, `registry/${style}/ui/registry.json`);
+  const usesInclude = registry.include && Array.isArray(registry.include);
 
-  registry.items = registry.items || [];
-  registry.items.push(newItem);
+  if (usesInclude && existsSync(uiRegistryPath)) {
+    // Write to per-directory registry.json (include pattern)
+    const uiRegistry = JSON.parse(readFileSync(uiRegistryPath, "utf-8"));
 
-  writeFileSync(registryPath, JSON.stringify(registry, null, 2) + "\n");
+    const newItem = {
+      name,
+      type: "registry:ui",
+      title: componentTitle,
+      description: description || `A ${name} component.`,
+      files: [
+        {
+          path: `${name}.tsx`,
+          type: "registry:ui",
+        },
+      ],
+    };
+
+    uiRegistry.items = uiRegistry.items || [];
+    uiRegistry.items.push(newItem);
+
+    writeFileSync(uiRegistryPath, JSON.stringify(uiRegistry, null, 2) + "\n");
+  } else {
+    // Write to root registry.json (flat pattern)
+    const newItem = {
+      name,
+      type: "registry:ui",
+      title: componentTitle,
+      description: description || `A ${name} component.`,
+      files: [
+        {
+          path: `registry/${style}/ui/${name}.tsx`,
+          type: "registry:ui",
+        },
+      ],
+    };
+
+    registry.items = registry.items || [];
+    registry.items.push(newItem);
+
+    writeFileSync(registryPath, JSON.stringify(registry, null, 2) + "\n");
+  }
+
   s.stop("Registry updated.");
 
   // 3. Create docs page if content/docs exists

@@ -5,8 +5,8 @@ import { join } from "node:path";
 interface RegistryItem {
   name: string;
   type: string;
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   files: { path: string; type: string }[];
   dependencies?: string[];
 }
@@ -26,7 +26,7 @@ function getComponentItems(config: ProjectConfig): RegistryItem[] {
       dependencies: ["class-variance-authority"],
       files: [
         {
-          path: `registry/${config.style}/ui/button.tsx`,
+          path: "button.tsx",
           type: "registry:ui",
         },
       ],
@@ -42,7 +42,7 @@ function getComponentItems(config: ProjectConfig): RegistryItem[] {
         description: "A card component with header, content, and footer.",
         files: [
           {
-            path: `registry/${config.style}/ui/card.tsx`,
+            path: "card.tsx",
             type: "registry:ui",
           },
         ],
@@ -55,7 +55,7 @@ function getComponentItems(config: ProjectConfig): RegistryItem[] {
         dependencies: ["class-variance-authority"],
         files: [
           {
-            path: `registry/${config.style}/ui/badge.tsx`,
+            path: "badge.tsx",
             type: "registry:ui",
           },
         ],
@@ -67,19 +67,35 @@ function getComponentItems(config: ProjectConfig): RegistryItem[] {
 }
 
 export function generateRegistryJson(config: ProjectConfig): void {
-  const items = getComponentItems(config);
+  const style = config.style;
 
-  const registry = {
+  // Root registry.json — uses include pattern
+  const root = {
     $schema: "https://ui.shadcn.com/schema/registry.json",
     name: config.registryName,
     homepage: config.homepage,
-    items,
+    include: [`registry/${style}/ui/registry.json`],
   };
 
   writeFile(
     join(config.directory, "registry.json"),
-    JSON.stringify(registry, null, 2) + "\n"
+    JSON.stringify(root, null, 2) + "\n"
   );
+
+  // Per-directory registry.json for UI components
+  const items = getComponentItems(config);
+
+  if (items.length > 0) {
+    const uiRegistry = {
+      $schema: "https://ui.shadcn.com/schema/registry.json",
+      items,
+    };
+
+    writeFile(
+      join(config.directory, `registry/${style}/ui/registry.json`),
+      JSON.stringify(uiRegistry, null, 2) + "\n"
+    );
+  }
 }
 
 export function generateComponentsJson(config: ProjectConfig): void {
