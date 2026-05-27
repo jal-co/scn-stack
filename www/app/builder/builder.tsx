@@ -50,12 +50,14 @@ function OptionCard({
   title,
   description,
   badge,
+  icon,
 }: {
   selected: boolean;
   onClick: () => void;
   title: string;
   description?: string;
   badge?: string;
+  icon?: string;
 }) {
   return (
     <button
@@ -68,6 +70,10 @@ function OptionCard({
       )}
     >
       <div className="flex items-center gap-2">
+        {icon && (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img src={icon} alt="" className="h-4 w-4 shrink-0" />
+        )}
         <span className="font-medium">{title}</span>
         {badge && (
           <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
@@ -245,24 +251,28 @@ export function Builder() {
                 title="Next.js"
                 description="App Router + Turbopack"
                 badge="recommended"
+                icon="https://svgl.app/library/nextjs_icon_dark.svg"
               />
               <OptionCard
                 selected={config.framework === "vite"}
                 onClick={() => update("framework", "vite")}
                 title="Vite"
                 description="React + Vite"
+                icon="https://svgl.app/library/vite.svg"
               />
               <OptionCard
                 selected={config.framework === "react-router"}
                 onClick={() => update("framework", "react-router")}
                 title="React Router"
                 description="v7 with SSR"
+                icon="https://svgl.app/library/reactrouter.svg"
               />
               <OptionCard
                 selected={config.framework === "tanstack-start"}
                 onClick={() => update("framework", "tanstack-start")}
                 title="TanStack Start"
                 description="Vinxi + file routing"
+                icon="https://svgl.app/library/tanstack.svg"
               />
             </div>
           </div>
@@ -283,6 +293,7 @@ export function Builder() {
                 onClick={() => update("docsEngine", "starlight")}
                 title="Starlight"
                 description="Astro-based"
+                icon="https://svgl.app/library/astro-icon-dark.svg"
               />
               <OptionCard
                 selected={config.docsEngine === "none"}
@@ -346,12 +357,18 @@ export function Builder() {
           <div className="flex flex-col gap-3">
             <SectionHeader icon={Terminal} title="Package Manager" />
             <div className="grid grid-cols-4 gap-2">
-              {(["pnpm", "npm", "yarn", "bun"] as const).map((pm) => (
+              {([
+                { value: "pnpm" as const, icon: "https://svgl.app/library/pnpm.svg" },
+                { value: "npm" as const, icon: "https://svgl.app/library/npm.svg" },
+                { value: "yarn" as const, icon: "https://svgl.app/library/yarn.svg" },
+                { value: "bun" as const, icon: "https://svgl.app/library/bun.svg" },
+              ]).map((pm) => (
                 <OptionCard
-                  key={pm}
-                  selected={config.packageManager === pm}
-                  onClick={() => update("packageManager", pm)}
-                  title={pm}
+                  key={pm.value}
+                  selected={config.packageManager === pm.value}
+                  onClick={() => update("packageManager", pm.value)}
+                  title={pm.value}
+                  icon={pm.icon}
                 />
               ))}
             </div>
