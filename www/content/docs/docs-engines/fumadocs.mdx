@@ -1,0 +1,68 @@
+---
+title: Fumadocs
+description: The recommended docs engine for shadcn registries.
+---
+
+## Overview
+
+[Fumadocs](https://fumadocs.vercel.app) is a docs framework built on React. It's the **de facto standard** for shadcn component registries — used by [8bitcn](https://8bitcn.com) and many others.
+
+## Requirements
+
+Fumadocs requires **Next.js**. If you select a different framework, the CLI will suggest Starlight instead.
+
+## What You Get
+
+- Full docs site at `/docs` integrated into your Next.js app
+- MDX content in `content/docs/` with frontmatter
+- Sidebar navigation via `meta.json` files
+- Dark mode, search, and table of contents
+- Auto-generated component documentation pages
+
+## File Structure
+
+```
+content/docs/
+├── meta.json                 # Top-level navigation
+├── index.mdx                 # Getting Started page
+├── installation.mdx          # Installation guide
+└── components/
+    ├── meta.json             # Component nav order
+    ├── button.mdx            # Button docs
+    ├── card.mdx              # Card docs
+    └── badge.mdx             # Badge docs
+```
+
+## Adding a Doc Page
+
+Create a new `.mdx` file in `content/docs/`:
+
+```mdx
+---
+title: My Component
+description: A description of your component.
+---
+
+## Installation
+
+\`\`\`bash
+npx shadcn add @my-ui/my-component
+\`\`\`
+
+## Usage
+
+\`\`\`tsx
+import { MyComponent } from "@/components/ui/my-component"
+\`\`\`
+```
+
+Add it to the appropriate `meta.json` to control navigation order.
+
+## Customization
+
+Fumadocs is highly customizable. See the [Fumadocs documentation](https://fumadocs.vercel.app/docs) for:
+
+- Custom layouts and themes
+- Search configuration
+- OpenAPI integration
+- Internationalization

@@ -1,0 +1,105 @@
+---
+title: Using the Prompts
+description: Walkthrough of the interactive CLI experience.
+---
+
+## Running the CLI
+
+```bash
+npx create-scn-stack
+```
+
+The CLI guides you through every decision with interactive prompts. Here's what each one does:
+
+### Registry Name
+
+```
+◆  Registry name
+│  my-ui
+```
+
+This becomes your registry's identifier — used in `registry.json`, the namespace (`@my-ui`), and throughout the generated code. Must be lowercase with hyphens only.
+
+### Project Location
+
+```
+◆  Project location
+│  ./my-ui
+```
+
+The folder where your project will be created. Defaults to `./<registry-name>`. Use `.` to scaffold in the current directory.
+
+### Style
+
+```
+◆  Style
+│  ● New York (recommended)
+│  ○ Default
+```
+
+The [shadcn/ui style variant](https://ui.shadcn.com/docs/theming). Determines the component file paths (`registry/new-york/ui/` vs `registry/default/ui/`) and the style field in `components.json`.
+
+### Homepage
+
+```
+◆  Homepage
+│  https://my-ui.com
+```
+
+The URL where your registry will be deployed. Used in `registry.json` homepage field and in namespace URL templates. You can change this later.
+
+### Framework
+
+```
+◆  Framework
+│  ● Next.js (recommended)
+│  ○ Vite (React)
+│  ○ React Router
+│  ○ TanStack Start
+```
+
+The web framework for your project. **Next.js** is recommended — it's what the official registry template uses, and Fumadocs requires it.
+
+### Documentation
+
+```
+◆  Documentation
+│  ● Fumadocs (recommended)
+│  ○ Starlight
+│  ○ None
+```
+
+Whether to include a documentation site. **Fumadocs** is the standard for shadcn registries (used by 8bitcn, and many others). If you choose a non-Next.js framework, Starlight will be used instead.
+
+### Starter Components
+
+```
+◆  Starter components
+│  ● Button, Card, Badge (essentials)
+│  ○ Button only (minimal)
+│  ○ None (empty registry)
+```
+
+Pre-built components to include as examples. Each comes with a source file, registry entry, and documentation page.
+
+### Namespace
+
+```
+◆  Add a namespace? Yes
+◆  Namespace
+│  @my-ui
+```
+
+Enables `@my-ui/button` style installs. Sets up the registries field in `components.json` with your homepage URL template.
+
+### Package Manager
+
+```
+◆  Package manager
+│  ● pnpm
+│  ○ npm
+│  ○ yarn
+│  ○ bun
+```
+
+Auto-detected from how you ran the CLI. All generated scripts use the selected package manager.

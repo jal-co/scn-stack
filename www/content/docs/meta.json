@@ -1,0 +1,12 @@
+{
+  "title": "scn-stack",
+  "pages": [
+    "index",
+    "---CLI---",
+    "...cli",
+    "---Output---",
+    "project-structure",
+    "...frameworks",
+    "...docs-engines"
+  ]
+}

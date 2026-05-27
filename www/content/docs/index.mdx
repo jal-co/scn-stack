@@ -1,0 +1,73 @@
+---
+title: Quick Start
+description: Create your first shadcn registry in minutes.
+---
+
+## Get Started
+
+### Prerequisites
+
+- **Node.js 18+** — [Download from nodejs.org](https://nodejs.org/)
+- **Git** — [Download from git-scm.com](https://git-scm.com/)
+
+### Create a Registry
+
+```bash
+npx create-scn-stack
+```
+
+Follow the interactive prompts to configure your registry. The CLI will:
+
+1. Ask you for a registry name, framework, docs engine, and more
+2. Generate all project files
+3. Install dependencies
+4. Initialize a git repository
+
+### Start Development
+
+```bash
+cd my-ui
+pnpm dev
+```
+
+Your registry is now running at `http://localhost:3000` with:
+- A **landing page** with install instructions
+- **Documentation** with auto-generated component pages
+- **Registry endpoints** at `/r/registry.json`
+
+### Build the Registry
+
+```bash
+pnpm registry:build
+```
+
+This runs `shadcn build` and generates static JSON files in `public/r/` — one for each component in your registry.
+
+### Deploy
+
+Deploy to Vercel, Netlify, or any platform that supports Next.js (or your chosen framework). Your registry is a standard web app — no special hosting required.
+
+Once deployed, anyone can install your components:
+
+```bash
+npx shadcn add @my-ui/button
+```
+
+## What is a shadcn Registry?
+
+A [shadcn registry](https://ui.shadcn.com/docs/registry) is a way to distribute components, hooks, blocks, and other code that users can install with the `shadcn` CLI.
+
+Unlike npm packages, registry components are **copied into the user's project** as source code they own and can customize. It's the same pattern that `shadcn/ui` itself uses.
+
+### Why Build a Registry?
+
+- **Design systems** — distribute your company's component library
+- **Open source** — share themed or specialized components with the community
+- **Internal tools** — standardize UI across projects in your org
+- **Commercial** — sell premium component collections
+
+## Next Steps
+
+- [CLI Options](/docs/cli/options) — all the prompts and what they do
+- [Project Structure](/docs/project-structure) — what gets generated
+- [Frameworks](/docs/frameworks/nextjs) — framework-specific details
