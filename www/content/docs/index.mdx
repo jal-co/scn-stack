@@ -16,12 +16,19 @@ description: Create your first shadcn registry in minutes.
 npx create-scn-stack
 ```
 
-Follow the interactive prompts to configure your registry. The CLI will:
+Follow the interactive prompts to configure your registry. Or skip prompts entirely:
+
+```bash
+npx create-scn-stack my-ui --yes
+```
+
+The CLI will:
 
 1. Ask you for a registry name, framework, docs engine, and more
-2. Generate all project files
-3. Install dependencies
-4. Initialize a git repository
+2. Generate all project files with the registry `include` pattern
+3. Create starter components with live preview demos
+4. Install dependencies and the shadcn AI skill
+5. Initialize a git repository
 
 ### Start Development
 
@@ -32,20 +39,29 @@ pnpm dev
 
 Your registry is now running at `http://localhost:3000` with:
 - A **landing page** with install instructions
-- **Documentation** with auto-generated component pages
+- **Documentation** with live component previews
 - **Registry endpoints** at `/r/registry.json`
 
-### Build the Registry
+### Add Components
 
 ```bash
+npx create-scn-stack add-component input -d "A text input component."
+```
+
+This creates the component source, adds it to `registry.json`, generates a doc page, and updates navigation — all in one command.
+
+### Build & Validate
+
+```bash
+npx shadcn registry validate
 pnpm registry:build
 ```
 
-This runs `shadcn build` and generates static JSON files in `public/r/` — one for each component in your registry.
+This validates your registry schema and generates static JSON files in `public/r/`.
 
 ### Deploy
 
-Deploy to Vercel, Netlify, or any platform that supports Next.js (or your chosen framework). Your registry is a standard web app — no special hosting required.
+Deploy to Vercel, Netlify, or any platform that supports your framework. Your registry is a standard web app — no special hosting required.
 
 Once deployed, anyone can install your components:
 
@@ -68,6 +84,6 @@ Unlike npm packages, registry components are **copied into the user's project** 
 
 ## Next Steps
 
-- [CLI Options](/docs/cli/options) — all the prompts and what they do
+- [CLI Options](/docs/cli/options) — all prompts, flags, and commands
 - [Project Structure](/docs/project-structure) — what gets generated
 - [Frameworks](/docs/frameworks/nextjs) — framework-specific details
