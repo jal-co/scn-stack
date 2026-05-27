@@ -21,11 +21,22 @@ function formatCount(n: number): string {
   return n.toString();
 }
 
-export function GitHubStarsButtonClient() {
+interface GitHubStarsButtonClientProps {
+  owner?: string;
+  repo?: string;
+  className?: string;
+}
+
+export function GitHubStarsButtonClient({
+  owner = "jal-co",
+  repo = "scn-stack",
+  className,
+}: GitHubStarsButtonClientProps = {}) {
   const [stars, setStars] = React.useState<number | null>(null);
+  const fullName = `${owner}/${repo}`;
 
   React.useEffect(() => {
-    fetch("https://api.github.com/repos/jal-co/scn-stack")
+    fetch(`https://api.github.com/repos/${owner}/${repo}`)
       .then((r) => r.json())
       .then((data) => {
         if (data.stargazers_count != null) {
@@ -33,26 +44,29 @@ export function GitHubStarsButtonClient() {
         }
       })
       .catch(() => {});
-  }, []);
+  }, [owner, repo]);
 
   return (
     <a
-      href="https://github.com/jal-co/scn-stack"
+      href={`https://github.com/${owner}/${repo}`}
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        "inline-flex h-7 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md bg-primary px-2.5 text-xs font-medium text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+        "inline-flex h-7 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md border border-border bg-card px-2.5 text-xs font-medium text-foreground shadow-xs transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+        className
       )}
     >
       <GitHubIcon className="size-3.5 shrink-0" />
-      <span className="max-w-[12rem] truncate">jal-co/scn-stack</span>
+      <span className="max-w-[12rem] truncate">{fullName}</span>
       {stars !== null && (
         <>
           <span
-            className="h-3.5 w-px shrink-0 bg-primary-foreground/20"
+            className="h-3.5 w-px shrink-0 bg-border"
             aria-hidden="true"
           />
-          <span className="tabular-nums">{formatCount(stars)}</span>
+          <span className="tabular-nums text-muted-foreground">
+            {formatCount(stars)}
+          </span>
         </>
       )}
     </a>

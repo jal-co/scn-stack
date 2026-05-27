@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { GitHubStarsButtonClient } from "./github-stars-client";
 
 const navItems = [
   { href: "/docs", label: "Docs" },
@@ -61,19 +62,17 @@ export function SiteHeader() {
         </nav>
       </div>
 
-      {/* Right: external links */}
-      <div className="hidden items-center gap-4 md:flex">
-        {externalLinks.map((item) => (
-          <a
-            key={item.href}
-            href={item.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-mono text-[11px] uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:text-foreground"
-          >
-            {item.label}
-          </a>
-        ))}
+      {/* Right: npm + GitHub stars */}
+      <div className="hidden items-center gap-3 md:flex">
+        <a
+          href="https://www.npmjs.com/package/create-scn-stack"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-mono text-[11px] uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:text-foreground"
+        >
+          npm
+        </a>
+        <GitHubStarsButtonClient owner="jal-co" repo="scn-stack" />
       </div>
 
       {/* Mobile toggle */}

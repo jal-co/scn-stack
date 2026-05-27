@@ -25,44 +25,14 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --radius-sm: 0px;
-  --radius-md: 0px;
-  --radius-lg: 0px;
-  --radius-xl: 0px;
-  --animate-blink-cursor: blink-cursor 1.2s step-end infinite;
-  --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
-  --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
-  @keyframes blink-cursor {
-  0%, 49% {
-    opacity: 1;
-    }
-  50%, 100% {
-    opacity: 0;
-    }
-  }
-  @keyframes shimmer-slide {
-  to {
-    transform: translate(calc(100cqw - 100%), 0);
-    }
-  }
-  @keyframes spin-around {
-  0% {
-    transform: translateZ(0) rotate(0);
-    }
-  15%, 35% {
-    transform: translateZ(0) rotate(90deg);
-    }
-  65%, 85% {
-    transform: translateZ(0) rotate(270deg);
-    }
-  100% {
-    transform: translateZ(0) rotate(360deg);
-    }
-  }
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
 :root {
-  --radius: 0px;
+  --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -84,44 +54,33 @@
 }
 
 .dark {
-  --background: oklch(0.1 0 0);
-  --foreground: oklch(0.9 0 0);
-  --card: oklch(0.12 0 0);
-  --card-foreground: oklch(0.9 0 0);
-  --popover: oklch(0.12 0 0);
-  --popover-foreground: oklch(0.9 0 0);
-  --primary: oklch(0.9 0 0);
-  --primary-foreground: oklch(0.1 0 0);
-  --secondary: oklch(0.18 0 0);
-  --secondary-foreground: oklch(0.9 0 0);
-  --muted: oklch(0.18 0 0);
-  --muted-foreground: oklch(0.55 0 0);
-  --accent: oklch(0.18 0 0);
-  --accent-foreground: oklch(0.9 0 0);
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.2 0 0);
-  --input: oklch(0.2 0 0);
-  --ring: oklch(0.4 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    border-radius: 0 !important;
   }
   body {
     @apply bg-background text-foreground;
   }
-}
-
-/* Dot grid background */
-.dot-grid {
-  background-image: radial-gradient(
-    circle,
-    color-mix(in oklch, var(--color-foreground) 8%, transparent) 1px,
-    transparent 1px
-  );
-  background-size: 24px 24px;
 }
 
 /* Strip shiki backgrounds */

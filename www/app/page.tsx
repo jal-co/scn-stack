@@ -1,7 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  Box,
+  BookOpen,
+  Eye,
+  Package,
+  Bot,
+  Terminal as TerminalIcon,
+  Check,
+} from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
 import { SiteHeader } from "@/components/site-header";
 import {
@@ -12,14 +21,6 @@ import {
   TerminalCopyButton,
   TerminalContent,
 } from "@/components/ai-elements/terminal";
-import { BlurFade } from "@/components/ui/blur-fade";
-import { BorderBeam } from "@/components/ui/border-beam";
-import { AnimatedGridPattern } from "@/components/ui/animated-grid-pattern";
-import { cn } from "@/lib/utils";
-
-/* ------------------------------------------------------------------ */
-/*  Terminal ANSI output                                               */
-/* ------------------------------------------------------------------ */
 
 const terminalOutput = [
   "\x1b[2m$\x1b[0m npx create-scn-stack",
@@ -40,292 +41,293 @@ const terminalOutput = [
   "\x1b[32m✓\x1b[0m Dependencies installed.",
   "\x1b[32m✓\x1b[0m Git initialized.",
   "",
-  "\x1b[32m✓ my-ui created with Next.js + Fumadocs. Happy building! 🎉\x1b[0m",
+  "\x1b[32m✓ my-ui created with Next.js + Fumadocs. Happy building! \ud83c\udf89\x1b[0m",
 ].join("\n");
 
-/* ------------------------------------------------------------------ */
-/*  Data                                                               */
-/* ------------------------------------------------------------------ */
-
 const features = [
-  { num: "01", title: "Frameworks", detail: "Next.js · Vite · React Router · TanStack Start" },
-  { num: "02", title: "Docs engines", detail: "Fumadocs · Mintlify · Starlight" },
-  { num: "03", title: "Live previews", detail: "Rendered components on every doc page" },
-  { num: "04", title: "Registry-first", detail: "Include pattern · Build · Validate · Namespace" },
-  { num: "05", title: "AI skills", detail: "shadcn skill + project-specific registry skill" },
-  { num: "06", title: "Add command", detail: "Source + registry entry + docs in one shot" },
+  {
+    icon: Box,
+    title: "Frameworks",
+    items: ["Next.js", "Vite", "React Router", "TanStack Start"],
+  },
+  {
+    icon: BookOpen,
+    title: "Docs engines",
+    items: ["Fumadocs", "Mintlify", "Starlight"],
+  },
+  {
+    icon: Eye,
+    title: "Live previews",
+    items: ["Rendered components", "Preview + Code tabs", "Auto-generated demos"],
+  },
+  {
+    icon: Package,
+    title: "Registry-first",
+    items: ["Include pattern", "shadcn build", "Namespace support", "Schema validation"],
+  },
+  {
+    icon: Bot,
+    title: "AI-native",
+    items: ["shadcn skill", "Project registry skill", "Claude · Cursor · Copilot"],
+  },
+  {
+    icon: TerminalIcon,
+    title: "Add components",
+    items: ["Source file", "Registry entry", "Docs page with preview"],
+  },
 ];
 
 const commands = [
-  { label: "Install", cmd: "npx shadcn add @my-ui/button" },
-  { label: "Add", cmd: "npx create-scn-stack add-component input" },
-  { label: "Build", cmd: "pnpm registry:build" },
-  { label: "Validate", cmd: "npx shadcn registry validate" },
+  { label: "Install a component", cmd: "npx shadcn add @my-ui/button" },
+  { label: "Add a new component", cmd: "npx create-scn-stack add-component input" },
+  { label: "Build the registry", cmd: "pnpm registry:build" },
+  { label: "Validate the schema", cmd: "npx shadcn registry validate" },
 ];
-
-/* ------------------------------------------------------------------ */
-/*  Page                                                               */
-/* ------------------------------------------------------------------ */
 
 export default function Home() {
   return (
     <div className="flex min-h-svh flex-col">
       <SiteHeader />
 
-      {/* ════════════════════════════════════════════════════════════ */}
-      {/*  Hero                                                      */}
-      {/* ════════════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden border-b">
-        {/* Animated grid background */}
-        <AnimatedGridPattern
-          numSquares={30}
-          maxOpacity={0.05}
-          duration={4}
-          className={cn(
-            "absolute inset-0 h-full w-full",
-            "[mask-image:radial-gradient(600px_circle_at_center,white,transparent)]"
-          )}
-        />
+      {/* Hero */}
+      <section className="border-b">
+        <div className="mx-auto max-w-5xl px-6 py-24 md:py-32">
+          <div className="flex flex-col items-center text-center">
+            <Link
+              href="/docs"
+              className="group inline-flex items-center gap-2 rounded-full border bg-card px-4 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-accent"
+            >
+              <span className="font-medium text-foreground">v0.7.0</span>
+              <span className="h-3 w-px bg-border" />
+              <span>Live previews + AI skills</span>
+              <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+            </Link>
 
-        <div className="relative mx-auto max-w-5xl px-6 py-24 md:py-32 lg:py-40">
-          <BlurFade delay={0.1}>
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-              scn-stack v0.7.0
-            </p>
-          </BlurFade>
-
-          <BlurFade delay={0.2}>
-            <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-[1.1] tracking-tight md:text-6xl lg:text-7xl">
-              Scaffold a complete
-              <br />
-              <span className="font-mono">shadcn</span> registry.
+            <h1 className="mt-8 max-w-3xl text-4xl font-bold tracking-tight md:text-6xl">
+              Scaffold a complete shadcn registry.
             </h1>
-          </BlurFade>
 
-          <BlurFade delay={0.3}>
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
               One command. Framework, docs, starter components, live previews,
               AI skills — ready to develop and deploy.
             </p>
-          </BlurFade>
 
-          <BlurFade delay={0.4}>
-            <div className="mt-8 inline-flex items-center gap-3 border border-dashed bg-card px-5 py-3 font-mono text-sm">
-              <span className="text-muted-foreground">$</span>
-              <code>npx create-scn-stack</code>
-              <CopyButton text="npx create-scn-stack" />
-            </div>
-          </BlurFade>
-
-          <BlurFade delay={0.5}>
-            <div className="mt-6 flex gap-3">
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+              <div className="inline-flex items-center gap-3 rounded-md border bg-card px-4 py-2 font-mono text-sm">
+                <span className="text-muted-foreground">$</span>
+                <code>npx create-scn-stack</code>
+                <CopyButton text="npx create-scn-stack" />
+              </div>
               <Link
                 href="/docs"
-                className="inline-flex items-center gap-2 border bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-all hover:bg-foreground/90 hover:shadow-lg"
+                className="group inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
               >
                 Get Started
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
               <Link
                 href="/builder"
-                className="inline-flex items-center gap-2 border border-dashed px-5 py-2.5 text-sm font-medium text-muted-foreground transition-all hover:border-foreground/30 hover:text-foreground"
+                className="inline-flex items-center gap-2 rounded-md border bg-card px-5 py-2.5 text-sm font-medium transition-colors hover:bg-accent"
               >
                 Builder
               </Link>
-              <a
-                href="https://github.com/jal-co/scn-stack"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 border border-dashed px-5 py-2.5 text-sm font-medium text-muted-foreground transition-all hover:border-foreground/30 hover:text-foreground"
-              >
-                GitHub
-              </a>
             </div>
-          </BlurFade>
-        </div>
-      </section>
 
-      {/* ════════════════════════════════════════════════════════════ */}
-      {/*  Terminal                                                  */}
-      {/* ════════════════════════════════════════════════════════════ */}
-      <section className="border-b">
-        <div className="mx-auto max-w-5xl px-6 py-16">
-          <BlurFade delay={0.1} inView>
-            <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-              What it looks like
-            </p>
-          </BlurFade>
-          <BlurFade delay={0.2} inView>
-            <div className="relative overflow-hidden">
-              <Terminal output={terminalOutput} className="border-zinc-800 shadow-2xl">
-                <TerminalHeader>
-                  <TerminalTitle>create-scn-stack</TerminalTitle>
-                  <TerminalActions>
+            {/* Terminal window */}
+            <div className="mt-16 w-full max-w-3xl text-left">
+              <Terminal
+                output={terminalOutput}
+                className="border-zinc-800 shadow-2xl"
+              >
+                <TerminalHeader className="grid grid-cols-3 items-center">
+                  <div className="flex items-center gap-2">
+                    <div className="h-3 w-3 rounded-full bg-[#ff5f56]" />
+                    <div className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
+                    <div className="h-3 w-3 rounded-full bg-[#27c93f]" />
+                  </div>
+                  <TerminalTitle className="justify-center">
+                    create-scn-stack
+                  </TerminalTitle>
+                  <TerminalActions className="justify-end">
                     <TerminalCopyButton />
                   </TerminalActions>
                 </TerminalHeader>
                 <TerminalContent className="max-h-none text-[13px] leading-relaxed" />
               </Terminal>
-              <BorderBeam size={200} duration={8} />
             </div>
-          </BlurFade>
+          </div>
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════════════════ */}
-      {/*  Features                                                  */}
-      {/* ════════════════════════════════════════════════════════════ */}
-      <section className="border-b">
-        <div className="mx-auto max-w-5xl px-6 pt-16 pb-0">
-          <BlurFade delay={0.1} inView>
-            <p className="mb-10 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-              Features
+      {/* Features */}
+      <section className="border-b bg-muted/20">
+        <div className="mx-auto max-w-5xl px-6 py-20">
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+              Everything you need.
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              Six core features, configured by interactive prompts.
             </p>
-          </BlurFade>
-        </div>
-        <div className="mx-auto grid max-w-5xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((f, i) => (
-            <BlurFade key={f.num} delay={0.1 + i * 0.05} inView>
-              <div className="group flex flex-col gap-3 border-b border-r border-dashed p-8 transition-colors hover:bg-accent/50">
-                <p className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground">
-                  {f.num}
-                </p>
-                <p className="text-lg font-semibold transition-colors group-hover:text-foreground">
-                  {f.title}
-                </p>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {f.detail}
-                </p>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((f) => (
+              <div
+                key={f.title}
+                className="group rounded-lg border bg-card p-6 transition-shadow hover:shadow-md"
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-md border bg-background">
+                  <f.icon className="h-4 w-4" />
+                </div>
+                <h3 className="mt-4 font-semibold">{f.title}</h3>
+                <ul className="mt-3 space-y-1.5">
+                  {f.items.map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-center gap-2 text-sm text-muted-foreground"
+                    >
+                      <Check className="h-3 w-3 shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </BlurFade>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════════════════ */}
-      {/*  Commands                                                  */}
-      {/* ════════════════════════════════════════════════════════════ */}
+      {/* Workflow */}
       <section className="border-b">
-        <div className="mx-auto max-w-5xl px-6 pt-16 pb-0">
-          <BlurFade delay={0.1} inView>
-            <p className="mb-10 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-              Workflow
+        <div className="mx-auto max-w-5xl px-6 py-20">
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+              Four commands.
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              From scaffold to deployed registry.
             </p>
-          </BlurFade>
-        </div>
-        <div className="mx-auto grid max-w-5xl grid-cols-1 sm:grid-cols-2">
-          {commands.map((c, i) => (
-            <BlurFade key={c.label} delay={0.1 + i * 0.05} inView>
-              <div className="group border-b border-r border-dashed p-8 transition-colors hover:bg-accent/50">
-                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                  {c.label}
-                </p>
-                <p className="mt-4 font-mono text-sm transition-colors group-hover:text-foreground">
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            {commands.map((c) => (
+              <div
+                key={c.label}
+                className="rounded-lg border bg-card p-6 transition-shadow hover:shadow-md"
+              >
+                <p className="text-sm font-medium">{c.label}</p>
+                <div className="mt-3 rounded-md bg-muted/50 px-4 py-2.5 font-mono text-sm">
                   <span className="text-muted-foreground">$ </span>
                   {c.cmd}
-                </p>
+                </div>
               </div>
-            </BlurFade>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════════════════ */}
-      {/*  Structure                                                 */}
-      {/* ════════════════════════════════════════════════════════════ */}
-      <section className="dot-grid border-b">
-        <div className="mx-auto max-w-5xl px-6 py-16">
-          <BlurFade delay={0.1} inView>
-            <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-              What you get
+      {/* Project structure */}
+      <section className="border-b bg-muted/20">
+        <div className="mx-auto max-w-5xl px-6 py-20">
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+              What you get.
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              A fully configured project, ready to develop and deploy.
             </p>
-          </BlurFade>
-          <BlurFade delay={0.2} inView>
-            <pre className="overflow-x-auto font-mono text-xs leading-relaxed text-muted-foreground">
-{`my-ui/
-├── registry.json              # include pattern
+          </div>
+
+          <div className="overflow-hidden rounded-lg border bg-card">
+            <div className="border-b bg-muted/30 px-4 py-2.5 font-mono text-xs text-muted-foreground">
+              my-ui/
+            </div>
+            <pre className="overflow-x-auto p-6 font-mono text-xs leading-relaxed text-muted-foreground">
+{`├── registry.json              # include pattern
 ├── registry/new-york/ui/
 │   ├── registry.json          # component items
 │   ├── button.tsx
+│   ├── card.tsx
 │   └── badge.tsx
 ├── components/
 │   ├── component-preview.tsx  # live previews
 │   └── examples/
-│       └── button-demo.tsx
+│       ├── button-demo.tsx
+│       └── card-demo.tsx
 ├── content/docs/components/
-│   └── button.mdx             # with <Preview>
+│   ├── button.mdx             # with <Preview>
+│   ├── card.mdx
+│   └── badge.mdx
 ├── .agents/skills/registry/
 │   └── SKILL.md               # AI skill
 ├── public/r/                  # built output
 ├── components.json
 └── package.json`}
             </pre>
-          </BlurFade>
+          </div>
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════════════════ */}
-      {/*  CTA                                                       */}
-      {/* ════════════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden">
-        <AnimatedGridPattern
-          numSquares={20}
-          maxOpacity={0.04}
-          duration={5}
-          className={cn(
-            "absolute inset-0 h-full w-full",
-            "[mask-image:radial-gradient(400px_circle_at_center,white,transparent)]"
-          )}
-        />
-        <div className="relative mx-auto max-w-5xl px-6 py-24 text-center">
-          <BlurFade delay={0.1} inView>
-            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-              Ready to build your registry?
-            </h2>
-          </BlurFade>
-          <BlurFade delay={0.2} inView>
-            <div className="mt-8 inline-flex items-center gap-3 border border-dashed bg-card px-5 py-3 font-mono text-sm">
+      {/* CTA */}
+      <section className="border-b">
+        <div className="mx-auto max-w-2xl px-6 py-24 text-center">
+          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+            Ready to build?
+          </h2>
+          <p className="mt-3 text-muted-foreground">
+            Spin up your registry in under a minute.
+          </p>
+
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <div className="inline-flex items-center gap-3 rounded-md border bg-card px-4 py-2 font-mono text-sm">
               <span className="text-muted-foreground">$</span>
               <code>npx create-scn-stack</code>
               <CopyButton text="npx create-scn-stack" />
             </div>
-          </BlurFade>
-          <BlurFade delay={0.3} inView>
-            <div className="mt-6 flex justify-center gap-4">
-              <Link
-                href="/docs"
-                className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
-              >
-                Docs
-              </Link>
-              <span className="text-border">·</span>
-              <Link
-                href="/builder"
-                className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
-              >
-                Builder
-              </Link>
-              <span className="text-border">·</span>
-              <a
-                href="https://github.com/jal-co/scn-stack"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
-              >
-                GitHub
-              </a>
-            </div>
-          </BlurFade>
+            <Link
+              href="/docs"
+              className="group inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            >
+              Get Started
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t px-6 py-6">
-        <div className="mx-auto flex max-w-5xl items-center justify-between font-mono text-[10px] tracking-[0.15em] text-muted-foreground">
-          <a href="https://github.com/jal-co" className="text-foreground" target="_blank" rel="noopener noreferrer">
-            jal-co
-          </a>
-          <span>MIT</span>
+      <footer className="px-6 py-8">
+        <div className="mx-auto flex max-w-5xl items-center justify-between text-sm text-muted-foreground">
+          <span>
+            Built by{" "}
+            <a
+              href="https://github.com/jal-co"
+              className="text-foreground transition-colors hover:text-muted-foreground"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              jal-co
+            </a>
+          </span>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://github.com/jal-co/scn-stack"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-foreground"
+            >
+              GitHub
+            </a>
+            <a
+              href="https://www.npmjs.com/package/create-scn-stack"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-foreground"
+            >
+              npm
+            </a>
+          </div>
         </div>
       </footer>
     </div>
