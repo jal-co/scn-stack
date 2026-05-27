@@ -66,6 +66,11 @@ function TerminalBlock() {
             Namespace{" "}
             <span className="text-foreground">@my-ui</span>
           </div>
+          <div>
+            <span className="text-cyan-500 dark:text-cyan-400">◆</span>{" "}
+            AI skills?{" "}
+            <span className="text-foreground">Yes</span>
+          </div>
         </div>
         <div className="space-y-1 pt-2">
           <div>
@@ -83,7 +88,13 @@ function TerminalBlock() {
             configured.
           </div>
           <div>
+            <span className="text-green-500">✓</span> Registry skill added.
+          </div>
+          <div>
             <span className="text-green-500">✓</span> Dependencies installed.
+          </div>
+          <div>
+            <span className="text-green-500">✓</span> shadcn skill installed.
           </div>
           <div>
             <span className="text-green-500">✓</span> Git repository
@@ -234,23 +245,25 @@ export default function Home() {
               <h3 className="mb-4 font-semibold">Project Structure</h3>
               <pre className="overflow-x-auto font-mono text-xs leading-relaxed text-muted-foreground">
 {`my-ui/
-├── registry.json            # Registry definition
-├── registry/new-york/ui/    # Component source
+├── registry.json              # include pattern
+├── registry/new-york/ui/
+│   ├── registry.json          # component items
 │   ├── button.tsx
 │   ├── card.tsx
 │   └── badge.tsx
-├── content/docs/            # Documentation (MDX)
-│   ├── index.mdx
-│   ├── installation.mdx
-│   └── components/
-│       ├── button.mdx
-│       ├── card.mdx
-│       └── badge.mdx
-├── app/
-│   ├── page.tsx             # Landing page
-│   └── docs/                # Docs routes
-├── public/r/                # Built registry JSON
-├── components.json          # shadcn config
+├── components/
+│   ├── component-preview.tsx  # live previews
+│   └── examples/
+│       ├── button-demo.tsx
+│       └── card-demo.tsx
+├── content/docs/components/
+│   ├── button.mdx             # with <Preview>
+│   ├── card.mdx
+│   └── badge.mdx
+├── .agents/skills/registry/
+│   └── SKILL.md               # AI skill
+├── public/r/                  # built output
+├── components.json
 └── package.json`}
               </pre>
             </div>
@@ -277,18 +290,15 @@ export default function Home() {
                 </div>
               </div>
               <div className="rounded-xl border bg-card p-6 shadow-sm">
-                <h3 className="mb-3 font-semibold">
-                  Compatible with shadcn CLI
-                </h3>
+                <h3 className="mb-3 font-semibold">Add components</h3>
                 <div className="space-y-2 font-mono text-sm">
                   <div className="rounded-md bg-muted p-3">
                     <span className="text-muted-foreground">$ </span>
-                    npx shadcn list @my-ui
+                    npx create-scn-stack add-component input
                   </div>
-                  <div className="rounded-md bg-muted p-3">
-                    <span className="text-muted-foreground">$ </span>
-                    npx shadcn search @my-ui --query button
-                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Creates source + registry entry + docs page in one command.
+                  </p>
                 </div>
               </div>
             </div>

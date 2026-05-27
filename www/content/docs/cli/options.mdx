@@ -1,7 +1,14 @@
 ---
 title: Options Reference
-description: All CLI prompts and configuration options.
+description: All CLI prompts, flags, and commands.
 ---
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `npx create-scn-stack` | Scaffold a new registry project |
+| `npx create-scn-stack add-component <name>` | Add a component to an existing registry |
 
 ## Prompts
 
@@ -9,7 +16,7 @@ When you run `npx create-scn-stack`, you'll be guided through these options:
 
 | Prompt | Description | Default |
 |--------|-------------|---------|
-| **Registry name** | Identifier for your registry (used as `@name/component`) | `my-ui` |
+| **Registry name** | Identifier for your registry (e.g., `my-ui`) | `my-ui` |
 | **Project location** | Folder to create the registry in | `./<registry-name>` |
 | **Style** | shadcn/ui style variant | `New York` |
 | **Homepage** | URL where the registry will be hosted | `https://<name>.com` |
@@ -18,6 +25,52 @@ When you run `npx create-scn-stack`, you'll be guided through these options:
 | **Starter components** | Pre-built example components | `Button, Card, Badge` |
 | **Namespace** | Registry namespace for `@name/component` installs | `@<name>` |
 | **Package manager** | Package manager to use | Auto-detected |
+| **AI skills** | Install shadcn skill + registry skill | `Yes` |
+
+## Flags
+
+All prompts can be pre-filled via flags. Use `--yes` to skip prompts entirely.
+
+```bash
+npx create-scn-stack my-ui --yes
+npx create-scn-stack my-ui --framework nextjs --docs fumadocs --pm pnpm
+npx create-scn-stack my-ui --yes --no-skills
+```
+
+| Flag | Values |
+|------|--------|
+| `--name <name>` | Registry name |
+| `--directory <path>` | Project location |
+| `--style <style>` | `new-york` \| `default` |
+| `--homepage <url>` | Registry homepage URL |
+| `--framework <fw>` | `nextjs` \| `vite` \| `react-router` \| `tanstack-start` |
+| `--docs <engine>` | `fumadocs` \| `starlight` \| `none` |
+| `--components <set>` | `essentials` \| `minimal` \| `none` |
+| `--namespace <ns>` | Namespace (e.g., `@my-ui`) |
+| `--pm <pm>` | `pnpm` \| `npm` \| `yarn` \| `bun` |
+| `--skills` | Include AI skills |
+| `--no-skills` | Skip AI skills |
+| `-y, --yes` | Skip all prompts, use defaults |
+| `-h, --help` | Show help |
+
+## add-component
+
+Add a component to an existing registry project:
+
+```bash
+npx create-scn-stack add-component input
+npx create-scn-stack add-component dialog -d "A modal dialog component."
+```
+
+This creates:
+- Component source in `registry/<style>/ui/<name>.tsx`
+- Entry in `registry/<style>/ui/registry.json` (detects include pattern)
+- Doc page in `content/docs/components/<name>.mdx`
+- Updates `meta.json` navigation
+
+| Flag | Description |
+|------|-------------|
+| `--description, -d` | Component description |
 
 ## Framework Options
 
@@ -32,26 +85,28 @@ When you run `npx create-scn-stack`, you'll be guided through these options:
 
 | Engine | Description |
 |--------|-------------|
-| **Fumadocs** | The standard for shadcn registries. Full-featured docs with MDX, search, and dark mode. Requires Next.js. |
-| **Starlight** | Astro-based docs. Generates a separate `docs/` directory. Works with any framework. |
+| **Fumadocs** | Standard for shadcn registries. Full docs with MDX, search, dark mode. Requires Next.js. |
+| **Starlight** | Astro-based docs. Separate `docs/` directory. Works with any framework. |
 | **None** | Registry only, no documentation site. |
 
 ## Style Options
 
 | Style | Description |
 |-------|-------------|
-| **New York** | The default shadcn/ui style. Smaller, more compact components. |
-| **Default** | The original shadcn/ui style. Slightly larger components. |
+| **New York** | Default shadcn/ui style. Smaller, compact components. |
+| **Default** | Original shadcn/ui style. Slightly larger components. |
 
 ## Starter Components
 
-| Set | Components |
-|-----|------------|
-| **Essentials** | `Button` (with variants), `Card` (header/content/footer), `Badge` (with variants) |
-| **Minimal** | `Button` only |
-| **None** | Empty registry — add your own components |
+| Set | Components | Includes |
+|-----|------------|----------|
+| **Essentials** | Button, Card, Badge | Source files, registry entries, doc pages with live previews |
+| **Minimal** | Button only | Source file, registry entry, doc page with preview |
+| **None** | Empty registry | Just the scaffold, add your own |
 
-Each starter component includes:
-- Source file in `registry/<style>/ui/`
-- Entry in `registry.json`
-- Documentation page (if docs engine is selected)
+## AI Skills
+
+| Skill | What it does |
+|-------|-------------|
+| **shadcn skill** | Installs the [official shadcn skill](https://ui.shadcn.com/docs/skills) via `skills add shadcn/ui`. Gives AI assistants knowledge of shadcn components, CLI, theming, and registry authoring. |
+| **Registry skill** | Generates `.agents/skills/registry/SKILL.md` — teaches AI how to add components, write docs, update registry.json, and follow conventions for your specific project. |
