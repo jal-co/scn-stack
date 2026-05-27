@@ -83,6 +83,79 @@
   }
 }
 
+@layer components {
+  .terminal-card-scene {
+    perspective: 1000px;
+    perspective-origin: 50% 28%;
+  }
+
+  .terminal-card-shell {
+    --terminal-rotate-x: 0deg;
+    --terminal-rotate-y: 0deg;
+    position: relative;
+    isolation: isolate;
+    transform: rotateX(var(--terminal-rotate-x))
+      rotateY(var(--terminal-rotate-y));
+    transform-style: preserve-3d;
+    transition: transform 160ms linear;
+  }
+
+  .terminal-card-shell:hover {
+    transform: rotateX(var(--terminal-rotate-x))
+      rotateY(var(--terminal-rotate-y));
+  }
+
+  .terminal-card-shell::before {
+    position: absolute;
+    inset: 8px -8px -10px 8px;
+    z-index: -2;
+    content: "";
+    border: 1px solid oklch(0.28 0.006 250 / 58%);
+    border-radius: 1rem;
+    background: oklch(0.17 0.006 250);
+    box-shadow: 0 32px 80px oklch(0.12 0.006 250 / 30%);
+    transform: translateZ(-18px);
+  }
+
+  .terminal-card-shell::after {
+    position: absolute;
+    inset: auto 8% -34px 14%;
+    z-index: -3;
+    height: 54px;
+    content: "";
+    border-radius: 999px;
+    background: oklch(0.16 0.018 250 / 32%);
+    filter: blur(22px);
+    transform: translateZ(-32px) rotateX(74deg);
+  }
+
+  .terminal-card-window {
+    transform: translateZ(14px);
+    transition: transform 200ms linear;
+    box-shadow:
+      0 24px 54px oklch(0.14 0.018 250 / 34%),
+      0 2px 0 oklch(0.99 0.006 250 / 8%) inset;
+  }
+
+  @media (max-width: 767px) {
+    .terminal-card-shell,
+    .terminal-card-shell:hover {
+      transform: rotateX(var(--terminal-rotate-x))
+        rotateY(var(--terminal-rotate-y));
+    }
+
+    .terminal-card-shell::before {
+      inset: 12px -12px -14px 14px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .terminal-card-shell {
+      transition: none;
+    }
+  }
+}
+
 /* Strip shiki backgrounds */
 [data-slot="code-block"] pre,
 [data-slot="code-block"] pre *,

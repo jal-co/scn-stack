@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import {
   ArrowRight,
   Box,
@@ -85,6 +86,64 @@ const commands = [
 ];
 
 export default function Home() {
+  const terminalCardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (reduceMotion.matches) {
+      return;
+    }
+
+    let frame = 0;
+
+    const setTerminalRotation = (rotateX = 0, rotateY = 0) => {
+      const card = terminalCardRef.current;
+
+      if (!card) {
+        return;
+      }
+
+      card.style.setProperty("--terminal-rotate-x", `${rotateX}deg`);
+      card.style.setProperty("--terminal-rotate-y", `${rotateY}deg`);
+    };
+
+    const handlePointerMove = (event: PointerEvent) => {
+      window.cancelAnimationFrame(frame);
+
+      frame = window.requestAnimationFrame(() => {
+        const card = terminalCardRef.current;
+
+        if (!card) {
+          return;
+        }
+
+        const rect = card.getBoundingClientRect();
+        const cardCenterX = rect.left + rect.width / 2;
+        const cardCenterY = rect.top + rect.height / 2;
+        const relativeX = (event.clientX - cardCenterX) / (window.innerWidth / 2);
+        const relativeY = (event.clientY - cardCenterY) / (window.innerHeight / 2);
+        const rotateY = Math.max(-2.2, Math.min(2.2, relativeX * 2.2));
+        const rotateX = Math.max(-1.8, Math.min(1.8, relativeY * -1.8));
+
+        setTerminalRotation(rotateX, rotateY);
+      });
+    };
+
+    const resetTerminalRotation = () => setTerminalRotation();
+
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("pointerleave", resetTerminalRotation);
+    window.addEventListener("blur", resetTerminalRotation);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerleave", resetTerminalRotation);
+      window.removeEventListener("blur", resetTerminalRotation);
+    };
+  }, []);
+
   return (
     <div className="flex min-h-svh flex-col">
       <SiteHeader />
@@ -134,26 +193,31 @@ export default function Home() {
             </div>
 
             {/* Terminal window */}
-            <div className="mt-16 w-full max-w-3xl text-left">
-              <Terminal
-                output={terminalOutput}
-                className="border-zinc-800 shadow-2xl"
+            <div className="terminal-card-scene mt-16 w-full max-w-3xl text-left">
+              <div
+                ref={terminalCardRef}
+                className="terminal-card-shell"
               >
-                <TerminalHeader className="grid grid-cols-3 items-center">
-                  <div className="flex items-center gap-2">
-                    <div className="h-3 w-3 rounded-full bg-[#ff5f56]" />
-                    <div className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
-                    <div className="h-3 w-3 rounded-full bg-[#27c93f]" />
-                  </div>
-                  <TerminalTitle className="justify-center">
-                    create-scn-stack
-                  </TerminalTitle>
-                  <TerminalActions className="justify-end">
-                    <TerminalCopyButton />
-                  </TerminalActions>
-                </TerminalHeader>
-                <TerminalContent className="max-h-none text-[13px] leading-relaxed" />
-              </Terminal>
+                <Terminal
+                  output={terminalOutput}
+                  className="terminal-card-window border-zinc-800"
+                >
+                  <TerminalHeader className="grid grid-cols-3 items-center">
+                    <div className="flex items-center gap-2">
+                      <div className="h-3 w-3 rounded-full bg-[#ff5f56]" />
+                      <div className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
+                      <div className="h-3 w-3 rounded-full bg-[#27c93f]" />
+                    </div>
+                    <TerminalTitle className="justify-center">
+                      create-scn-stack
+                    </TerminalTitle>
+                    <TerminalActions className="justify-end">
+                      <TerminalCopyButton />
+                    </TerminalActions>
+                  </TerminalHeader>
+                  <TerminalContent className="max-h-none text-[13px] leading-relaxed" />
+                </Terminal>
+              </div>
             </div>
           </div>
         </div>
