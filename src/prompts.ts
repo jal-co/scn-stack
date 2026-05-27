@@ -43,7 +43,7 @@ function validateNamespace(value: string | undefined): string | undefined {
 }
 
 export async function runPrompts(): Promise<ProjectConfig> {
-  p.intro(pc.bgCyan(pc.black(" create-scn-registry ")));
+  p.intro(pc.bgCyan(pc.black(" create-scn-stack ")));
 
   const project = await p.group(
     {

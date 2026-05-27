@@ -1,10 +1,10 @@
 {
-  "name": "create-scn-registry",
+  "name": "create-scn-stack",
   "version": "0.1.0",
   "description": "Scaffold a complete shadcn component registry with documentation in minutes.",
   "type": "module",
   "bin": {
-    "create-scn-registry": "./dist/index.js"
+    "create-scn-stack": "./dist/index.js"
   },
   "files": [
     "dist",
@@ -28,7 +28,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jal-co/create-shadcn-registry.git"
+    "url": "https://github.com/jal-co/scn-stack.git"
   },
   "engines": {
     "node": ">=18"

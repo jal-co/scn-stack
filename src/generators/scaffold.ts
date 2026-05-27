@@ -119,7 +119,7 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
     runCommand("git init", targetDir, true);
     runCommand("git add -A", targetDir, true);
     runCommand(
-      'git commit -m "feat: initial scaffold from create-scn-registry"',
+      'git commit -m "feat: initial scaffold from create-scn-stack"',
       targetDir,
       true
     );
