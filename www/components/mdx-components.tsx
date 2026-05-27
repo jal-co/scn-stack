@@ -27,9 +27,10 @@ function getCodeInfo(children: ReactNode): {
   if (
     children &&
     typeof children === "object" &&
-    "props" in (children as Record<string, unknown>)
+    !Array.isArray(children) &&
+    "props" in (children as unknown as Record<string, unknown>)
   ) {
-    const childProps = (children as { props: Record<string, unknown> }).props;
+    const childProps = (children as unknown as { props: Record<string, unknown> }).props;
     const className = (childProps.className as string) || "";
     const langMatch = className.match(/language-(\w+)/);
     const lang = langMatch?.[1] || "";
