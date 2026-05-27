@@ -20,15 +20,18 @@ type Framework = "nextjs" | "vite" | "react-router" | "tanstack-start";
 type DocsEngine = "fumadocs" | "mintlify" | "starlight" | "none";
 type StarterComponents = "essentials" | "minimal" | "none";
 type Style = "new-york" | "default";
+type BaseLibrary = "radix" | "base";
 type PackageManager = "pnpm" | "npm" | "yarn" | "bun";
 
 interface Config {
   name: string;
   style: Style;
+  base: BaseLibrary;
   homepage: string;
   framework: Framework;
   docsEngine: DocsEngine;
   starterComponents: StarterComponents;
+  monorepo: boolean;
   namespace: string;
   packageManager: PackageManager;
 }
@@ -36,10 +39,12 @@ interface Config {
 const DEFAULT_CONFIG: Config = {
   name: "my-ui",
   style: "new-york",
+  base: "radix",
   homepage: "https://my-ui.com",
   framework: "nextjs",
   docsEngine: "fumadocs",
   starterComponents: "essentials",
+  monorepo: false,
   namespace: "@my-ui",
   packageManager: "pnpm",
 };
@@ -51,6 +56,7 @@ function OptionCard({
   description,
   badge,
   icon,
+  iconNode,
 }: {
   selected: boolean;
   onClick: () => void;
@@ -58,22 +64,23 @@ function OptionCard({
   description?: string;
   badge?: string;
   icon?: string;
+  iconNode?: React.ReactNode;
 }) {
   return (
     <button
       onClick={onClick}
       className={cn(
-        "flex flex-col gap-1  border px-4 py-3 text-left text-sm transition-all",
+        "flex flex-col gap-1 border px-4 py-3 text-left text-sm transition-all",
         selected
           ? "border-foreground bg-foreground/5 ring-1 ring-foreground/20"
           : "border-border hover:border-foreground/30 hover:bg-muted/50"
       )}
     >
       <div className="flex items-center gap-2">
-        {icon && (
+        {iconNode || (icon && (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img src={icon} alt="" className="h-4 w-4 shrink-0" />
-        )}
+        ))}
         <span className="font-medium">{title}</span>
         {badge && (
           <span className="border border-border/60 bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
@@ -148,6 +155,12 @@ function buildCommand(config: Config): string {
   }
   if (config.starterComponents !== "essentials") {
     parts.push(`--components ${config.starterComponents}`);
+  }
+  if (config.base !== "radix") {
+    parts.push(`--base ${config.base}`);
+  }
+  if (config.monorepo) {
+    parts.push("--monorepo");
   }
   if (config.namespace !== `@${config.name}`) {
     parts.push(`--namespace ${config.namespace}`);
@@ -237,6 +250,35 @@ export function Builder() {
                 selected={config.style === "default"}
                 onClick={() => update("style", "default")}
                 title="Default"
+              />
+            </div>
+          </div>
+
+          {/* Base Library */}
+          <div className="flex flex-col gap-3">
+            <SectionHeader icon={Boxes} title="Base Library" />
+            <div className="grid grid-cols-2 gap-2">
+              <OptionCard
+                selected={config.base === "radix"}
+                onClick={() => update("base", "radix")}
+                title="Radix UI"
+                badge="recommended"
+                iconNode={
+                  <svg viewBox="4 0 17 25" fill="currentColor" className="h-4 w-4">
+                    <path d="M12 25a8 8 0 1 1 0-16v16zM12 0H4v8h8V0zM17 8a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>
+                  </svg>
+                }
+              />
+              <OptionCard
+                selected={config.base === "base"}
+                onClick={() => update("base", "base")}
+                title="Base UI"
+                description="by MUI"
+                iconNode={
+                  <svg viewBox="0 0 17 24" fill="currentColor" className="h-4 w-4">
+                    <path d="M9.5 7.015A.477.477 0 0 0 9 7.5V23a8 8 0 0 0 .5-15.985ZM8 9.8V23c-4.418 0-8-3.94-8-8.8V1c4.418 0 8 3.94 8 8.8Z"/>
+                  </svg>
+                }
               />
             </div>
           </div>
@@ -359,6 +401,25 @@ export function Builder() {
               placeholder="@my-ui"
               className="h-10  border bg-background px-3 text-sm outline-none transition-colors focus:border-foreground/50 focus:ring-1 focus:ring-foreground/20"
             />
+          </div>
+
+          {/* Monorepo */}
+          <div className="flex flex-col gap-3">
+            <SectionHeader icon={Boxes} title="Monorepo" />
+            <div className="grid grid-cols-2 gap-2">
+              <OptionCard
+                selected={!config.monorepo}
+                onClick={() => update("monorepo", false)}
+                title="Single project"
+                badge="default"
+              />
+              <OptionCard
+                selected={config.monorepo}
+                onClick={() => update("monorepo", true)}
+                title="Monorepo"
+                description="packages/ workspace"
+              />
+            </div>
           </div>
 
           {/* Package Manager */}

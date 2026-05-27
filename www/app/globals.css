@@ -83,6 +83,11 @@
   }
 }
 
+/* Kill all border radius globally — override component hardcoded values */
+* {
+  border-radius: 0 !important;
+}
+
 /* Strip ALL shiki backgrounds inside code components */
 [data-slot="code-block"] pre,
 [data-slot="code-block"] pre *,

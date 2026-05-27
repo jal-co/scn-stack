@@ -338,6 +338,22 @@ Or manually:
 3. Run \`${getRunCommand(config.packageManager, "registry:build")}\`
 ${config.docsEngine === "fumadocs" ? "4. Add a doc page in `content/docs/components/<name>.mdx`" : config.docsEngine === "mintlify" ? "4. Add a doc page in `docs/components/<name>.mdx`" : config.docsEngine === "starlight" ? "4. Add a doc page in `docs/src/content/docs/components/<name>.md`" : ""}
 
+## What's Next
+
+1. **Build components** — Create your custom components in \`registry/${config.style}/ui/\`
+2. **Write docs** — Add documentation pages with live previews
+3. **Test locally** — Run \`${getRunCommand(config.packageManager, "dev")}\` and test with \`npx shadcn add http://localhost:3000/r/<name>.json\`
+4. **Validate** — Run \`npx shadcn registry validate\` before publishing
+5. **Deploy** — Push to Vercel, Netlify, or any hosting platform
+6. **Submit to shadcn** — [Add your registry](https://ui.shadcn.com/docs/registry/registry-index) to the official shadcn registry directory
+
+## Resources
+
+- [shadcn Registry Docs](https://ui.shadcn.com/docs/registry)
+- [Registry Schema](https://ui.shadcn.com/docs/registry/registry-json)
+- [scn-stack Docs](https://scn-stack.vercel.app/docs)
+- [scn-stack Builder](https://scn-stack.vercel.app/builder)
+
 ## License
 
 MIT
