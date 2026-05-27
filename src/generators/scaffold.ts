@@ -39,14 +39,27 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
   }
 
   // Update config with resolved directory
-  config.directory = targetDir;
+  const monorepoRoot = config.monorepo ? targetDir : null;
+  if (config.monorepo) {
+    config.directory = join(targetDir, "packages/registry");
+  } else {
+    config.directory = targetDir;
+  }
 
   const s = p.spinner();
+
+  // 0. Generate monorepo root if needed
+  if (monorepoRoot) {
+    s.start("Setting up monorepo...");
+    ensureDir(monorepoRoot);
+    generateMonorepoRoot(config, monorepoRoot);
+    s.stop("Monorepo configured.");
+  }
 
   // 1. Generate framework files
   s.start("Generating project files...");
 
-  ensureDir(targetDir);
+  ensureDir(config.directory);
 
   switch (config.framework) {
     case "nextjs":
@@ -123,9 +136,10 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
   s.stop("README generated.");
 
   // 7. Install dependencies
+  const installDir = monorepoRoot || config.directory;
   s.start(`Installing dependencies with ${config.packageManager}...`);
   try {
-    runCommand(getInstallCommand(config.packageManager), targetDir, true);
+    runCommand(getInstallCommand(config.packageManager), installDir, true);
     s.stop("Dependencies installed.");
   } catch {
     s.stop("Failed to install dependencies. You can install them manually.");
@@ -137,7 +151,7 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
     try {
       runCommand(
         `${getDlxCommand(config.packageManager)} skills add shadcn/ui`,
-        targetDir,
+        installDir,
         true
       );
       s.stop("shadcn skill installed.");
@@ -149,11 +163,11 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
   // 9. Initialize git
   s.start("Initializing git repository...");
   try {
-    runCommand("git init", targetDir, true);
-    runCommand("git add -A", targetDir, true);
+    runCommand("git init", installDir, true);
+    runCommand("git add -A", installDir, true);
     runCommand(
       'git commit -m "feat: initial scaffold from create-scn-stack"',
-      targetDir,
+      installDir,
       true
     );
     s.stop("Git repository initialized.");
@@ -205,6 +219,47 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
 
   p.outro(
     `${pc.green("✓")} ${pc.bold(config.name)} created with ${frameworkLabel}${docsLabel ? ` + ${docsLabel}` : ""}. Happy building! 🎉`
+  );
+}
+
+function generateMonorepoRoot(
+  config: ProjectConfig,
+  rootDir: string
+): void {
+  const pm = config.packageManager;
+
+  // Root package.json with workspaces
+  const rootPkg: Record<string, unknown> = {
+    name: config.name,
+    private: true,
+    scripts: {
+      dev: `${pm === "npm" ? "npm run" : pm} --filter registry dev`,
+      build: `${pm === "npm" ? "npm run" : pm} --filter registry build`,
+      "registry:build": `${pm === "npm" ? "npm run" : pm} --filter registry registry:build`,
+    },
+  };
+
+  if (pm === "pnpm") {
+    // pnpm uses pnpm-workspace.yaml
+    writeFile(
+      join(rootDir, "pnpm-workspace.yaml"),
+      "packages:\n  - packages/*\n"
+    );
+  } else if (pm === "npm" || pm === "yarn") {
+    rootPkg.workspaces = ["packages/*"];
+  } else if (pm === "bun") {
+    rootPkg.workspaces = ["packages/*"];
+  }
+
+  writeFile(
+    join(rootDir, "package.json"),
+    JSON.stringify(rootPkg, null, 2) + "\n"
+  );
+
+  // Root .gitignore
+  writeFile(
+    join(rootDir, ".gitignore"),
+    `node_modules/\n.DS_Store\n`
   );
 }
 
