@@ -144,12 +144,14 @@ npx create-scn-stack add-component <name> -d "A description."
 ## Registry Conventions
 
 - Component files go in \`registry/${style}/ui/\`.
-- File paths in registry.json are relative to the project root.
+- Uses the \`include\` pattern: root \`registry.json\` includes \`registry/${style}/ui/registry.json\`.
+- File paths in per-directory registry.json are relative to that directory.
 - Imports in components use \`@/\` aliases (e.g. \`@/lib/utils\`).
 - Use \`class-variance-authority\` for variant-based components.
 - Use \`React.forwardRef\` for all components.
 - Export both the component and its props type.
 - Run \`pnpm registry:build\` after any registry.json change.
+- Run \`npx shadcn registry validate\` to check your registry before publishing.
 ${namespace ? `- Users install with: \`npx shadcn add ${namespace}/<name>\`` : ""}
 
 ## Testing

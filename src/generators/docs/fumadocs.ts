@@ -256,8 +256,134 @@ npx shadcn@latest list ${config.useNamespace ? config.namespace : `${config.home
     ) + "\n"
   );
 
+  // Component preview component
+  generateComponentPreview(config);
+
   // Component doc pages
   generateComponentDocs(config);
+}
+
+function generateComponentPreview(config: ProjectConfig): void {
+  const dir = config.directory;
+  const style = config.style;
+
+  // ComponentPreview — client component with Preview/Code tabs
+  writeFile(
+    join(dir, "components/component-preview.tsx"),
+    `"use client"
+
+import * as React from "react"
+import { cn } from "@/lib/utils"
+
+interface ComponentPreviewProps {
+  children: React.ReactNode
+  className?: string
+}
+
+export function ComponentPreview({ children, className }: ComponentPreviewProps) {
+  return (
+    <div
+      className={cn(
+        "not-prose flex min-h-[200px] w-full items-center justify-center rounded-xl border bg-card p-8",
+        className
+      )}
+    >
+      {children}
+    </div>
+  )
+}
+`
+  );
+
+  // Example preview files for each starter component
+  if (
+    config.starterComponents === "essentials" ||
+    config.starterComponents === "minimal"
+  ) {
+    writeFile(
+      join(dir, "components/examples/button-demo.tsx"),
+      `"use client"
+
+import { Button } from "@/registry/${style}/ui/button"
+
+export function ButtonDemo() {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button>Default</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="destructive">Destructive</Button>
+      <Button variant="outline">Outline</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="link">Link</Button>
+    </div>
+  )
+}
+
+export function ButtonSizes() {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button size="lg">Large</Button>
+      <Button>Default</Button>
+      <Button size="sm">Small</Button>
+    </div>
+  )
+}
+`
+    );
+  }
+
+  if (config.starterComponents === "essentials") {
+    writeFile(
+      join(dir, "components/examples/card-demo.tsx"),
+      `"use client"
+
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/registry/${style}/ui/card"
+
+export function CardDemo() {
+  return (
+    <Card className="w-[350px]">
+      <CardHeader>
+        <CardTitle>Card Title</CardTitle>
+        <CardDescription>Card description goes here.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm text-muted-foreground">This is the card content area.</p>
+      </CardContent>
+      <CardFooter className="text-xs text-muted-foreground">
+        Card footer
+      </CardFooter>
+    </Card>
+  )
+}
+`
+    );
+
+    writeFile(
+      join(dir, "components/examples/badge-demo.tsx"),
+      `"use client"
+
+import { Badge } from "@/registry/${style}/ui/badge"
+
+export function BadgeDemo() {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Badge>Default</Badge>
+      <Badge variant="secondary">Secondary</Badge>
+      <Badge variant="destructive">Destructive</Badge>
+      <Badge variant="outline">Outline</Badge>
+    </div>
+  )
+}
+`
+    );
+  }
 }
 
 function generateComponentDocs(config: ProjectConfig): void {
@@ -279,6 +405,15 @@ title: Button
 description: A button component with multiple variants.
 ---
 
+import { ComponentPreview } from "@/components/component-preview"
+import { ButtonDemo, ButtonSizes } from "@/components/examples/button-demo"
+
+## Preview
+
+<ComponentPreview>
+  <ButtonDemo />
+</ComponentPreview>
+
 ## Installation
 
 \`\`\`bash
@@ -297,22 +432,29 @@ export function Example() {
 
 ## Variants
 
+<ComponentPreview>
+  <ButtonDemo />
+</ComponentPreview>
+
 \`\`\`tsx
 <Button variant="default">Default</Button>
+<Button variant="secondary">Secondary</Button>
 <Button variant="destructive">Destructive</Button>
 <Button variant="outline">Outline</Button>
-<Button variant="secondary">Secondary</Button>
 <Button variant="ghost">Ghost</Button>
 <Button variant="link">Link</Button>
 \`\`\`
 
 ## Sizes
 
+<ComponentPreview>
+  <ButtonSizes />
+</ComponentPreview>
+
 \`\`\`tsx
-<Button size="default">Default</Button>
-<Button size="sm">Small</Button>
 <Button size="lg">Large</Button>
-<Button size="icon">🔔</Button>
+<Button>Default</Button>
+<Button size="sm">Small</Button>
 \`\`\`
 `
     );
@@ -325,6 +467,15 @@ export function Example() {
 title: Card
 description: A card component with header, content, and footer.
 ---
+
+import { ComponentPreview } from "@/components/component-preview"
+import { CardDemo } from "@/components/examples/card-demo"
+
+## Preview
+
+<ComponentPreview>
+  <CardDemo />
+</ComponentPreview>
 
 ## Installation
 
@@ -371,6 +522,15 @@ title: Badge
 description: A badge component with multiple variants.
 ---
 
+import { ComponentPreview } from "@/components/component-preview"
+import { BadgeDemo } from "@/components/examples/badge-demo"
+
+## Preview
+
+<ComponentPreview>
+  <BadgeDemo />
+</ComponentPreview>
+
 ## Installation
 
 \`\`\`bash
@@ -388,6 +548,10 @@ export function Example() {
 \`\`\`
 
 ## Variants
+
+<ComponentPreview>
+  <BadgeDemo />
+</ComponentPreview>
 
 \`\`\`tsx
 <Badge variant="default">Default</Badge>
