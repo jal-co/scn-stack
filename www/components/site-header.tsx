@@ -45,7 +45,7 @@ export function SiteHeader() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 flex h-14 items-center gap-2 border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6">
+    <header className="sticky top-0 z-50 flex h-14 items-center gap-2 border-b bg-background/95 px-4 backdrop-blur-sm sm:px-6">
       {/* Mobile menu button */}
       <button
         type="button"
@@ -59,10 +59,12 @@ export function SiteHeader() {
       {/* Logo */}
       <Link
         href="/"
-        className="flex items-center gap-2 rounded-md text-sm font-semibold tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+        className="flex items-center gap-2 text-sm font-semibold tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
       >
-        <Package className="h-5 w-5" />
-        <span className="hidden font-semibold sm:inline">scn-stack</span>
+        <Package className="h-4 w-4" />
+        <span className="hidden font-mono text-xs font-bold uppercase tracking-widest sm:inline">
+          scn-stack
+        </span>
       </Link>
 
       {/* Desktop nav */}
@@ -72,9 +74,9 @@ export function SiteHeader() {
             key={item.href}
             href={item.href}
             className={cn(
-              "rounded-md px-3 py-1.5 text-sm transition-colors hover:bg-accent hover:text-accent-foreground",
+              "px-3 py-1.5 font-mono text-xs uppercase tracking-widest transition-colors hover:text-foreground",
               pathname.startsWith(item.href)
-                ? "font-medium text-foreground"
+                ? "text-foreground"
                 : "text-muted-foreground"
             )}
           >
@@ -89,7 +91,7 @@ export function SiteHeader() {
           href="https://www.npmjs.com/package/create-scn-stack"
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground sm:inline-flex"
+          className="hidden px-3 py-1.5 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
         >
           npm
         </a>

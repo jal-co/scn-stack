@@ -63,7 +63,7 @@ function OptionCard({
     <button
       onClick={onClick}
       className={cn(
-        "flex flex-col gap-1 rounded-lg border px-4 py-3 text-left text-sm transition-all",
+        "flex flex-col gap-1  border px-4 py-3 text-left text-sm transition-all",
         selected
           ? "border-foreground bg-foreground/5 ring-1 ring-foreground/20"
           : "border-border hover:border-foreground/30 hover:bg-muted/50"
@@ -76,7 +76,7 @@ function OptionCard({
         )}
         <span className="font-medium">{title}</span>
         {badge && (
-          <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
+          <span className="border border-border/60 bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
             {badge}
           </span>
         )}
@@ -96,8 +96,8 @@ function SectionHeader({
   title: string;
 }) {
   return (
-    <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-      <Icon className="h-4 w-4" />
+    <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+      <Icon className="h-3.5 w-3.5" />
       {title}
     </div>
   );
@@ -113,7 +113,7 @@ function CopyCommandButton({ command }: { command: string }) {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       }}
-      className="inline-flex items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+      className="inline-flex items-center gap-1.5  border bg-background px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
     >
       {copied ? (
         <>
@@ -219,7 +219,7 @@ export function Builder() {
               value={config.name}
               onChange={(e) => update("name", e.target.value)}
               placeholder="my-ui"
-              className="h-10 rounded-lg border bg-background px-3 text-sm outline-none transition-colors focus:border-foreground/50 focus:ring-1 focus:ring-foreground/20"
+              className="h-10  border bg-background px-3 text-sm outline-none transition-colors focus:border-foreground/50 focus:ring-1 focus:ring-foreground/20"
             />
           </div>
 
@@ -345,7 +345,7 @@ export function Builder() {
               value={config.homepage}
               onChange={(e) => update("homepage", e.target.value)}
               placeholder="https://my-ui.com"
-              className="h-10 rounded-lg border bg-background px-3 text-sm outline-none transition-colors focus:border-foreground/50 focus:ring-1 focus:ring-foreground/20"
+              className="h-10  border bg-background px-3 text-sm outline-none transition-colors focus:border-foreground/50 focus:ring-1 focus:ring-foreground/20"
             />
           </div>
 
@@ -357,7 +357,7 @@ export function Builder() {
               value={config.namespace}
               onChange={(e) => update("namespace", e.target.value)}
               placeholder="@my-ui"
-              className="h-10 rounded-lg border bg-background px-3 text-sm outline-none transition-colors focus:border-foreground/50 focus:ring-1 focus:ring-foreground/20"
+              className="h-10  border bg-background px-3 text-sm outline-none transition-colors focus:border-foreground/50 focus:ring-1 focus:ring-foreground/20"
             />
           </div>
 
@@ -385,12 +385,12 @@ export function Builder() {
 
         {/* Command output — sticky sidebar on desktop */}
         <div className="lg:sticky lg:top-[calc(3.5rem+2rem)] lg:h-fit lg:w-80">
-          <div className="flex flex-col gap-4 rounded-xl border bg-card p-5 shadow-sm">
+          <div className="flex flex-col gap-4  border bg-card p-5 shadow-sm">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Command</span>
               <CopyCommandButton command={command.replace(/\s*\\\n\s*/g, " ")} />
             </div>
-            <div className="overflow-x-auto rounded-lg bg-muted/70 p-4">
+            <div className="overflow-x-auto  bg-muted/70 p-4">
               <pre className="font-mono text-xs leading-relaxed text-foreground">
                 {command}
               </pre>

@@ -7,18 +7,21 @@ import {
   Layers,
   Rocket,
   ArrowRight,
+  Bot,
 } from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
 import { SiteHeader } from "@/components/site-header";
 
 function TerminalBlock() {
   return (
-    <div className="w-full max-w-2xl overflow-hidden rounded-xl border bg-card shadow-lg">
+    <div className="w-full max-w-2xl overflow-hidden border bg-card">
       <div className="flex items-center gap-2 border-b px-4 py-3">
-        <div className="h-3 w-3 rounded-full bg-red-500/80" />
-        <div className="h-3 w-3 rounded-full bg-yellow-500/80" />
-        <div className="h-3 w-3 rounded-full bg-green-500/80" />
-        <span className="ml-2 text-xs text-muted-foreground">terminal</span>
+        <div className="h-2.5 w-2.5 bg-red-500/80" />
+        <div className="h-2.5 w-2.5 bg-yellow-500/80" />
+        <div className="h-2.5 w-2.5 bg-green-500/80" />
+        <span className="ml-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+          terminal
+        </span>
       </div>
       <div className="space-y-4 p-6 font-mono text-sm">
         <div className="flex items-center gap-2">
@@ -33,18 +36,13 @@ function TerminalBlock() {
           </div>
           <div>
             <span className="text-cyan-500 dark:text-cyan-400">◆</span>{" "}
-            Project location{" "}
-            <span className="text-foreground">./my-ui</span>
-          </div>
-          <div>
-            <span className="text-cyan-500 dark:text-cyan-400">◆</span>{" "}
             Style{" "}
             <span className="text-foreground">New York</span>
           </div>
           <div>
             <span className="text-cyan-500 dark:text-cyan-400">◆</span>{" "}
-            Homepage{" "}
-            <span className="text-foreground">https://my-ui.com</span>
+            Base library{" "}
+            <span className="text-foreground">Radix UI</span>
           </div>
           <div>
             <span className="text-cyan-500 dark:text-cyan-400">◆</span>{" "}
@@ -84,17 +82,13 @@ function TerminalBlock() {
             created.
           </div>
           <div>
-            <span className="text-green-500">✓</span> Fumadocs documentation
-            configured.
+            <span className="text-green-500">✓</span> Documentation configured.
           </div>
           <div>
             <span className="text-green-500">✓</span> Registry skill added.
           </div>
           <div>
             <span className="text-green-500">✓</span> Dependencies installed.
-          </div>
-          <div>
-            <span className="text-green-500">✓</span> shadcn skill installed.
           </div>
           <div>
             <span className="text-green-500">✓</span> Git repository
@@ -112,39 +106,39 @@ function TerminalBlock() {
 const features = [
   {
     icon: Layers,
-    title: "4 Frameworks",
+    title: "Works with your framework.",
     description:
-      "Next.js, Vite, React Router, or TanStack Start. Pick what fits your project.",
+      "Next.js, Vite, React Router, TanStack Start. Pick what fits.",
   },
   {
     icon: BookOpen,
-    title: "Docs Included",
+    title: "Docs included.",
     description:
-      "Fumadocs or Starlight — get a full documentation site with auto-generated component pages.",
+      "Fumadocs, Mintlify, or Starlight. Full documentation site with component pages.",
   },
   {
     icon: FileCode,
-    title: "Starter Components",
+    title: "Live component previews.",
     description:
-      "Button, Card, Badge with variants — real registry:ui items ready for shadcn build.",
+      "Every component page includes a rendered preview alongside the code.",
   },
   {
     icon: Package,
-    title: "Registry Ready",
+    title: "Registry-first.",
     description:
-      "Valid registry.json, components.json, namespace support. Run shadcn build and ship.",
+      "Valid registry.json with include pattern. shadcn build, validate, and namespace support.",
   },
   {
     icon: Terminal,
-    title: "One Command",
+    title: "One command to add.",
     description:
-      "Interactive prompts guide you through every choice. Zero config to figure out.",
+      "npx create-scn-stack add-component input — source, registry entry, and docs page.",
   },
   {
-    icon: Rocket,
-    title: "Deploy Anywhere",
+    icon: Bot,
+    title: "AI-native.",
     description:
-      "Vercel, Netlify, Cloudflare — your registry is a static site. Deploy it anywhere.",
+      "Ships with shadcn skill + registry skill. Claude, Cursor, and Copilot understand your project.",
   },
 ];
 
@@ -155,28 +149,22 @@ export default function Home() {
 
       {/* Hero */}
       <section className="flex flex-1 flex-col items-center justify-center gap-8 px-4 py-20 text-center md:py-32">
-        <div className="flex flex-col items-center gap-4">
-          <div className="inline-flex items-center gap-2 rounded-full border bg-muted/50 px-3 py-1 text-xs text-muted-foreground">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500" />
-            v0.2.0 — Now on npm
+        <div className="flex flex-col items-center gap-6">
+          <div className="inline-flex items-center gap-2 border border-dashed px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+            <span className="inline-block h-1.5 w-1.5 bg-green-500" />
+            v0.7.0
           </div>
           <h1 className="max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-            Scaffold your{" "}
-            <span className="bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
-              shadcn registry
-            </span>{" "}
-            in minutes
+            Scaffold your shadcn registry
           </h1>
           <p className="max-w-xl text-lg text-muted-foreground">
             Interactive CLI that generates a complete component registry with
-            docs, framework of your choice, and starter components. Like{" "}
-            <span className="text-foreground font-medium">create-t3-app</span>,
-            but for shadcn registries.
+            docs, framework of your choice, and starter components.
           </p>
         </div>
 
         {/* Install command */}
-        <div className="flex items-center gap-3 rounded-lg border bg-card px-5 py-3 font-mono text-sm shadow-sm">
+        <div className="flex items-center gap-3 border bg-card px-5 py-3 font-mono text-sm">
           <span className="text-muted-foreground">$</span>
           <code>npx create-scn-stack</code>
           <CopyButton text="npx create-scn-stack" />
@@ -185,19 +173,17 @@ export default function Home() {
         <div className="flex gap-3">
           <Link
             href="/docs"
-            className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90"
+            className="inline-flex items-center gap-2 border bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-colors hover:bg-foreground/90"
           >
             Get Started
             <ArrowRight className="h-4 w-4" />
           </Link>
-          <a
-            href="https://github.com/jal-co/scn-stack"
-            className="inline-flex items-center gap-2 rounded-md border bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/builder"
+            className="inline-flex items-center gap-2 border px-5 py-2.5 text-sm font-medium transition-colors hover:bg-accent"
           >
-            GitHub
-          </a>
+            Builder
+          </Link>
         </div>
       </section>
 
@@ -207,19 +193,22 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="border-t bg-muted/30 px-4 py-20">
+      <section className="border-t px-4 py-20">
         <div className="mx-auto max-w-5xl">
-          <h2 className="mb-12 text-center text-2xl font-bold tracking-tight sm:text-3xl">
-            Everything you need to ship a registry
-          </h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature) => (
+          <p className="mb-10 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+            Features
+          </p>
+          <div className="grid gap-px border bg-border sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((feature, i) => (
               <div
                 key={feature.title}
-                className="flex flex-col gap-3 rounded-xl border bg-card p-6 shadow-sm transition-shadow hover:shadow-md"
+                className="flex flex-col gap-3 bg-background p-6"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
-                  <feature.icon className="h-5 w-5 text-foreground" />
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <feature.icon className="h-4 w-4 text-muted-foreground" />
                 </div>
                 <h3 className="font-semibold">{feature.title}</h3>
                 <p className="text-sm leading-relaxed text-muted-foreground">
@@ -232,17 +221,19 @@ export default function Home() {
       </section>
 
       {/* Output preview */}
-      <section className="px-4 py-20">
+      <section className="border-t px-4 py-20">
         <div className="mx-auto max-w-5xl">
-          <h2 className="mb-4 text-center text-2xl font-bold tracking-tight sm:text-3xl">
+          <p className="mb-4 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+            Output
+          </p>
+          <h2 className="mb-10 text-2xl font-bold tracking-tight sm:text-3xl">
             What you get
           </h2>
-          <p className="mb-12 text-center text-muted-foreground">
-            A fully configured project, ready to develop and deploy.
-          </p>
-          <div className="grid gap-8 md:grid-cols-2">
-            <div className="rounded-xl border bg-card p-6 shadow-sm">
-              <h3 className="mb-4 font-semibold">Project Structure</h3>
+          <div className="grid gap-px border bg-border md:grid-cols-2">
+            <div className="bg-background p-6">
+              <p className="mb-4 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                Project structure
+              </p>
               <pre className="overflow-x-auto font-mono text-xs leading-relaxed text-muted-foreground">
 {`my-ui/
 ├── registry.json              # include pattern
@@ -267,39 +258,39 @@ export default function Home() {
 └── package.json`}
               </pre>
             </div>
-            <div className="flex flex-col gap-6">
-              <div className="rounded-xl border bg-card p-6 shadow-sm">
-                <h3 className="mb-3 font-semibold">Your users install with</h3>
-                <div className="space-y-2 font-mono text-sm">
-                  <div className="rounded-md bg-muted p-3">
-                    <span className="text-muted-foreground">$ </span>
-                    npx shadcn add @my-ui/button
-                  </div>
+            <div className="flex flex-col gap-px bg-border">
+              <div className="bg-background p-6">
+                <p className="mb-3 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  Install
+                </p>
+                <div className="border bg-card p-3 font-mono text-sm">
+                  <span className="text-muted-foreground">$ </span>
+                  npx shadcn add @my-ui/button
                 </div>
               </div>
-              <div className="rounded-xl border bg-card p-6 shadow-sm">
-                <h3 className="mb-3 font-semibold">Build your registry</h3>
-                <div className="space-y-2 font-mono text-sm">
-                  <div className="rounded-md bg-muted p-3">
-                    <span className="text-muted-foreground">$ </span>
-                    pnpm registry:build
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Generates static JSON in public/r/ — ready to deploy.
-                  </p>
+              <div className="bg-background p-6">
+                <p className="mb-3 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  Add components
+                </p>
+                <div className="border bg-card p-3 font-mono text-sm">
+                  <span className="text-muted-foreground">$ </span>
+                  npx create-scn-stack add-component input
                 </div>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Creates source + registry entry + docs page.
+                </p>
               </div>
-              <div className="rounded-xl border bg-card p-6 shadow-sm">
-                <h3 className="mb-3 font-semibold">Add components</h3>
-                <div className="space-y-2 font-mono text-sm">
-                  <div className="rounded-md bg-muted p-3">
-                    <span className="text-muted-foreground">$ </span>
-                    npx create-scn-stack add-component input
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Creates source + registry entry + docs page in one command.
-                  </p>
+              <div className="bg-background p-6">
+                <p className="mb-3 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  Build
+                </p>
+                <div className="border bg-card p-3 font-mono text-sm">
+                  <span className="text-muted-foreground">$ </span>
+                  pnpm registry:build
                 </div>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Generates static JSON in public/r/ — ready to deploy.
+                </p>
               </div>
             </div>
           </div>
@@ -307,19 +298,19 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="border-t bg-muted/30 px-4 py-20">
+      <section className="border-t px-4 py-20">
         <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 text-center">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
             Ready to build your registry?
           </h2>
-          <div className="flex items-center gap-3 rounded-lg border bg-card px-5 py-3 font-mono text-sm shadow-sm">
+          <div className="flex items-center gap-3 border bg-card px-5 py-3 font-mono text-sm">
             <span className="text-muted-foreground">$</span>
             <code>npx create-scn-stack</code>
             <CopyButton text="npx create-scn-stack" />
           </div>
           <Link
             href="/docs"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
           >
             Read the docs
             <ArrowRight className="h-3 w-3" />
@@ -329,7 +320,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t px-4 py-8">
-        <div className="mx-auto flex max-w-5xl items-center justify-between text-sm text-muted-foreground">
+        <div className="mx-auto flex max-w-5xl items-center justify-between font-mono text-xs text-muted-foreground">
           <span>
             Built by{" "}
             <a
@@ -341,7 +332,7 @@ export default function Home() {
               jal-co
             </a>
           </span>
-          <span>MIT License</span>
+          <span>MIT</span>
         </div>
       </footer>
     </div>
