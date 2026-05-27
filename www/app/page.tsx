@@ -99,7 +99,12 @@ export default function Home() {
 
     let frame = 0;
 
-    const setTerminalRotation = (rotateX = 0, rotateY = 0) => {
+    const setTerminalRotation = (
+      rotateX = 0,
+      rotateY = 0,
+      lightX = 50,
+      lightY = 42
+    ) => {
       const card = terminalCardRef.current;
 
       if (!card) {
@@ -108,6 +113,8 @@ export default function Home() {
 
       card.style.setProperty("--terminal-rotate-x", `${rotateX}deg`);
       card.style.setProperty("--terminal-rotate-y", `${rotateY}deg`);
+      card.style.setProperty("--terminal-light-x", `${lightX}%`);
+      card.style.setProperty("--terminal-light-y", `${lightY}%`);
     };
 
     const handlePointerMove = (event: PointerEvent) => {
@@ -127,8 +134,10 @@ export default function Home() {
         const relativeY = (event.clientY - cardCenterY) / (window.innerHeight / 2);
         const rotateY = Math.max(-2.2, Math.min(2.2, relativeX * 2.2));
         const rotateX = Math.max(-1.8, Math.min(1.8, relativeY * -1.8));
+        const lightX = Math.max(28, Math.min(72, 50 + relativeX * 18));
+        const lightY = Math.max(18, Math.min(62, 42 + relativeY * 14));
 
-        setTerminalRotation(rotateX, rotateY);
+        setTerminalRotation(rotateX, rotateY, lightX, lightY);
       });
     };
 
@@ -158,7 +167,7 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="relative z-10 mx-auto max-w-5xl px-6 py-24 md:py-32">
+        <div className="relative z-10 mx-auto max-w-5xl px-6 py-20 md:py-24">
           <div className="flex flex-col items-center text-center">
             <Link
               href="/docs"
@@ -200,31 +209,95 @@ export default function Home() {
               </Link>
             </div>
 
-            {/* Terminal window */}
-            <div className="terminal-card-scene mt-16 w-full max-w-3xl text-left">
+            {/* Terminal laptop */}
+            <div className="macbook-stage mt-10 w-full max-w-3xl text-left">
               <div
                 ref={terminalCardRef}
-                className="terminal-card-shell"
+                className="macbook-photo-shell"
+                style={{
+                  ["--terminal-light-x" as string]: "50%",
+                  ["--terminal-light-y" as string]: "42%",
+                  isolation: "isolate",
+                  marginInline: "auto",
+                  maxWidth: "920px",
+                  position: "relative",
+                  transform:
+                    "rotateX(var(--terminal-rotate-x, 0deg)) rotateY(var(--terminal-rotate-y, 0deg))",
+                  transformOrigin: "center bottom",
+                  transformStyle: "preserve-3d",
+                }}
               >
-                <Terminal
-                  output={terminalOutput}
-                  className="terminal-card-window border-zinc-800"
+                <div
+                  className="macbook-photo-screen"
+                  style={{
+                    background: "oklch(0.055 0.003 270)",
+                    borderRadius: "1.2%",
+                    height: "85.43%",
+                    left: "10.16%",
+                    overflow: "hidden",
+                    position: "absolute",
+                    top: "2.45%",
+                    width: "79.69%",
+                    zIndex: 3,
+                  }}
                 >
-                  <TerminalHeader className="grid grid-cols-3 items-center">
-                    <div className="flex items-center gap-2">
-                      <div className="h-3 w-3 rounded-full bg-[#ff5f56]" />
-                      <div className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
-                      <div className="h-3 w-3 rounded-full bg-[#27c93f]" />
+                    <div className="macbook-desktop">
+                      <div className="macbook-menu-bar">
+                        <div className="flex items-center gap-3">
+                          <span className="text-zinc-100">●</span>
+                          <span className="font-medium text-zinc-100">Terminal</span>
+                          <span>File</span>
+                          <span>Edit</span>
+                          <span>View</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span>⌘</span>
+                          <span>100%</span>
+                          <span>9:41 AM</span>
+                        </div>
+                      </div>
+
+                      <div className="macbook-window-frame">
+                        <Terminal
+                          output={terminalOutput}
+                          className="macbook-terminal border-zinc-800"
+                        >
+                          <TerminalHeader className="grid grid-cols-3 items-center px-3 py-1.5">
+                            <div className="flex items-center gap-1.5">
+                              <div className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
+                              <div className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
+                              <div className="h-2.5 w-2.5 rounded-full bg-[#27c93f]" />
+                            </div>
+                            <TerminalTitle className="justify-center text-xs">
+                              create-scn-stack
+                            </TerminalTitle>
+                            <TerminalActions className="justify-end">
+                              <TerminalCopyButton className="size-6" />
+                            </TerminalActions>
+                          </TerminalHeader>
+                          <TerminalContent className="max-h-[214px] p-3 text-[11px] leading-relaxed" />
+                        </Terminal>
+                      </div>
                     </div>
-                    <TerminalTitle className="justify-center">
-                      create-scn-stack
-                    </TerminalTitle>
-                    <TerminalActions className="justify-end">
-                      <TerminalCopyButton />
-                    </TerminalActions>
-                  </TerminalHeader>
-                  <TerminalContent className="max-h-none text-[13px] leading-relaxed" />
-                </Terminal>
+                </div>
+                <img
+                  src="/macbook-pro-m4-space-black.svg"
+                  alt=""
+                  className="macbook-photo-frame"
+                  style={{
+                    display: "block",
+                    filter:
+                      "drop-shadow(0 34px 52px oklch(0.03 0.003 270 / 62%))",
+                    height: "auto",
+                    pointerEvents: "none",
+                    position: "relative",
+                    userSelect: "none",
+                    width: "100%",
+                    zIndex: 1,
+                  }}
+                  draggable={false}
+                />
+                <div className="macbook-photo-light" aria-hidden="true" />
               </div>
             </div>
           </div>
