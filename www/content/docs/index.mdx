@@ -27,8 +27,20 @@ The CLI will:
 1. Ask you for a registry name, framework, docs engine, and more
 2. Generate all project files with the registry `include` pattern
 3. Create starter components with live preview demos
-4. Install dependencies and the shadcn AI skill
-5. Initialize a git repository
+4. Set up theme scaffolding and v0 integration
+5. Generate `llms.txt` and `.scn-stack.json` config
+6. Install dependencies and the shadcn AI skill
+7. Initialize a git repository
+
+### Add to an Existing Project
+
+Already have a project? Add a registry to it:
+
+```bash
+npx create-scn-stack init
+```
+
+This detects your framework, creates `registry.json`, `components.json`, adds a `registry:build` script, and optionally scaffolds documentation. See [init command](/docs/cli/options#init) for details.
 
 ### Start Development
 
@@ -42,13 +54,15 @@ Your registry is now running at `http://localhost:3000` with:
 - **Documentation** with live component previews
 - **Registry endpoints** at `/r/registry.json`
 
-### Add Components
+### Add Components, Hooks & Blocks
 
 ```bash
 npx create-scn-stack add-component input -d "A text input component."
+npx create-scn-stack add-hook use-toggle -d "A toggle state hook."
+npx create-scn-stack add-block login-form -d "A login form block."
 ```
 
-This creates the component source, adds it to `registry.json`, generates a doc page, and updates navigation — all in one command.
+Each command creates the source file, adds it to `registry.json`, generates a doc page, and updates navigation — all in one command.
 
 ### Build & Validate
 

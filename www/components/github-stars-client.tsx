@@ -52,7 +52,7 @@ export function GitHubStarsButtonClient({
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        "inline-flex h-7 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md border border-white/[0.08] bg-white/[0.04] px-2.5 text-xs font-medium text-zinc-200 shadow-xs transition-colors hover:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-white/20",
+        "inline-flex h-7 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md bg-white px-2.5 text-xs font-medium text-zinc-900 shadow-xs transition-colors hover:bg-zinc-200 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-white/40",
         className
       )}
     >
@@ -61,7 +61,7 @@ export function GitHubStarsButtonClient({
       {stars !== null && (
         <>
           <span
-            className="h-3.5 w-px shrink-0 bg-white/[0.1]"
+            className="h-3.5 w-px shrink-0 bg-zinc-300"
             aria-hidden="true"
           />
           <span className="tabular-nums text-zinc-500">

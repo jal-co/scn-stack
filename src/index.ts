@@ -5,6 +5,9 @@ import {
   addComponent,
   parseAddComponentArgs,
 } from "./commands/add-component.js";
+import { addHook, parseAddHookArgs } from "./commands/add-hook.js";
+import { addBlock, parseAddBlockArgs } from "./commands/add-block.js";
+import { init, parseInitArgs } from "./commands/init.js";
 
 async function main() {
   const command = process.argv[2];
@@ -13,6 +16,24 @@ async function main() {
   if (command === "add-component") {
     const args = parseAddComponentArgs(process.argv);
     await addComponent(args);
+    return;
+  }
+
+  if (command === "add-hook") {
+    const args = parseAddHookArgs(process.argv);
+    await addHook(args);
+    return;
+  }
+
+  if (command === "add-block") {
+    const args = parseAddBlockArgs(process.argv);
+    await addBlock(args);
+    return;
+  }
+
+  if (command === "init") {
+    const args = parseInitArgs(process.argv);
+    await init(args);
     return;
   }
 

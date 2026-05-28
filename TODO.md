@@ -18,6 +18,13 @@ Scaffolding CLI for creating shadcn component registries.
 - [x] Registry scaffolding: registry.json, components.json, shadcn build, namespace
 - [x] Matches current shadcn v3 conventions, Tailwind v4, Fumadocs v16
 - [x] npm publish via GitHub Actions on release
+- [x] `--yes` flag for non-interactive mode with all defaults
+- [x] CLI flags matching builder options (`--framework nextjs --docs fumadocs`)
+- [x] `add-component <name>` subcommand — scaffold new component + doc page + registry entry
+- [x] `add-hook <name>` subcommand — scaffold new hook + doc page + registry entry
+- [x] `add-block <name>` subcommand — scaffold new block + doc page + registry entry
+- [x] `llms.txt` generation in scaffolded projects (Next.js route handler or static file)
+- [x] `init` subcommand — add a registry to an existing project (detect framework, inject registry.json, components.json, build script, optional docs)
 
 ### Website (scnstack.sh)
 - [x] Landing page: hero, terminal demo, features, output preview, CTA
@@ -28,31 +35,16 @@ Scaffolding CLI for creating shadcn component registries.
 - [x] jalco-ui components: CodeBlock, CodeLine, CodeBlockCommand, FileTree
 - [x] svgl logos on builder option cards
 - [x] Vercel deployment with root directory set to www/
-
----
-
-## 🔲 Next Up
-
-### CLI improvements
-- [ ] `--yes` flag for non-interactive mode with all defaults
-- [ ] CLI flags matching builder options (e.g. `--framework nextjs --docs fumadocs`)
-- [ ] `add-component <name>` subcommand — scaffold new component + doc page + registry entry
-- [ ] `add-hook <name>` subcommand
-- [ ] `add-block <name>` subcommand
-- [ ] `llms.txt` generation in scaffolded projects
-
-### Website
-- [ ] Connect Vercel GitHub integration for auto-deploy on push
-- [ ] OG image generation
-- [ ] Demo GIF / video on landing page
-- [ ] Showcase page (registries built with scn-stack)
-- [ ] Analytics (npm downloads, GitHub stars on landing page)
-- [ ] SEO: sitemap, robots.txt, canonical URLs
+- [x] Vercel GitHub integration for auto-deploy on push
+- [x] OG image
+- [x] Demo GIF / video on landing page
+- [x] SEO: sitemap, robots.txt
+- [x] Analytics: npm weekly downloads + GitHub stars in header
 
 ### Registry features
-- [ ] Theme / style scaffolding (`registry:style`, `registry:theme`)
-- [ ] Authentication setup for private registries
-- [ ] v0 integration ("Open in v0") setup
-- [ ] Component preview iframe in generated docs
-- [ ] Monorepo support (registry + consuming app in one repo)
-- [ ] Config file (`.scn-stack.json`) for repeatable scaffolding / add commands
+- [x] Theme / style scaffolding (`registry:theme` with CSS custom properties)
+- [x] Authentication setup for private registries (Next.js middleware + bearer token)
+- [x] v0 integration ("Open in v0" button + URL helper)
+- [x] Component preview iframe in generated docs (`/preview/[name]` route + `PreviewFrame` component)
+- [x] Monorepo support (registry + consuming app in one repo)
+- [x] Config file (`.scn-stack.json`) for repeatable scaffolding / add commands

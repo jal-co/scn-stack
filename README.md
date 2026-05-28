@@ -24,6 +24,14 @@ Setting one up from scratch means wiring together a framework, registry config, 
 - 🎨 **Style** — New York or Default shadcn style
 - 🧩 **Starter components** — Button, Card, Badge with auto-generated doc pages
 - 📦 **Registry ready** — `registry.json`, `shadcn build`, namespace support
+- 🔌 **Init into existing projects** — add a registry to any project
+- 🪝 **Hooks & blocks** — scaffold hooks and blocks alongside components
+- 🎭 **Theme scaffolding** — distributable theme with CSS custom properties
+- 🔒 **Private registries** — bearer token auth with middleware
+- 🖼️ **Component previews** — iframe preview system for docs
+- 🤖 **v0 integration** — "Open in v0" button + URL helpers
+- 📄 **llms.txt** — auto-generated for AI context
+- ⚙️ **Config file** — `.scn-stack.json` for repeatable operations
 - 🚀 **Deploy anywhere** — Vercel, Netlify, Cloudflare, self-hosted
 
 ## Quick Start
@@ -31,6 +39,14 @@ Setting one up from scratch means wiring together a framework, registry config, 
 ```bash
 npx create-scn-stack
 ```
+
+### Add to an existing project
+
+```bash
+npx create-scn-stack init
+```
+
+Detects your framework, creates `registry.json`, `components.json`, and a build script.
 
 You'll be asked:
 
@@ -74,6 +90,16 @@ my-registry/
 ├── public/r/                      # Built registry output
 └── components.json                # shadcn config
 ```
+
+## Adding Components, Hooks & Blocks
+
+```bash
+npx create-scn-stack add-component input -d "An input component."
+npx create-scn-stack add-hook use-toggle -d "A toggle state hook."
+npx create-scn-stack add-block login-form -d "A login form block."
+```
+
+Each command creates the source file, updates `registry.json`, and generates a docs page.
 
 ## Users Install Your Components
 

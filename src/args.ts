@@ -120,11 +120,17 @@ export function printHelp(): void {
 
   Usage:
     npx create-scn-stack [name] [options]
+    npx create-scn-stack init [options]
     npx create-scn-stack add-component [name] [options]
+    npx create-scn-stack add-hook [name] [options]
+    npx create-scn-stack add-block [name] [options]
 
   Commands:
     (default)               Scaffold a new registry project
+    init                    Add a registry to an existing project
     add-component [name]    Add a component to an existing registry
+    add-hook [name]         Add a hook to an existing registry
+    add-block [name]        Add a block to an existing registry
 
   Scaffold Options:
     --name <name>           Registry name (e.g., my-ui)
@@ -144,15 +150,27 @@ export function printHelp(): void {
     -y, --yes               Skip prompts, use defaults
     -h, --help              Show this help
 
-  Add Component Options:
-    --description, -d       Component description
+  Init Options:
+    --name <name>           Registry name (default: from package.json)
+    --style <style>         new-york | default (default: new-york)
+    --namespace <ns>        Namespace (e.g., @my-ui)
+    --homepage <url>        Registry homepage URL
+    --docs                  Add documentation scaffolding
+    --no-docs               Skip documentation
+    -y, --yes               Skip prompts, use defaults
+
+  Add Component/Hook/Block Options:
+    --description, -d       Description
 
   Examples:
     npx create-scn-stack
     npx create-scn-stack my-ui --yes
     npx create-scn-stack my-ui --framework nextjs --docs fumadocs
-    npx create-scn-stack my-ui --yes --skills
+    npx create-scn-stack init
+    npx create-scn-stack init --name my-ui --namespace @my-ui --yes
     npx create-scn-stack add-component input
     npx create-scn-stack add-component dialog -d "A modal dialog component."
+    npx create-scn-stack add-hook use-toggle -d "A toggle state hook."
+    npx create-scn-stack add-block login-form -d "A login form block."
 `);
 }

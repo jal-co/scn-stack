@@ -21,6 +21,11 @@ import { generateFumadocs } from "./docs/fumadocs.js";
 import { generateMintlify } from "./docs/mintlify.js";
 import { generateStarlight } from "./docs/starlight.js";
 import { generateSkill } from "./skills.js";
+import { generateLlmsTxt } from "./llms-txt.js";
+import { generateTheme, addThemeInclude } from "./theme.js";
+import { generateV0 } from "./v0.js";
+import { generatePreview } from "./preview.js";
+import { generateConfig } from "./config.js";
 
 export async function scaffold(config: ProjectConfig): Promise<void> {
   const targetDir = resolve(process.cwd(), config.directory);
@@ -130,12 +135,40 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
     s.stop("Registry skill added.");
   }
 
-  // 6. Generate README
+  // 6. Generate llms.txt
+  s.start("Generating llms.txt...");
+  generateLlmsTxt(config);
+  s.stop("llms.txt generated.");
+
+  // 7. Generate theme scaffolding
+  s.start("Setting up theme...");
+  generateTheme(config);
+  addThemeInclude(config);
+  s.stop("Theme configured.");
+
+  // 8. Generate v0 integration
+  s.start("Adding v0 integration...");
+  generateV0(config);
+  s.stop("v0 integration added.");
+
+  // 9. Generate component preview system
+  if (config.framework === "nextjs") {
+    s.start("Setting up component previews...");
+    generatePreview(config);
+    s.stop("Component preview system added.");
+  }
+
+  // 10. Generate .scn-stack.json config
+  s.start("Writing config...");
+  generateConfig(config);
+  s.stop("Config saved.");
+
+  // 11. Generate README
   s.start("Generating README...");
   generateReadme(config);
   s.stop("README generated.");
 
-  // 7. Install dependencies
+  // 12. Install dependencies
   const installDir = monorepoRoot || config.directory;
   s.start(`Installing dependencies with ${config.packageManager}...`);
   try {
@@ -145,7 +178,7 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
     s.stop("Failed to install dependencies. You can install them manually.");
   }
 
-  // 8. Install shadcn skill
+  // 13. Install shadcn skill
   if (config.installShadcnSkill) {
     s.start("Installing shadcn skill...");
     try {
@@ -160,7 +193,7 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
     }
   }
 
-  // 9. Initialize git
+  // 14. Initialize git
   s.start("Initializing git repository...");
   try {
     runCommand("git init", installDir, true);
@@ -325,10 +358,12 @@ This generates static JSON files in \`public/r/\` for each registry item.
 ${config.docsEngine === "fumadocs" ? "├── content/docs/              # Documentation (MDX)\n" : ""}${config.docsEngine === "mintlify" ? "├── docs/                      # Mintlify documentation\n" : ""}${config.docsEngine === "starlight" ? "├── docs/                      # Starlight documentation site\n" : ""}└── components.json            # shadcn config
 \`\`\`
 
-## Adding Components
+## Adding Components, Hooks & Blocks
 
 \`\`\`bash
 npx create-scn-stack add-component <name> -d "Description"
+npx create-scn-stack add-hook <name> -d "Description"
+npx create-scn-stack add-block <name> -d "Description"
 \`\`\`
 
 Or manually:

@@ -133,12 +133,14 @@ Add the page to \`content/docs/components/meta.json\`:
     : ""
 }
 
-## CLI Shortcut
+## CLI Shortcuts
 
-You can also use the CLI to scaffold all of the above:
+You can also use the CLI to scaffold components, hooks, and blocks:
 
 \`\`\`bash
 npx create-scn-stack add-component <name> -d "A description."
+npx create-scn-stack add-hook <name> -d "A description."
+npx create-scn-stack add-block <name> -d "A description."
 \`\`\`
 
 ## Registry Conventions
