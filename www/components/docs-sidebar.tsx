@@ -46,6 +46,12 @@ const docsNav: NavGroup[] = [
       { title: "Starlight", href: "/docs/docs-engines/starlight" },
     ],
   },
+  {
+    title: "Resources",
+    items: [
+      { title: "llms.txt", href: "/llms.txt" },
+    ],
+  },
 ];
 
 export { docsNav };
