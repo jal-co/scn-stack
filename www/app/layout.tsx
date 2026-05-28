@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://scnstack.sh"),
   title: {
     default: "scn-stack — Scaffold shadcn registries in minutes",
     template: "%s | scn-stack",
@@ -28,12 +29,21 @@ export const metadata: Metadata = {
     url: "https://scnstack.sh",
     siteName: "scn-stack",
     type: "website",
+    images: [
+      {
+        url: "/brand/og.png",
+        width: 1600,
+        height: 900,
+        alt: "scn-stack — Scaffold a complete shadcn registry.",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "scn-stack",
     description:
       "Scaffold a complete shadcn component registry with documentation in minutes.",
+    images: ["/brand/og.png"],
   },
 };
 

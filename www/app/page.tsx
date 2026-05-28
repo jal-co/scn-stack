@@ -10,6 +10,7 @@ import {
 import { CopyButton } from "@/components/copy-button";
 import { useTerminalDemo } from "@/components/use-terminal-demo";
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import {
   Terminal,
@@ -336,39 +337,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/[0.06] bg-zinc-950 px-6 py-8">
-        <div className="mx-auto flex max-w-5xl items-center justify-between text-sm text-zinc-600">
-          <span>
-            Built by{" "}
-            <a
-              href="https://github.com/jal-co"
-              className="text-zinc-400 transition-colors hover:text-zinc-300"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              jal-co
-            </a>
-          </span>
-          <div className="flex items-center gap-4">
-            <a
-              href="https://github.com/jal-co/scn-stack"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-zinc-400"
-            >
-              GitHub
-            </a>
-            <a
-              href="https://www.npmjs.com/package/create-scn-stack"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-zinc-400"
-            >
-              npm
-            </a>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

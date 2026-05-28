@@ -14,6 +14,7 @@ import {
   Boxes,
 } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { cn } from "@/lib/utils";
 
 type Framework = "nextjs" | "vite" | "react-router" | "tanstack-start";
@@ -436,22 +437,7 @@ export function Builder() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t px-4 py-8">
-        <div className="mx-auto flex max-w-5xl items-center justify-between text-sm text-muted-foreground">
-          <span>
-            Built by{" "}
-            <a
-              href="https://github.com/jal-co"
-              className="text-foreground underline underline-offset-4"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              jal-co
-            </a>
-          </span>
-          <span>MIT License</span>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
