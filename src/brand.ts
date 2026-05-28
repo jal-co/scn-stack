@@ -11,16 +11,22 @@ const BOLD = pc.bold;
 const GREEN = pc.green;
 const WHITE = pc.white;
 
+// Icon: three horizontal bars (matches the SVG brand icon)
+// Middle bar is wider, top/bottom are shorter
+const ICON = [
+  `   ${CYAN("━━━━━━━━━━━━━━━━━━")}`,
+  `  ${CYAN("━━━━━━━━━━━━━━━━━━━━━━")}`,
+  `   ${CYAN("━━━━━━━━━━━━━━━━━━")}`,
+].join("\n");
+
 const LOGO = `
-${CYAN("┌")}${DIM("─────────────────────────────────────")}${CYAN("┐")}
-${CYAN("│")}                                     ${CYAN("│")}
-${CYAN("│")}   ${BOLD(WHITE("scn"))}${DIM("━━━")}${BOLD(WHITE("stack"))}                      ${CYAN("│")}
-${CYAN("│")}   ${DIM("scaffolding for shadcn registries")}  ${CYAN("│")}
-${CYAN("│")}                                     ${CYAN("│")}
-${CYAN("└")}${DIM("─────────────────────────────────────")}${CYAN("┘")}
+${ICON}
+
+   ${BOLD(WHITE("scn"))}${DIM("━━━")}${BOLD(WHITE("stack"))}
+   ${DIM("scaffolding for shadcn registries")}
 `;
 
-const LOGO_COMPACT = `  ${BOLD(WHITE("scn"))}${DIM("━━━")}${BOLD(WHITE("stack"))}`;
+const LOGO_COMPACT = `  ${CYAN("━━")} ${BOLD(WHITE("scn"))}${DIM("━━━")}${BOLD(WHITE("stack"))}`;
 
 /**
  * Print the full branded header. Use at the start of `create-scn-stack` and `init`.
