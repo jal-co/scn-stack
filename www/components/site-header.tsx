@@ -1,31 +1,30 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useScroll } from "@/hooks/use-scroll";
+import { Button } from "@/components/ui/button";
 import { GitHubStarsButtonClient } from "./github-stars-client";
+import { XIcon, MenuIcon } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const navItems = [
   { href: "/docs", label: "Docs" },
   { href: "/builder", label: "Builder" },
-];
-
-const externalLinks = [
-  { href: "https://github.com/jal-co/scn-stack", label: "GitHub" },
-  { href: "https://www.npmjs.com/package/create-scn-stack", label: "npm" },
+  { href: "/sponsor", label: "Sponsor" },
 ];
 
 export function SiteHeader() {
-  const [open, setOpen] = React.useState(false);
+  const scrolled = useScroll(10);
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setOpen(false);
   }, [pathname]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
       return () => {
@@ -35,86 +34,121 @@ export function SiteHeader() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 flex h-12 items-center justify-between border-b bg-background/95 px-6 backdrop-blur-sm">
-      {/* Left: logo + nav */}
-      <div className="flex items-center gap-6">
+    <header
+      className={cn(
+        "sticky top-0 z-50 mx-auto w-full max-w-4xl md:rounded-md md:transition-all md:ease-out",
+        scrolled
+          ? "border border-white/[0.08] bg-zinc-950/80 backdrop-blur-md md:top-2 md:max-w-3xl md:shadow-lg md:shadow-black/20"
+          : "border border-transparent"
+      )}
+    >
+      <nav
+        className={cn(
+          "flex h-14 w-full items-center justify-between px-4 md:h-12 md:transition-all md:ease-out",
+          {
+            "md:px-2": scrolled,
+          }
+        )}
+      >
         <Link
           href="/"
-          className="font-mono text-xs font-bold uppercase tracking-[0.2em]"
+          className="rounded-md p-2 font-mono text-xs font-bold uppercase tracking-[0.2em] text-zinc-100 transition-colors hover:bg-white/[0.06]"
         >
           scn-stack
         </Link>
-        <nav className="hidden items-center gap-4 md:flex">
+
+        <div className="hidden items-center gap-1 md:flex">
           {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
+            <Button
+              asChild
+              key={item.label}
+              size="sm"
+              variant="ghost"
               className={cn(
-                "font-mono text-[11px] uppercase tracking-[0.15em] transition-colors hover:text-foreground",
-                pathname.startsWith(item.href)
-                  ? "text-foreground"
-                  : "text-muted-foreground"
+                "text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-100",
+                pathname.startsWith(item.href) && "text-zinc-100"
               )}
             >
-              {item.label}
-            </Link>
+              <Link href={item.href}>{item.label}</Link>
+            </Button>
           ))}
-        </nav>
-      </div>
+          <Button
+            asChild
+            size="sm"
+            variant="ghost"
+            className="text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-100"
+          >
+            <a
+              href="https://www.npmjs.com/package/create-scn-stack"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              npm
+            </a>
+          </Button>
+          <GitHubStarsButtonClient owner="jal-co" repo="scn-stack" />
+        </div>
 
-      {/* Right: npm + GitHub stars */}
-      <div className="hidden items-center gap-3 md:flex">
-        <a
-          href="https://www.npmjs.com/package/create-scn-stack"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-mono text-[11px] uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:text-foreground"
+        <Button
+          aria-label={open ? "Close" : "Menu"}
+          className="text-zinc-400 md:hidden"
+          onClick={() => setOpen(!open)}
+          size="icon"
+          variant="ghost"
         >
-          npm
-        </a>
-        <GitHubStarsButtonClient owner="jal-co" repo="scn-stack" />
-      </div>
+          {open ? (
+            <XIcon className="size-4" />
+          ) : (
+            <MenuIcon className="size-4" />
+          )}
+        </Button>
+      </nav>
 
-      {/* Mobile toggle */}
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        className="text-muted-foreground md:hidden"
-        aria-label={open ? "Close" : "Menu"}
-      >
-        {open ? <X className="size-4" /> : <Menu className="size-4" />}
-      </button>
-
-      {/* Mobile nav */}
       {open && (
         <>
           <div
-            className="fixed inset-0 top-12 z-40 bg-black/40 md:hidden"
+            className="fixed inset-0 top-14 z-40 bg-black/50 md:hidden"
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />
-          <nav className="fixed inset-x-0 top-12 z-50 border-b bg-background p-6 md:hidden">
-            <div className="flex flex-col gap-3">
-              {[
-                { href: "/", label: "Home" },
-                ...navItems,
-                ...externalLinks,
-              ].map((item) => {
-                const isExternal = item.href.startsWith("http");
-                const Component = isExternal ? "a" : Link;
-                return (
-                  <Component
-                    key={item.href}
-                    href={item.href}
-                    className="font-mono text-xs uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:text-foreground"
-                    {...(isExternal
-                      ? { target: "_blank", rel: "noopener noreferrer" }
-                      : {})}
-                  >
-                    {item.label}
-                  </Component>
-                );
-              })}
+          <nav className="fixed inset-x-0 top-14 z-50 border-b border-white/[0.08] bg-zinc-950 p-4 md:hidden">
+            <div className="flex flex-col gap-1">
+              {[{ href: "/", label: "Home" }, ...navItems].map((item) => (
+                <Button
+                  asChild
+                  key={item.label}
+                  variant="ghost"
+                  className="justify-start text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-100"
+                >
+                  <Link href={item.href}>{item.label}</Link>
+                </Button>
+              ))}
+              <Button
+                asChild
+                variant="ghost"
+                className="justify-start text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-100"
+              >
+                <a
+                  href="https://www.npmjs.com/package/create-scn-stack"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  npm
+                </a>
+              </Button>
+              <Button
+                asChild
+                variant="ghost"
+                className="justify-start text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-100"
+              >
+                <a
+                  href="https://github.com/jal-co/scn-stack"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  GitHub
+                </a>
+              </Button>
             </div>
           </nav>
         </>

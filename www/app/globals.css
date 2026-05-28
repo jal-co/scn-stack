@@ -84,73 +84,290 @@
 }
 
 @layer components {
-  .terminal-card-scene {
+  .hero-bg {
+    background: oklch(0.07 0.003 270);
+    padding-bottom: 0;
+  }
+
+  .hero-features {
+    background: oklch(0.04 0.002 270);
+  }
+
+  .hero-bg::before {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    content: "";
+    background:
+      radial-gradient(ellipse at 50% 18%, oklch(0.18 0.004 270) 0%, transparent 52%),
+      radial-gradient(ellipse at 70% 62%, oklch(0.14 0.003 270 / 42%), transparent 38%),
+      radial-gradient(ellipse at 28% 48%, oklch(0.12 0.003 270 / 36%), transparent 44%);
+    pointer-events: none;
+  }
+
+  .hero-bg::after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 6;
+    width: 100%;
+    height: 320px;
+    content: "";
+    background: linear-gradient(180deg, transparent 0%, oklch(0.04 0.002 270) 100%);
+    pointer-events: none;
+  }
+
+
+
+  .cta-section {
+    margin-top: -80px;
+    padding-top: 80px;
+  }
+
+  .cta-fade-overlay {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 1;
+    height: 160px;
+    background: linear-gradient(180deg, oklch(0.04 0.002 270), transparent);
+    pointer-events: none;
+  }
+
+
+
+
+
+  .macbook-stage {
     perspective: 1000px;
     perspective-origin: 50% 28%;
   }
 
-  .terminal-card-shell {
+  .macbook-photo-shell {
     --terminal-rotate-x: 0deg;
     --terminal-rotate-y: 0deg;
     position: relative;
     isolation: isolate;
+    max-width: 920px;
+    margin-inline: auto;
     transform: rotateX(var(--terminal-rotate-x))
       rotateY(var(--terminal-rotate-y));
+    transform-origin: center bottom;
     transform-style: preserve-3d;
     transition: transform 160ms linear;
+    animation: macbook-frame-open 1500ms cubic-bezier(0.16, 1, 0.3, 1) 160ms both;
   }
 
-  .terminal-card-shell:hover {
-    transform: rotateX(var(--terminal-rotate-x))
-      rotateY(var(--terminal-rotate-y));
-  }
-
-  .terminal-card-shell::before {
+  .macbook-glow {
     position: absolute;
-    inset: 8px -8px -10px 8px;
-    z-index: -2;
-    content: "";
-    border: 1px solid oklch(0.28 0.006 250 / 58%);
-    border-radius: 1rem;
-    background: oklch(0.17 0.006 250);
-    box-shadow: 0 32px 80px oklch(0.12 0.006 250 / 30%);
-    transform: translateZ(-18px);
+    top: 4%;
+    right: -14%;
+    bottom: 12%;
+    left: 8%;
+    z-index: 0;
+    border-radius: 38%;
+    background:
+      radial-gradient(ellipse at 82% 36%, oklch(0.58 0.26 25 / 52%), oklch(0.44 0.22 350 / 28%) 22%, transparent 46%),
+      radial-gradient(ellipse at 58% 50%, oklch(0.36 0.2 310 / 44%), transparent 44%),
+      radial-gradient(ellipse at 38% 44%, oklch(0.28 0.14 280 / 38%), transparent 48%),
+      radial-gradient(ellipse at 22% 38%, oklch(0.18 0.08 260 / 32%), transparent 46%);
+    filter: blur(58px);
+    opacity: 0.72;
+    pointer-events: none;
   }
 
-  .terminal-card-shell::after {
+  .macbook-glow-grain {
     position: absolute;
-    inset: auto 8% -34px 14%;
-    z-index: -3;
-    height: 54px;
+    top: 4%;
+    right: -14%;
+    bottom: 12%;
+    left: 8%;
+    z-index: 0;
+    border-radius: 38%;
+    background-image: radial-gradient(oklch(0.94 0.01 300 / 26%) 1px, transparent 1px);
+    background-size: 3px 3px;
+    filter: blur(1px);
+    opacity: 0.58;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse at center, black 0 38%, transparent 72%);
+  }
+
+  .macbook-photo-shell::after {
+    position: absolute;
+    right: 12%;
+    bottom: -10px;
+    left: 12%;
+    z-index: -1;
+    height: 42px;
     content: "";
     border-radius: 999px;
-    background: oklch(0.16 0.018 250 / 32%);
+    background: oklch(0.04 0.003 270 / 76%);
     filter: blur(22px);
-    transform: translateZ(-32px) rotateX(74deg);
+    transform: translateZ(-80px) rotateX(74deg);
   }
 
-  .terminal-card-window {
-    transform: translateZ(14px);
-    transition: transform 200ms linear;
-    box-shadow:
-      0 24px 54px oklch(0.14 0.018 250 / 34%),
-      0 2px 0 oklch(0.99 0.006 250 / 8%) inset;
+  .macbook-photo-frame {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+    user-select: none;
+    filter: drop-shadow(0 34px 52px oklch(0.03 0.003 270 / 62%));
+  }
+
+  .macbook-photo-light {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        circle at var(--terminal-light-x, 50%) var(--terminal-light-y, 42%),
+        oklch(0.96 0.004 270 / 26%),
+        oklch(0.78 0.004 270 / 8%) 16%,
+        transparent 34%
+      ),
+      linear-gradient(
+        115deg,
+        transparent 0 34%,
+        oklch(0.98 0.004 270 / 12%) 42%,
+        transparent 51% 100%
+      );
+    mix-blend-mode: screen;
+    opacity: 0.42;
+    transition: background-position 160ms linear;
+  }
+
+  .macbook-photo-screen {
+    position: absolute;
+    top: 2.45%;
+    left: 10.16%;
+    z-index: 3;
+    width: 79.69%;
+    height: 85.43%;
+    overflow: hidden;
+    border-radius: 1.2%;
+    background: oklch(0.055 0.003 270);
+  }
+
+  .macbook-photo-screen::before {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 4;
+    width: 12.2%;
+    height: 3.05%;
+    content: "";
+    border-radius: 0 0 12px 12px;
+    background: oklch(0.01 0.001 270);
+    transform: translateX(-50%);
+  }
+
+  .macbook-photo-screen::after {
+    position: absolute;
+    top: 0.82%;
+    left: 49.95%;
+    z-index: 5;
+    width: 0.42%;
+    aspect-ratio: 1;
+    content: "";
+    border-radius: 999px;
+    background: radial-gradient(circle at 35% 35%, oklch(0.45 0.08 250), oklch(0.02 0.01 260) 62%);
+    box-shadow: 0 0 6px oklch(0.42 0.08 250 / 50%);
+    transform: translateX(-50%);
+  }
+
+  .macbook-desktop {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 82% 38%, oklch(0.62 0.28 25) 0%, oklch(0.48 0.24 350) 18%, transparent 42%),
+      radial-gradient(circle at 58% 52%, oklch(0.38 0.18 310) 0%, oklch(0.24 0.12 280) 24%, transparent 48%),
+      radial-gradient(circle at 22% 28%, oklch(0.18 0.06 260) 0%, transparent 42%),
+      oklch(0.06 0.02 260);
+  }
+
+  .macbook-desktop::after {
+    position: absolute;
+    inset: 0;
+    content: "";
+    background-image: radial-gradient(oklch(0.88 0.01 280 / 18%) 1px, transparent 1px);
+    background-size: 3px 3px;
+    opacity: 0.52;
+    pointer-events: none;
+  }
+
+  .macbook-menu-bar {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 26px;
+    border-bottom: 1px solid oklch(0.95 0.004 270 / 8%);
+    background: oklch(0.09 0.003 270 / 82%);
+    padding-inline: 14px;
+    font-size: 10px;
+    line-height: 1;
+    color: oklch(0.78 0.004 270);
+    backdrop-filter: blur(14px);
+  }
+
+  .macbook-window-frame {
+    position: relative;
+    z-index: 1;
+    width: min(88%, 390px);
+    margin: 28px auto 0;
+    filter: drop-shadow(0 24px 34px oklch(0.03 0.003 270 / 58%));
+  }
+
+  .macbook-terminal {
+    max-height: 252px;
+    border: 0;
+    border-radius: 0.75rem;
+    box-shadow: none;
+    transform: translateZ(20px);
+  }
+
+
+
+
+
+  @keyframes macbook-frame-open {
+    0% {
+      filter: brightness(0.62);
+      opacity: 0;
+      transform: rotateX(-62deg) translateY(72px) scale(0.94, 0.42);
+    }
+
+    62% {
+      filter: brightness(1.08);
+      opacity: 1;
+      transform: rotateX(3deg) translateY(-6px) scale(1.01, 1);
+    }
+
+    to {
+      filter: brightness(1);
+      opacity: 1;
+      transform: rotateX(var(--terminal-rotate-x))
+        rotateY(var(--terminal-rotate-y)) translateY(0) scale(1);
+    }
   }
 
   @media (max-width: 767px) {
-    .terminal-card-shell,
-    .terminal-card-shell:hover {
-      transform: rotateX(var(--terminal-rotate-x))
-        rotateY(var(--terminal-rotate-y));
-    }
 
-    .terminal-card-shell::before {
-      inset: 12px -12px -14px 14px;
+
+    .macbook-window-frame {
+      width: 92%;
+      margin-top: 18px;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .terminal-card-shell {
+    .macbook-photo-shell {
+      animation: none;
       transition: none;
     }
   }
