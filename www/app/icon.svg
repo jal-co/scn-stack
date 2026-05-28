@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 796.4 768">
+  <style>
+    line { stroke-linecap: round; stroke-linejoin: bevel; stroke-width: 85.6px; }
+    @media (prefers-color-scheme: light) { line { stroke: #09090b; } }
+    @media (prefers-color-scheme: dark) { line { stroke: #fafafa; } }
+  </style>
+  <line x1="117.7" y1="384" x2="662.8" y2="384"/>
+  <line x1="165.6" y1="607" x2="614.9" y2="607"/>
+  <line x1="165.6" y1="161" x2="614.9" y2="161"/>
+</svg>

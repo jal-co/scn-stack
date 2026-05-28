@@ -2,6 +2,8 @@
 
 Scaffold a complete [shadcn component registry](https://ui.shadcn.com/docs/registry) with documentation in minutes.
 
+🌐 [scnstack.sh](https://scnstack.sh)
+
 ```bash
 npx create-scn-stack
 ```

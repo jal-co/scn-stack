@@ -21,7 +21,7 @@ description: Manage the ${name} shadcn component registry — add components, wr
 
 # ${name} Registry
 
-This project is a [shadcn component registry](https://ui.shadcn.com/docs/registry) scaffolded with [scn-stack](https://scn-stack.vercel.app).
+This project is a [shadcn component registry](https://ui.shadcn.com/docs/registry) scaffolded with [scn-stack](https://scnstack.sh).
 
 ## Project Structure
 

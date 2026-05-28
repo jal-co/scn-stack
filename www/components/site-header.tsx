@@ -52,9 +52,14 @@ export function SiteHeader() {
       >
         <Link
           href="/"
-          className="rounded-md p-2 font-mono text-xs font-bold uppercase tracking-[0.2em] text-zinc-100 transition-colors hover:bg-white/[0.06]"
+          className="rounded-md px-2 py-1.5 transition-colors hover:bg-white/[0.06]"
         >
-          scn-stack
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/brand/scn-stack-wordmark.svg"
+            alt="scn-stack"
+            className="h-5 w-auto invert"
+          />
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">

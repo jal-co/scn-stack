@@ -10,6 +10,7 @@ import {
 import { CopyButton } from "@/components/copy-button";
 import { useTerminalDemo } from "@/components/use-terminal-demo";
 import { SiteHeader } from "@/components/site-header";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import {
   Terminal,
   TerminalHeader,
@@ -263,10 +264,16 @@ export default function Home() {
           <div className="relative">
             <Marquee speed={35} pauseOnHover autoFill>
               {stackLogos.map((logo) => (
-                <div key={logo.alt} className="mx-10 flex items-center gap-2.5">
-                  <img src={logo.src} alt={logo.alt} className="h-7 w-7 object-contain" />
-                  <span className="text-sm font-medium text-zinc-500">{logo.label}</span>
-                </div>
+                <Tooltip key={logo.alt}>
+                  <TooltipTrigger asChild>
+                    <div className="mx-12 flex items-center justify-center">
+                      <img src={logo.src} alt={logo.alt} className="h-10 w-10 object-contain" />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" sideOffset={8}>
+                    {logo.label}
+                  </TooltipContent>
+                </Tooltip>
               ))}
             </Marquee>
             <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-[oklch(0.04_0.002_270)] to-transparent" />
@@ -276,10 +283,16 @@ export default function Home() {
           <div className="relative">
             <Marquee speed={30} pauseOnHover autoFill direction="right">
               {toolLogos.map((logo) => (
-                <div key={logo.alt} className="mx-10 flex items-center gap-2.5">
-                  <img src={logo.src} alt={logo.alt} className="h-7 w-7 object-contain" />
-                  <span className="text-sm font-medium text-zinc-500">{logo.label}</span>
-                </div>
+                <Tooltip key={logo.alt}>
+                  <TooltipTrigger asChild>
+                    <div className="mx-12 flex items-center justify-center">
+                      <img src={logo.src} alt={logo.alt} className="h-10 w-10 object-contain" />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" sideOffset={8}>
+                    {logo.label}
+                  </TooltipContent>
+                </Tooltip>
               ))}
             </Marquee>
             <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-[oklch(0.04_0.002_270)] to-transparent" />
