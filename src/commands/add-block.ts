@@ -2,7 +2,7 @@ import * as p from "@clack/prompts";
 import pc from "picocolors";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { writeFile, ensureDir, titleCase } from "../utils.js";
+import { writeFile, ensureDir, titleCase, registryHasItem } from "../utils.js";
 import { printHeaderCompact, printSummaryBox, printFooter, labelValue } from "../brand.js";
 
 interface AddBlockArgs {
@@ -82,12 +82,9 @@ export async function addBlock(args: AddBlockArgs): Promise<void> {
     process.exit(0);
   }
 
-  // Check if block already exists
-  const existing = registry.items?.find(
-    (item: { name: string }) => item.name === name
-  );
-  if (existing) {
-    p.cancel(`Block "${name}" already exists in registry.json.`);
+  // Check if block already exists across root + included registries
+  if (registryHasItem(cwd, name)) {
+    p.cancel(`Block "${name}" already exists in the registry.`);
     process.exit(1);
   }
 

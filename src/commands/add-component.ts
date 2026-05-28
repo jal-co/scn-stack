@@ -2,7 +2,7 @@ import * as p from "@clack/prompts";
 import pc from "picocolors";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
-import { writeFile, ensureDir, titleCase } from "../utils.js";
+import { writeFile, ensureDir, titleCase, registryHasItem } from "../utils.js";
 import { printHeaderCompact, printSummaryBox, printFooter, labelValue } from "../brand.js";
 
 interface AddComponentArgs {
@@ -84,12 +84,10 @@ export async function addComponent(args: AddComponentArgs): Promise<void> {
     process.exit(0);
   }
 
-  // Check if component already exists
-  const existing = registry.items?.find(
-    (item: { name: string }) => item.name === name
-  );
-  if (existing) {
-    p.cancel(`Component "${name}" already exists in registry.json.`);
+  // Check if component already exists — looks at the root registry AND any
+  // per-directory registry files referenced via `include`.
+  if (registryHasItem(cwd, name)) {
+    p.cancel(`Component "${name}" already exists in the registry.`);
     process.exit(1);
   }
 

@@ -1,5 +1,10 @@
 # scn-stack
 
+[![npm version](https://shieldcn.dev/npm/create-scn-stack.svg)](https://www.npmjs.com/package/create-scn-stack)
+[![npm downloads](https://shieldcn.dev/npm/dm/create-scn-stack.svg)](https://www.npmjs.com/package/create-scn-stack)
+[![stars](https://shieldcn.dev/github/stars/jal-co/scn-stack.svg)](https://github.com/jal-co/scn-stack)
+[![license](https://shieldcn.dev/github/license/jal-co/scn-stack.svg)](./LICENSE)
+
 Scaffold a complete [shadcn component registry](https://ui.shadcn.com/docs/registry) with documentation in minutes.
 
 🌐 [scnstack.sh](https://scnstack.sh)
@@ -113,9 +118,35 @@ npx shadcn registry add @acme=https://acme.com/r/{name}.json
 npx shadcn add @acme/button
 ```
 
+## Development
+
+```bash
+npm install
+npm run build      # bundle the CLI to dist/
+npm run lint       # type-check with tsc
+npm test           # run the Vitest suite
+npm run test:watch # watch mode
+```
+
+### Tests
+
+The suite covers:
+
+- **Unit** — argument parsing (`args`), helpers (`utils`), and the registry /
+  config generators.
+- **Integration** — the built CLI run end-to-end into a temp directory
+  (`--yes` scaffold + `add-component`), asserting the generated files and
+  registry wiring.
+
+Integration tests build real projects but skip the slow, networked steps
+(dependency install, skill install, git init) via the
+`SCN_STACK_SKIP_INSTALL=1` environment variable. Run `npm run build` before
+the suite so the integration tests have a fresh `dist/index.js`.
+
 ## Contributing
 
-Contributions welcome! Please read [TODO.md](./TODO.md) for the current roadmap.
+Contributions welcome! Open an issue or PR on
+[GitHub](https://github.com/jal-co/scn-stack).
 
 ## License
 
