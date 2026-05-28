@@ -169,18 +169,24 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
   generateReadme(config);
   s.stop("README generated.");
 
+  // Allow CI / tests to scaffold files without the slow, networked steps
+  // (dependency install, skill install, git init).
+  const skipSideEffects = process.env.SCN_STACK_SKIP_INSTALL === "1";
+
   // 12. Install dependencies
   const installDir = monorepoRoot || config.directory;
-  s.start(`Installing dependencies with ${config.packageManager}...`);
-  try {
-    runCommand(getInstallCommand(config.packageManager), installDir, true);
-    s.stop("Dependencies installed.");
-  } catch {
-    s.stop("Failed to install dependencies. You can install them manually.");
+  if (!skipSideEffects) {
+    s.start(`Installing dependencies with ${config.packageManager}...`);
+    try {
+      runCommand(getInstallCommand(config.packageManager), installDir, true);
+      s.stop("Dependencies installed.");
+    } catch {
+      s.stop("Failed to install dependencies. You can install them manually.");
+    }
   }
 
   // 13. Install shadcn skill
-  if (config.installShadcnSkill) {
+  if (!skipSideEffects && config.installShadcnSkill) {
     s.start("Installing shadcn skill...");
     try {
       runCommand(
@@ -195,18 +201,20 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
   }
 
   // 14. Initialize git
-  s.start("Initializing git repository...");
-  try {
-    runCommand("git init", installDir, true);
-    runCommand("git add -A", installDir, true);
-    runCommand(
-      'git commit -m "feat: initial scaffold from create-scn-stack"',
-      installDir,
-      true
-    );
-    s.stop("Git repository initialized.");
-  } catch {
-    s.stop("Git initialization skipped.");
+  if (!skipSideEffects) {
+    s.start("Initializing git repository...");
+    try {
+      runCommand("git init", installDir, true);
+      runCommand("git add -A", installDir, true);
+      runCommand(
+        'git commit -m "feat: initial scaffold from create-scn-stack"',
+        installDir,
+        true
+      );
+      s.stop("Git repository initialized.");
+    } catch {
+      s.stop("Git initialization skipped.");
+    }
   }
 
   // Done! Show next steps
