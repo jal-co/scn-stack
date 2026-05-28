@@ -3,6 +3,7 @@ import pc from "picocolors";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { writeFile, ensureDir, titleCase } from "../utils.js";
+import { printHeaderCompact, printSummaryBox, printFooter, labelValue } from "../brand.js";
 
 interface AddHookArgs {
   name?: string;
@@ -29,7 +30,7 @@ export function parseAddHookArgs(argv: string[]): AddHookArgs {
 }
 
 export async function addHook(args: AddHookArgs): Promise<void> {
-  p.intro(pc.bgCyan(pc.black(" add-hook ")));
+  printHeaderCompact("add-hook");
 
   const cwd = process.cwd();
   const registryPath = join(cwd, "registry.json");
@@ -232,20 +233,15 @@ export function Example() {
   }
 
   // Done
-  p.note(
-    [
-      `${pc.dim("Hook:")}       registry/${style}/hooks/${pc.cyan(name + ".ts")}`,
-      `${pc.dim("Registry:")}   ${pc.cyan("registry.json")} (updated)`,
-      existsSync(docsDir)
-        ? `${pc.dim("Docs:")}       content/docs/hooks/${pc.cyan(name + ".mdx")}`
-        : "",
-      "",
-      `${pc.dim("Next:")}       Edit the hook, then run ${pc.cyan("pnpm registry:build")}`,
-    ]
-      .filter(Boolean)
-      .join("\n"),
-    `Added ${hookTitle}`
-  );
+  printSummaryBox(`Added ${hookTitle}`, [
+    labelValue("Hook:", `registry/${style}/hooks/${pc.cyan(name + ".ts")}`),
+    labelValue("Registry:", `${pc.cyan("registry.json")} (updated)`),
+    existsSync(docsDir)
+      ? labelValue("Docs:", `content/docs/hooks/${pc.cyan(name + ".mdx")}`)
+      : "",
+    "",
+    `Edit the hook, then run ${pc.cyan("pnpm registry:build")}`,
+  ]);
 
-  p.outro(`${pc.green("✓")} ${hookTitle} added to your registry.`);
+  printFooter(`${hookTitle} added to your registry.`);
 }

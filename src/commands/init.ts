@@ -3,6 +3,7 @@ import pc from "picocolors";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { writeFile, ensureDir, titleCase } from "../utils.js";
+import { printHeader, printSummaryBox, printFooter, labelValue } from "../brand.js";
 
 interface InitArgs {
   name?: string;
@@ -88,7 +89,8 @@ function detectExistingComponents(cwd: string): string | null {
 }
 
 export async function init(args: InitArgs): Promise<void> {
-  p.intro(pc.bgCyan(pc.black(" init — add registry to existing project ")));
+  printHeader();
+  p.log.info(pc.dim("Adding registry to existing project"));
 
   const cwd = process.cwd();
 
@@ -460,11 +462,18 @@ Browse available components in the sidebar.
     .filter(Boolean)
     .join("\n");
 
-  p.note(createdFiles, `Registry initialized in ${pc.cyan(cwd)}`);
+  printSummaryBox(`Registry initialized`, [
+    labelValue("Registry:", pc.cyan("registry.json")),
+    labelValue("UI registry:", pc.cyan(`registry/${style}/ui/registry.json`)),
+    labelValue("Config:", `${pc.cyan("components.json")} ${existingConfig ? "(updated)" : "(created)"}`),
+    labelValue("Build script:", pc.cyan('package.json → "registry:build"')),
+    addDocs ? labelValue("Docs:", pc.cyan("content/docs/")) : "",
+    "",
+    `Add components with ${pc.cyan("npx create-scn-stack add-component <name>")}`,
+    `Build registry with ${pc.cyan("pnpm registry:build")}`,
+  ]);
 
-  p.outro(
-    `${pc.green("✓")} Registry ${pc.bold(name)} added to your project. Happy building! 🎉`
-  );
+  printFooter(`Registry ${pc.bold(name)} added to your project. Happy building! \ud83c\udf89`);
 }
 
 function readPkgName(cwd: string): string | null {
