@@ -4,7 +4,7 @@ Scaffolding CLI for creating shadcn component registries.
 
 `npx create-scn-stack`
 
-**Live:** [scn-stack.vercel.app](https://scn-stack.vercel.app) · [npm](https://www.npmjs.com/package/create-scn-stack) · [GitHub](https://github.com/jal-co/scn-stack)
+**Live:** [scnstack.sh](https://scnstack.sh) · [npm](https://www.npmjs.com/package/create-scn-stack) · [GitHub](https://github.com/jal-co/scn-stack)
 
 ---
 
@@ -19,7 +19,7 @@ Scaffolding CLI for creating shadcn component registries.
 - [x] Matches current shadcn v3 conventions, Tailwind v4, Fumadocs v16
 - [x] npm publish via GitHub Actions on release
 
-### Website (scn-stack.vercel.app)
+### Website (scnstack.sh)
 - [x] Landing page: hero, terminal demo, features, output preview, CTA
 - [x] Builder page: visual configurator with live command output
 - [x] Docs: 11 pages (Quick Start, CLI, frameworks, docs engines, project structure)
