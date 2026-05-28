@@ -8,7 +8,10 @@ description: All CLI prompts, flags, and commands.
 | Command | Description |
 |---------|-------------|
 | `npx create-scn-stack` | Scaffold a new registry project |
+| `npx create-scn-stack init` | [Add a registry to an existing project](/docs/cli/init) |
 | `npx create-scn-stack add-component <name>` | Add a component to an existing registry |
+| `npx create-scn-stack add-hook <name>` | Add a hook to an existing registry |
+| `npx create-scn-stack add-block <name>` | Add a block to an existing registry |
 
 ## Prompts
 
@@ -72,6 +75,48 @@ This creates:
 |------|-------------|
 | `--description, -d` | Component description |
 
+## add-hook
+
+Add a hook to an existing registry project:
+
+```bash
+npx create-scn-stack add-hook use-toggle
+npx create-scn-stack add-hook use-media-query -d "A media query hook."
+```
+
+This creates:
+- Hook source in `registry/<style>/hooks/<name>.ts`
+- A `registry/<style>/hooks/registry.json` (created if needed)
+- Updates root `registry.json` include array to reference hooks registry
+- Doc page in `content/docs/hooks/<name>.mdx`
+- Updates `meta.json` navigation
+
+Hook names must start with `use-`.
+
+| Flag | Description |
+|------|-------------|
+| `--description, -d` | Hook description |
+
+## add-block
+
+Add a block to an existing registry project:
+
+```bash
+npx create-scn-stack add-block login-form
+npx create-scn-stack add-block dashboard-header -d "A dashboard header block."
+```
+
+This creates:
+- Block source in `registry/<style>/blocks/<name>.tsx`
+- A `registry/<style>/blocks/registry.json` (created if needed)
+- Updates root `registry.json` include array to reference blocks registry
+- Doc page in `content/docs/blocks/<name>.mdx`
+- Updates `meta.json` navigation
+
+| Flag | Description |
+|------|-------------|
+| `--description, -d` | Block description |
+
 ## Framework Options
 
 | Framework | Description |
@@ -86,6 +131,7 @@ This creates:
 | Engine | Description |
 |--------|-------------|
 | **Fumadocs** | Standard for shadcn registries. Full docs with MDX, search, dark mode. Requires Next.js. |
+| **Mintlify** | Hosted docs platform. Works with any framework. |
 | **Starlight** | Astro-based docs. Separate `docs/` directory. Works with any framework. |
 | **None** | Registry only, no documentation site. |
 
@@ -109,4 +155,4 @@ This creates:
 | Skill | What it does |
 |-------|-------------|
 | **shadcn skill** | Installs the [official shadcn skill](https://ui.shadcn.com/docs/skills) via `skills add shadcn/ui`. Gives AI assistants knowledge of shadcn components, CLI, theming, and registry authoring. |
-| **Registry skill** | Generates `.agents/skills/registry/SKILL.md` — teaches AI how to add components, write docs, update registry.json, and follow conventions for your specific project. |
+| **Registry skill** | Generates `.agents/skills/registry/SKILL.md` — teaches AI how to add components, hooks, blocks, write docs, update registry.json, and follow conventions for your specific project. |

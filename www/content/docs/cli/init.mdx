@@ -1,0 +1,119 @@
+---
+title: Init
+description: Add a shadcn registry to an existing project.
+---
+
+## Overview
+
+The `init` command adds a registry to a project you already have — your personal site, a Next.js app, a Vite project, etc. Instead of scaffolding a new project from scratch, it detects what you have and injects just the registry plumbing.
+
+```bash
+npx create-scn-stack init
+```
+
+## What It Does
+
+1. **Detects your framework** — reads `package.json` for Next.js, Vite, React Router, or TanStack Start
+2. **Creates `registry.json`** — with the `include` pattern and an empty UI registry
+3. **Creates or updates `components.json`** — adds namespace and registry URL if you opt in
+4. **Adds `registry:build` script** — to `package.json`
+5. **Adds `shadcn` dependency** — if not already present
+6. **Creates `lib/utils.ts`** — if not present (the `cn()` helper)
+7. **Scaffolds docs** — optional, creates `content/docs/` with Getting Started page
+8. **Updates `.gitignore`** — adds `public/r/` (generated registry output)
+
+## Interactive Mode
+
+```bash
+npx create-scn-stack init
+```
+
+```
+◆  Detected framework: Next.js
+◆  Registry name
+│  my-app
+◆  Style
+│  ● New York (recommended)
+│  ○ Default
+◆  Homepage URL
+│  https://my-app.com
+◆  Add a namespace? Yes
+◆  Namespace
+│  @my-app
+◆  Add documentation pages? Yes
+```
+
+The command auto-detects your framework and existing `components.json`, so it only asks what it needs.
+
+## Non-Interactive Mode
+
+```bash
+npx create-scn-stack init --yes
+npx create-scn-stack init --name my-ui --namespace @my-ui --yes
+npx create-scn-stack init --name my-ui --homepage https://my-ui.com --docs --yes
+```
+
+## Flags
+
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--name <name>` | Registry name | From `package.json` name |
+| `--style <style>` | `new-york` \| `default` | `new-york` |
+| `--namespace <ns>` | Namespace (e.g., `@my-ui`) | `@<name>` |
+| `--homepage <url>` | Registry homepage URL | `https://<name>.com` |
+| `--docs` | Add documentation scaffolding | Prompt (default: yes for Next.js) |
+| `--no-docs` | Skip documentation | — |
+| `-y, --yes` | Skip prompts, use defaults | — |
+
+## Generated Files
+
+After running `init`, your project gets these new files:
+
+```
+your-project/
+├── registry.json                        # Registry definition
+├── registry/new-york/ui/
+│   └── registry.json                    # Empty UI registry (add items here)
+├── components.json                      # Created or updated with namespace
+├── content/docs/                        # (if --docs)
+│   ├── index.mdx
+│   ├── meta.json
+│   └── components/
+│       └── meta.json
+└── lib/utils.ts                         # (if not present)
+```
+
+Your existing `package.json` is updated with a `registry:build` script and `shadcn` dependency.
+
+## After Init
+
+Add your first component:
+
+```bash
+npx create-scn-stack add-component button -d "A button component."
+```
+
+Build the registry:
+
+```bash
+pnpm registry:build
+```
+
+Your registry JSON files are generated in `public/r/` and served by your existing app.
+
+## Existing components.json
+
+If your project already has a `components.json` (e.g., you've already run `npx shadcn init`), the `init` command will **update** it rather than overwrite — it adds your namespace to the `registries` field while preserving everything else.
+
+## Framework Detection
+
+The command detects your framework from `package.json` dependencies:
+
+| Dependency | Detected As |
+|------------|-------------|
+| `next` | Next.js |
+| `@tanstack/start` | TanStack Start |
+| `react-router` / `react-router-dom` | React Router |
+| `vite` | Vite |
+
+If no framework is detected, registry files are still generated — they work with any setup.

@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { useScroll } from "@/hooks/use-scroll";
 import { Button } from "@/components/ui/button";
 import { GitHubStarsButtonClient } from "./github-stars-client";
+import { NpmDownloads } from "./npm-downloads";
 import { XIcon, MenuIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -77,20 +78,7 @@ export function SiteHeader() {
               <Link href={item.href}>{item.label}</Link>
             </Button>
           ))}
-          <Button
-            asChild
-            size="sm"
-            variant="ghost"
-            className="text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-100"
-          >
-            <a
-              href="https://www.npmjs.com/package/create-scn-stack"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              npm
-            </a>
-          </Button>
+          <NpmDownloads />
           <GitHubStarsButtonClient owner="jal-co" repo="scn-stack" />
         </div>
 
@@ -128,19 +116,6 @@ export function SiteHeader() {
                   <Link href={item.href}>{item.label}</Link>
                 </Button>
               ))}
-              <Button
-                asChild
-                variant="ghost"
-                className="justify-start text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-100"
-              >
-                <a
-                  href="https://www.npmjs.com/package/create-scn-stack"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  npm
-                </a>
-              </Button>
               <Button
                 asChild
                 variant="ghost"

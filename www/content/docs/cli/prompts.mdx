@@ -65,11 +65,12 @@ The web framework for your project. **Next.js** is recommended — it's what the
 ```
 ◆  Documentation
 │  ● Fumadocs (recommended)
+│  ○ Mintlify
 │  ○ Starlight
 │  ○ None
 ```
 
-Whether to include a documentation site. **Fumadocs** is the standard for shadcn registries (used by 8bitcn, and many others). If you choose a non-Next.js framework, Starlight will be used instead.
+Whether to include a documentation site. **Fumadocs** is the standard for shadcn registries (used by 8bitcn, and many others). **Mintlify** is a hosted platform that works with any framework. If you choose a non-Next.js framework with Fumadocs selected, Starlight will be used instead.
 
 ### Starter Components
 
@@ -103,3 +104,47 @@ Enables `@my-ui/button` style installs. Sets up the registries field in `compone
 ```
 
 Auto-detected from how you ran the CLI. All generated scripts use the selected package manager.
+
+---
+
+## Init Prompts
+
+When you run `npx create-scn-stack init` in an existing project, you'll see a shorter set of prompts:
+
+```
+◆  Detected framework: Next.js
+◆  Registry name
+│  my-app
+◆  Style
+│  ● New York (recommended)
+│  ○ Default
+◆  Homepage URL
+│  https://my-app.com
+◆  Add a namespace? Yes
+◆  Namespace
+│  @my-app
+◆  Add documentation pages? Yes
+```
+
+The init command auto-detects your framework from `package.json` and existing `components.json`, so it only asks what it needs.
+
+---
+
+## Add Command Prompts
+
+The `add-component`, `add-hook`, and `add-block` commands prompt for a name and description if not provided via arguments:
+
+```
+◆  Component name
+│  input
+◆  Description
+│  A text input component.
+```
+
+Skip the prompts by passing arguments directly:
+
+```bash
+npx create-scn-stack add-component input -d "A text input component."
+npx create-scn-stack add-hook use-toggle -d "A toggle state hook."
+npx create-scn-stack add-block login-form -d "A login form block."
+```
