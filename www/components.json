@@ -19,6 +19,8 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@jalco": "https://ui.justinlevine.me/r/{name}.json"
+    "@jalco": "https://ui.justinlevine.me/r/{name}.json",
+    "@cardcn": "https://cardcn.dev/r/{name}.json",
+    "@efferd": "https://efferd.com/r/{name}.json"
   }
 }

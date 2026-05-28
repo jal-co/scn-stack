@@ -1,0 +1,303 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import { Heart, ExternalLink, Star, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { SiteHeader } from "@/components/site-header";
+
+export const metadata: Metadata = {
+  title: "Sponsor — scn-stack",
+  description:
+    "Support scn-stack — free, open-source scaffolding for shadcn registries. Sponsor tiers, stargazers, and how to contribute.",
+};
+
+const GITHUB_SPONSORS_URL = "https://github.com/sponsors/jal-co";
+
+interface Stargazer {
+  login: string;
+  avatar_url: string;
+}
+
+async function getStargazers(): Promise<Stargazer[]> {
+  const pages: Stargazer[] = [];
+  let page = 1;
+  while (page <= 5) {
+    const res = await fetch(
+      `https://api.github.com/repos/jal-co/scn-stack/stargazers?per_page=100&page=${page}`,
+      {
+        headers: {
+          Accept: "application/vnd.github.v3+json",
+          ...(process.env.GITHUB_TOKEN
+            ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` }
+            : {}),
+        },
+        next: { revalidate: 3600 },
+      }
+    );
+    if (!res.ok) break;
+    const data: Stargazer[] = await res.json();
+    if (data.length === 0) break;
+    pages.push(...data);
+    if (data.length < 100) break;
+    page++;
+  }
+  return pages.filter((s) => s.login !== "jal-co");
+}
+
+const tiers = [
+  {
+    name: "Gold",
+    slots: 3,
+    sponsors: [] as { name: string; href: string }[],
+    colors: {
+      bg: "linear-gradient(145deg, #d4a84b 0%, #f5d98a 30%, #c9952e 60%, #e8c55a 100%)",
+      text: "#5c3d0e",
+      border: "#c9952e",
+      slotBg: "rgba(212, 168, 75, 0.08)",
+      slotBorder: "rgba(201, 149, 46, 0.25)",
+    },
+  },
+  {
+    name: "Silver",
+    slots: 3,
+    sponsors: [] as { name: string; href: string }[],
+    colors: {
+      bg: "linear-gradient(145deg, #a8a8a8 0%, #d4d4d4 30%, #8a8a8a 60%, #c0c0c0 100%)",
+      text: "#2a2a2a",
+      border: "#8a8a8a",
+      slotBg: "rgba(168, 168, 168, 0.06)",
+      slotBorder: "rgba(138, 138, 138, 0.2)",
+    },
+  },
+  {
+    name: "Bronze",
+    slots: 4,
+    sponsors: [] as { name: string; href: string }[],
+    colors: {
+      bg: "linear-gradient(145deg, #b5745a 0%, #d4956e 30%, #8c5a3e 60%, #c98a68 100%)",
+      text: "#3d1e0e",
+      border: "#8c5a3e",
+      slotBg: "rgba(181, 116, 90, 0.06)",
+      slotBorder: "rgba(140, 90, 62, 0.2)",
+    },
+  },
+];
+
+export default async function SponsorPage() {
+  const stargazers = await getStargazers();
+
+  return (
+    <main className="flex min-h-svh flex-col bg-zinc-950">
+      <SiteHeader />
+      <div className="mx-auto w-full max-w-3xl flex-1 border-x border-dashed border-white/[0.06]">
+        {/* Hero */}
+        <section className="flex flex-col gap-6 border-b border-white/[0.06] px-6 py-14 sm:px-10">
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-zinc-500">
+              <Heart className="size-3.5" />
+              Sponsor
+            </div>
+            <h1 className="text-3xl font-bold tracking-tight text-zinc-100 sm:text-4xl">
+              I&apos;ll never charge, but if you want to help
+            </h1>
+            <p className="max-w-xl text-base leading-relaxed text-zinc-400">
+              scn-stack is an open-source CLI that scaffolds complete shadcn
+              registries. Every feature is free and that&apos;s not changing.
+            </p>
+            <p className="max-w-xl text-sm leading-relaxed text-zinc-500">
+              If scn-stack saved you time setting up a registry, or you just
+              like that this exists in the open, sponsoring is a nice way to say
+              so. It helps me justify spending real time on it instead of
+              treating it like a side-of-desk thing.
+            </p>
+            <p className="max-w-xl text-sm leading-relaxed text-zinc-500">
+              Any amount is genuinely appreciated. And if money&apos;s not your
+              thing, starring the repo or sharing a project you built with it
+              works too.
+            </p>
+          </div>
+
+          <a
+            href={GITHUB_SPONSORS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button
+              size="lg"
+              className="gap-2 bg-zinc-50 text-zinc-950 hover:bg-zinc-200"
+            >
+              <Heart className="size-4" />
+              Sponsor on GitHub
+              <ExternalLink className="size-3.5 opacity-60" />
+            </Button>
+          </a>
+        </section>
+
+        {/* Sponsor tiers */}
+        <section className="flex flex-col">
+          {tiers.map((tier) => {
+            const filled = tier.sponsors.length;
+            const empty = tier.slots - filled;
+
+            return (
+              <div
+                key={tier.name}
+                className="flex flex-col gap-3 border-b border-white/[0.06] px-6 py-6 sm:px-10"
+              >
+                <div
+                  className="relative flex items-center justify-center rounded-md px-8 py-2.5"
+                  style={{
+                    background: tier.colors.bg,
+                    boxShadow:
+                      "inset 0 1px 1px rgba(255,255,255,0.35), inset 0 -1px 2px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.12)",
+                  }}
+                >
+                  {[
+                    "left-2.5 top-1/2 -translate-y-1/2",
+                    "right-2.5 top-1/2 -translate-y-1/2",
+                  ].map((pos) => (
+                    <span
+                      key={pos}
+                      className={`absolute size-2 rounded-full ${pos}`}
+                      style={{
+                        background: `radial-gradient(circle at 35% 35%, rgba(255,255,255,0.5), transparent 50%), ${tier.colors.bg}`,
+                        boxShadow:
+                          "inset 0 1px 2px rgba(0,0,0,0.3), inset 0 -1px 1px rgba(255,255,255,0.2), 0 1px 1px rgba(255,255,255,0.15)",
+                        border: "1px solid rgba(0,0,0,0.15)",
+                      }}
+                    />
+                  ))}
+                  <h3
+                    className="text-xs font-extrabold uppercase tracking-[0.2em]"
+                    style={{ color: tier.colors.text }}
+                  >
+                    {tier.name}
+                  </h3>
+                </div>
+
+                <div
+                  className="grid gap-2"
+                  style={{
+                    gridTemplateColumns: `repeat(${Math.min(tier.slots, 4)}, 1fr)`,
+                  }}
+                >
+                  {tier.sponsors.map((sponsor) => (
+                    <a
+                      key={sponsor.name}
+                      href={sponsor.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center justify-center rounded-md border p-6 transition-all hover:scale-[1.02]"
+                      style={{
+                        backgroundColor: tier.colors.slotBg,
+                        borderColor: tier.colors.slotBorder,
+                      }}
+                    >
+                      <span className="text-sm font-medium text-zinc-200">
+                        {sponsor.name}
+                      </span>
+                    </a>
+                  ))}
+
+                  {Array.from({ length: empty }).map((_, i) => (
+                    <a
+                      key={`empty-${tier.name}-${i}`}
+                      href={GITHUB_SPONSORS_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center rounded-md border border-dashed p-8 transition-all hover:scale-[1.02]"
+                      style={{ borderColor: tier.colors.slotBorder }}
+                    >
+                      <Plus
+                        className="size-5"
+                        style={{ color: tier.colors.border, opacity: 0.5 }}
+                      />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </section>
+
+        {/* Stargazers */}
+        {stargazers.length > 0 && (
+          <section className="flex flex-col border-b border-white/[0.06]">
+            <div className="flex items-center gap-3 px-6 py-3 sm:px-10">
+              <h3 className="text-xs font-bold uppercase tracking-wide text-zinc-300">
+                Stargazers
+              </h3>
+              <span className="text-xs tabular-nums text-zinc-600">
+                {stargazers.length}
+              </span>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-0 border-t border-white/[0.06] py-4">
+              {stargazers.map((user) => (
+                <a
+                  key={user.login}
+                  href={`https://github.com/${user.login}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={user.login}
+                  className="group relative p-1.5 transition-colors hover:bg-white/[0.04]"
+                >
+                  <Image
+                    src={user.avatar_url}
+                    alt={user.login}
+                    width={36}
+                    height={36}
+                    className="rounded-full ring-1 ring-white/[0.08] transition-all group-hover:scale-110 group-hover:ring-white/20"
+                    unoptimized
+                  />
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* CTA */}
+        <section className="flex flex-col items-center gap-5 px-6 py-14 sm:px-10">
+          <div className="flex flex-col items-center gap-2 text-center">
+            <h2 className="text-lg font-bold tracking-tight text-zinc-100">
+              Want to support the project?
+            </h2>
+            <p className="max-w-sm text-sm text-zinc-500">
+              Every bit helps — whether it&apos;s a sponsorship, a star, or
+              sharing something you found useful.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <a
+              href={GITHUB_SPONSORS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button
+                size="default"
+                className="gap-2 bg-zinc-50 text-zinc-950 hover:bg-zinc-200"
+              >
+                <Heart className="size-4" />
+                Become a Sponsor
+              </Button>
+            </a>
+            <a
+              href="https://github.com/jal-co/scn-stack"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button
+                variant="outline"
+                size="default"
+                className="gap-2 border-white/[0.08] text-zinc-300 hover:bg-white/[0.06]"
+              >
+                <Star className="size-4" />
+                Star on GitHub
+              </Button>
+            </a>
+          </div>
+        </section>
+      </div>
+    </main>
+  );
+}

@@ -84,107 +84,58 @@
 }
 
 @layer components {
-  .hero-raycast-bg {
-    background:
-      radial-gradient(circle at 50% 28%, oklch(0.24 0.005 270 / 58%), transparent 42%),
-      linear-gradient(180deg, oklch(0.08 0.003 270), oklch(0.11 0.004 270) 55%, oklch(0.07 0.003 270));
+  .hero-bg {
+    background: oklch(0.07 0.003 270);
+    padding-bottom: 0;
   }
 
-  .hero-raycast-bg::before {
+  .hero-features {
+    background: oklch(0.04 0.002 270);
+  }
+
+  .hero-bg::before {
     position: absolute;
     inset: 0;
     z-index: 0;
     content: "";
     background:
-      radial-gradient(ellipse at 50% 28%, transparent 0 30%, oklch(0.06 0.003 270 / 84%) 70%),
-      linear-gradient(180deg, transparent 0%, oklch(0.06 0.003 270 / 64%) 100%);
+      radial-gradient(ellipse at 50% 18%, oklch(0.18 0.004 270) 0%, transparent 52%),
+      radial-gradient(ellipse at 70% 62%, oklch(0.14 0.003 270 / 42%), transparent 38%),
+      radial-gradient(ellipse at 28% 48%, oklch(0.12 0.003 270 / 36%), transparent 44%);
     pointer-events: none;
   }
 
-  .hero-raycast-bg::after {
+  .hero-bg::after {
     position: absolute;
-    inset: -20% 0 0;
-    z-index: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 6;
+    width: 100%;
+    height: 320px;
     content: "";
-    background-image: radial-gradient(oklch(0.88 0.004 270 / 14%) 1px, transparent 1px);
-    background-size: 3px 3px;
-    mask-image: radial-gradient(ellipse at center 48%, black 0 22%, transparent 68%);
-    mix-blend-mode: screen;
-    opacity: 0.72;
-    animation: hero-grain-drift 4s steps(2, end) infinite;
+    background: linear-gradient(180deg, transparent 0%, oklch(0.04 0.002 270) 100%);
     pointer-events: none;
   }
 
-  .hero-raycast-beams {
+
+
+  .cta-section {
+    margin-top: -80px;
+    padding-top: 80px;
+  }
+
+  .cta-fade-overlay {
     position: absolute;
-    top: 58px;
-    left: 50%;
-    z-index: 0;
-    width: min(920px, 84vw);
-    height: 720px;
+    inset: 0 0 auto;
+    z-index: 1;
+    height: 160px;
+    background: linear-gradient(180deg, oklch(0.04 0.002 270), transparent);
     pointer-events: none;
-    transform: translateX(-50%);
   }
 
-  .hero-raycast-beams span {
-    position: absolute;
-    top: -132px;
-    left: 50%;
-    width: 146px;
-    height: 860px;
-    border-radius: 999px;
-    background:
-      linear-gradient(
-        180deg,
-        oklch(0.95 0.004 270 / 0%) 0%,
-        oklch(0.76 0.004 270 / 30%) 28%,
-        oklch(0.62 0.004 270 / 48%) 58%,
-        oklch(0.42 0.004 270 / 0%) 100%
-      );
-    filter: blur(0.4px);
-    mix-blend-mode: screen;
-    opacity: 0.76;
-    box-shadow:
-      0 0 44px oklch(0.72 0.004 270 / 18%),
-      22px 0 76px oklch(0.86 0.004 270 / 12%) inset,
-      -26px 0 54px oklch(0.18 0.004 270 / 24%) inset;
-    animation: hero-beam-float 8s ease-in-out infinite alternate;
-    transform: translateX(-50%) rotate(-34deg);
-    transform-origin: center;
-  }
 
-  .hero-raycast-beams span:nth-child(1) {
-    margin-left: -250px;
-    opacity: 0.46;
-  }
 
-  .hero-raycast-beams span:nth-child(2) {
-    margin-left: -118px;
-    width: 180px;
-    opacity: 0.88;
-    animation-delay: -1.5s;
-  }
 
-  .hero-raycast-beams span:nth-child(3) {
-    margin-left: 38px;
-    width: 205px;
-    opacity: 0.9;
-    animation-delay: -3s;
-  }
-
-  .hero-raycast-beams span:nth-child(4) {
-    margin-left: 212px;
-    width: 138px;
-    opacity: 0.48;
-    animation-delay: -4.5s;
-  }
-
-  .hero-raycast-beams span:nth-child(5) {
-    margin-left: 384px;
-    width: 96px;
-    opacity: 0.22;
-    animation-delay: -6s;
-  }
 
   .macbook-stage {
     perspective: 1000px;
@@ -204,6 +155,40 @@
     transform-style: preserve-3d;
     transition: transform 160ms linear;
     animation: macbook-frame-open 1500ms cubic-bezier(0.16, 1, 0.3, 1) 160ms both;
+  }
+
+  .macbook-glow {
+    position: absolute;
+    top: 4%;
+    right: -14%;
+    bottom: 12%;
+    left: 8%;
+    z-index: 0;
+    border-radius: 38%;
+    background:
+      radial-gradient(ellipse at 82% 36%, oklch(0.58 0.26 25 / 52%), oklch(0.44 0.22 350 / 28%) 22%, transparent 46%),
+      radial-gradient(ellipse at 58% 50%, oklch(0.36 0.2 310 / 44%), transparent 44%),
+      radial-gradient(ellipse at 38% 44%, oklch(0.28 0.14 280 / 38%), transparent 48%),
+      radial-gradient(ellipse at 22% 38%, oklch(0.18 0.08 260 / 32%), transparent 46%);
+    filter: blur(58px);
+    opacity: 0.72;
+    pointer-events: none;
+  }
+
+  .macbook-glow-grain {
+    position: absolute;
+    top: 4%;
+    right: -14%;
+    bottom: 12%;
+    left: 8%;
+    z-index: 0;
+    border-radius: 38%;
+    background-image: radial-gradient(oklch(0.94 0.01 300 / 26%) 1px, transparent 1px);
+    background-size: 3px 3px;
+    filter: blur(1px);
+    opacity: 0.58;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse at center, black 0 38%, transparent 72%);
   }
 
   .macbook-photo-shell::after {
@@ -298,19 +283,19 @@
     height: 100%;
     overflow: hidden;
     background:
-      radial-gradient(circle at 46% 54%, oklch(0.42 0.004 270 / 24%), transparent 34%),
-      linear-gradient(125deg, transparent 0 28%, oklch(0.54 0.004 270 / 18%) 28% 35%, transparent 35% 42%, oklch(0.72 0.004 270 / 16%) 42% 50%, transparent 50% 60%, oklch(0.5 0.004 270 / 12%) 60% 66%, transparent 66%),
-      oklch(0.055 0.003 270);
+      radial-gradient(circle at 82% 38%, oklch(0.62 0.28 25) 0%, oklch(0.48 0.24 350) 18%, transparent 42%),
+      radial-gradient(circle at 58% 52%, oklch(0.38 0.18 310) 0%, oklch(0.24 0.12 280) 24%, transparent 48%),
+      radial-gradient(circle at 22% 28%, oklch(0.18 0.06 260) 0%, transparent 42%),
+      oklch(0.06 0.02 260);
   }
 
   .macbook-desktop::after {
     position: absolute;
     inset: 0;
     content: "";
-    background-image: radial-gradient(oklch(0.94 0.004 270 / 16%) 1px, transparent 1px);
+    background-image: radial-gradient(oklch(0.88 0.01 280 / 18%) 1px, transparent 1px);
     background-size: 3px 3px;
-    mask-image: radial-gradient(ellipse at center, black 0 30%, transparent 74%);
-    opacity: 0.44;
+    opacity: 0.52;
     pointer-events: none;
   }
 
@@ -346,31 +331,9 @@
     transform: translateZ(20px);
   }
 
-  @keyframes hero-beam-float {
-    from {
-      transform: translateX(-50%) rotate(-34deg) translateY(-18px);
-      filter: blur(0.4px) brightness(0.9);
-    }
 
-    to {
-      transform: translateX(-50%) rotate(-34deg) translateY(20px);
-      filter: blur(0.7px) brightness(1.12);
-    }
-  }
 
-  @keyframes hero-grain-drift {
-    0% {
-      background-position: 0 0;
-    }
 
-    50% {
-      background-position: 18px -12px;
-    }
-
-    100% {
-      background-position: -9px 15px;
-    }
-  }
 
   @keyframes macbook-frame-open {
     0% {
@@ -394,16 +357,7 @@
   }
 
   @media (max-width: 767px) {
-    .hero-raycast-beams {
-      top: 96px;
-      width: 560px;
-      height: 620px;
-    }
 
-    .hero-raycast-beams span {
-      width: 92px;
-      height: 700px;
-    }
 
     .macbook-window-frame {
       width: 92%;
@@ -412,8 +366,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-raycast-bg::after,
-    .hero-raycast-beams span,
     .macbook-photo-shell {
       animation: none;
       transition: none;
