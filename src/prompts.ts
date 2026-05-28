@@ -11,6 +11,7 @@ import type {
 } from "./types.js";
 import type { CliArgs } from "./args.js";
 import { detectPackageManager } from "./utils.js";
+import { printHeader, labelValue } from "./brand.js";
 
 function validateRegistryName(value: string | undefined): string | undefined {
   if (!value) return "Registry name is required.";
@@ -54,7 +55,7 @@ const DEFAULTS = {
 };
 
 export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
-  p.intro(pc.bgCyan(pc.black(" create-scn-stack ")));
+  printHeader();
 
   // If --yes, fill everything from args + defaults
   if (args.yes) {
@@ -90,18 +91,18 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
     p.log.info(`Using defaults for ${pc.cyan(config.name)}`);
     p.log.step(
       [
-        `${pc.dim("Name:")}        ${config.name}`,
-        `${pc.dim("Directory:")}   ${config.directory}`,
-        `${pc.dim("Style:")}       ${config.style}`,
-        `${pc.dim("Base:")}        ${config.baseLibrary}`,
-        `${pc.dim("Homepage:")}    ${config.homepage}`,
-        `${pc.dim("Framework:")}   ${config.framework}`,
-        `${pc.dim("Docs:")}        ${config.docsEngine}`,
-        `${pc.dim("Components:")}  ${config.starterComponents}`,
-        `${pc.dim("Monorepo:")}    ${config.monorepo ? "yes" : "no"}`,
-        `${pc.dim("Namespace:")}   ${config.namespace}`,
-        `${pc.dim("PM:")}          ${config.packageManager}`,
-        `${pc.dim("Skills:")}      ${installSkills ? "yes" : "no"}`,
+        labelValue("Name:", config.name),
+        labelValue("Directory:", config.directory),
+        labelValue("Style:", config.style),
+        labelValue("Base:", config.baseLibrary),
+        labelValue("Homepage:", config.homepage),
+        labelValue("Framework:", config.framework),
+        labelValue("Docs:", config.docsEngine),
+        labelValue("Components:", config.starterComponents),
+        labelValue("Monorepo:", config.monorepo ? "yes" : "no"),
+        labelValue("Namespace:", config.namespace),
+        labelValue("PM:", config.packageManager),
+        labelValue("Skills:", installSkills ? "yes" : "no"),
       ].join("\n")
     );
 

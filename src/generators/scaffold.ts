@@ -26,6 +26,7 @@ import { generateTheme, addThemeInclude } from "./theme.js";
 import { generateV0 } from "./v0.js";
 import { generatePreview } from "./preview.js";
 import { generateConfig } from "./config.js";
+import { printSummaryBox, printFooter, labelValue } from "../brand.js";
 
 export async function scaffold(config: ProjectConfig): Promise<void> {
   const targetDir = resolve(process.cwd(), config.directory);
@@ -220,27 +221,6 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
           ? "React Router"
           : "TanStack Start";
 
-  p.note(
-    [
-      `${pc.cyan("cd")} ${config.name}`,
-      `${pc.cyan(runCmd)}`,
-      "",
-      `${pc.dim("Registry:")}   http://localhost:3000/r/registry.json`,
-      config.docsEngine !== "none"
-        ? `${pc.dim("Docs:")}       http://localhost:3000/docs`
-        : "",
-      "",
-      `${pc.dim("Build registry:")}  ${pc.cyan(`${getRunCommand(config.packageManager, "registry:build")}`)}`,
-      `${pc.dim("Add component:")}   ${pc.cyan(`${dlx} shadcn@latest add http://localhost:3000/r/button.json`)}`,
-      config.useNamespace
-        ? `${pc.dim("Namespace:")}      ${pc.cyan(config.namespace)}`
-        : "",
-    ]
-      .filter(Boolean)
-      .join("\n"),
-    "Next steps"
-  );
-
   const docsLabel =
     config.docsEngine === "fumadocs"
       ? "Fumadocs"
@@ -250,9 +230,22 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
           ? "Starlight"
           : "";
 
-  p.outro(
-    `${pc.green("✓")} ${pc.bold(config.name)} created with ${frameworkLabel}${docsLabel ? ` + ${docsLabel}` : ""}. Happy building! 🎉`
-  );
+  printSummaryBox(`${config.name} created`, [
+    labelValue("Framework:", frameworkLabel),
+    docsLabel ? labelValue("Docs:", docsLabel) : "",
+    config.useNamespace ? labelValue("Namespace:", pc.cyan(config.namespace)) : "",
+    "",
+    `${pc.cyan("cd")} ${config.name}`,
+    `${pc.cyan(runCmd)}`,
+    "",
+    labelValue("Registry:", "http://localhost:3000/r/registry.json"),
+    config.docsEngine !== "none" ? labelValue("Docs:", "http://localhost:3000/docs") : "",
+    "",
+    labelValue("Build:", pc.cyan(getRunCommand(config.packageManager, "registry:build"))),
+    labelValue("Add:", pc.cyan(`${dlx} shadcn@latest add http://localhost:3000/r/button.json`)),
+  ]);
+
+  printFooter(`${pc.bold(config.name)} ready with ${frameworkLabel}${docsLabel ? ` + ${docsLabel}` : ""}. Happy building! 🎉`);
 }
 
 function generateMonorepoRoot(

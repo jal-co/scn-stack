@@ -3,6 +3,7 @@ import pc from "picocolors";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { writeFile, ensureDir, titleCase } from "../utils.js";
+import { printHeaderCompact, printSummaryBox, printFooter, labelValue } from "../brand.js";
 
 interface AddBlockArgs {
   name?: string;
@@ -29,7 +30,7 @@ export function parseAddBlockArgs(argv: string[]): AddBlockArgs {
 }
 
 export async function addBlock(args: AddBlockArgs): Promise<void> {
-  p.intro(pc.bgCyan(pc.black(" add-block ")));
+  printHeaderCompact("add-block");
 
   const cwd = process.cwd();
   const registryPath = join(cwd, "registry.json");
@@ -240,20 +241,15 @@ export default function Page() {
   }
 
   // Done
-  p.note(
-    [
-      `${pc.dim("Block:")}      registry/${style}/blocks/${pc.cyan(name + ".tsx")}`,
-      `${pc.dim("Registry:")}   ${pc.cyan("registry.json")} (updated)`,
-      existsSync(docsDir)
-        ? `${pc.dim("Docs:")}       content/docs/blocks/${pc.cyan(name + ".mdx")}`
-        : "",
-      "",
-      `${pc.dim("Next:")}       Edit the block, then run ${pc.cyan("pnpm registry:build")}`,
-    ]
-      .filter(Boolean)
-      .join("\n"),
-    `Added ${blockTitle}`
-  );
+  printSummaryBox(`Added ${blockTitle}`, [
+    labelValue("Block:", `registry/${style}/blocks/${pc.cyan(name + ".tsx")}`),
+    labelValue("Registry:", `${pc.cyan("registry.json")} (updated)`),
+    existsSync(docsDir)
+      ? labelValue("Docs:", `content/docs/blocks/${pc.cyan(name + ".mdx")}`)
+      : "",
+    "",
+    `Edit the block, then run ${pc.cyan("pnpm registry:build")}`,
+  ]);
 
-  p.outro(`${pc.green("✓")} ${blockTitle} added to your registry.`);
+  printFooter(`${blockTitle} added to your registry.`);
 }

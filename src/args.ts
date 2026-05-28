@@ -1,3 +1,4 @@
+import pc from "picocolors";
 import type {
   Framework,
   DocsEngine,
@@ -116,7 +117,7 @@ export function parseArgs(argv: string[]): CliArgs {
 
 export function printHelp(): void {
   console.log(`
-  create-scn-stack — Scaffold a shadcn component registry
+  ${pc.bold(pc.white("scn"))}${pc.dim("━━━")}${pc.bold(pc.white("stack"))}  ${pc.dim("› scaffolding for shadcn registries")}
 
   Usage:
     npx create-scn-stack [name] [options]

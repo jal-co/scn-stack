@@ -3,6 +3,7 @@ import pc from "picocolors";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { writeFile, ensureDir, titleCase } from "../utils.js";
+import { printHeaderCompact, printSummaryBox, printFooter, labelValue } from "../brand.js";
 
 interface AddComponentArgs {
   name?: string;
@@ -29,7 +30,7 @@ export function parseAddComponentArgs(argv: string[]): AddComponentArgs {
 }
 
 export async function addComponent(args: AddComponentArgs): Promise<void> {
-  p.intro(pc.bgCyan(pc.black(" add-component ")));
+  printHeaderCompact("add-component");
 
   // Must be run from a project with registry.json
   const cwd = process.cwd();
@@ -236,20 +237,15 @@ export function Example() {
   }
 
   // Done
-  p.note(
-    [
-      `${pc.dim("Component:")}  registry/${style}/ui/${pc.cyan(name + ".tsx")}`,
-      `${pc.dim("Registry:")}   ${pc.cyan("registry.json")} (updated)`,
-      existsSync(docsDir)
-        ? `${pc.dim("Docs:")}       content/docs/components/${pc.cyan(name + ".mdx")}`
-        : "",
-      "",
-      `${pc.dim("Next:")}       Edit the component, then run ${pc.cyan("pnpm registry:build")}`,
-    ]
-      .filter(Boolean)
-      .join("\n"),
-    `Added ${componentTitle}`
-  );
+  printSummaryBox(`Added ${componentTitle}`, [
+    labelValue("Component:", `registry/${style}/ui/${pc.cyan(name + ".tsx")}`),
+    labelValue("Registry:", `${pc.cyan("registry.json")} (updated)`),
+    existsSync(docsDir)
+      ? labelValue("Docs:", `content/docs/components/${pc.cyan(name + ".mdx")}`)
+      : "",
+    "",
+    `Edit the component, then run ${pc.cyan("pnpm registry:build")}`,
+  ]);
 
-  p.outro(`${pc.green("✓")} ${componentTitle} added to your registry.`);
+  printFooter(`${componentTitle} added to your registry.`);
 }
