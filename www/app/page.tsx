@@ -116,7 +116,7 @@ export default function Home() {
   return (
     <div className="flex min-h-svh flex-col">
       {/* Hero */}
-      <section className="hero-bg relative pb-0">
+      <section className="hero-bg relative overflow-x-clip pb-0">
         <SiteHeader />
 
         <div className="relative z-10 mx-auto max-w-5xl px-6 py-20 md:py-24">
