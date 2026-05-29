@@ -1,0 +1,106 @@
+name: 🐛 Bug Report
+description: The CLI errors, scaffolds incorrectly, or produces a broken project
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please fill out the details below so we can reproduce it.
+
+  - type: input
+    id: cli-version
+    attributes:
+      label: CLI version
+      description: Output of `npx create-scn-stack --help` (top line) or your installed version
+      placeholder: "0.9.0"
+    validations:
+      required: true
+
+  - type: input
+    id: node-version
+    attributes:
+      label: Node version
+      placeholder: "v22.10.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: package-manager
+    attributes:
+      label: Package manager
+      options:
+        - pnpm
+        - npm
+        - yarn
+        - bun
+    validations:
+      required: true
+
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Framework selected
+      options:
+        - nextjs
+        - vite
+        - react-router
+        - tanstack-start
+        - "N/A — bug not related to a specific framework"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: docs-engine
+    attributes:
+      label: Docs engine selected
+      options:
+        - fumadocs
+        - mintlify
+        - starlight
+        - none
+        - "N/A — bug not related to docs"
+    validations:
+      required: true
+
+  - type: textarea
+    id: command
+    attributes:
+      label: Command you ran
+      description: The exact `npx create-scn-stack ...` (or subcommand) you ran
+      placeholder: npx create-scn-stack my-ui --yes --framework vite --docs starlight
+      render: bash
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug, including any error output
+      placeholder: The scaffold finished, but `npm run dev` errored with "Cannot find module ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Minimum steps to reproduce — link to a repo if possible
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Anything else — OS, shell, monorepo, custom flags, screenshots of the TUI, etc.
+    validations:
+      required: false

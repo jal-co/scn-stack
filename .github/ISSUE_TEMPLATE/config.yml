@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📖 Documentation
+    url: https://scnstack.sh/docs
+    about: Check the docs before opening an issue
+  - name: 🎨 Builder
+    url: https://scnstack.sh/builder
+    about: Configure your scaffold interactively in the browser
+  - name: 💬 Discussions
+    url: https://github.com/jal-co/scn-stack/discussions
+    about: Ask questions or share what you built
