@@ -1,6 +1,6 @@
 {
   "name": "create-scn-stack",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Scaffold a complete shadcn component registry with documentation in minutes.",
   "type": "module",
   "bin": {

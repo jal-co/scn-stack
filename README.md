@@ -145,8 +145,12 @@ the suite so the integration tests have a fresh `dist/index.js`.
 
 ## Contributing
 
-Contributions welcome! Open an issue or PR on
-[GitHub](https://github.com/jal-co/scn-stack).
+Contributions welcome! Please read [CONTRIBUTING.md](./.github/CONTRIBUTING.md)
+for branch naming, commit message conventions, the test suite, and the project
+layout.
+
+This project follows the [Contributor Covenant 3.0](./.github/CODE_OF_CONDUCT.md).
+By participating you agree to abide by its terms.
 
 ## License
 
