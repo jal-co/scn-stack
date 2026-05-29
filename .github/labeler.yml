@@ -1,0 +1,59 @@
+# Auto-labeler config for actions/labeler
+# Docs: https://github.com/actions/labeler
+#
+# Branch prefixes must stay in sync with:
+#   - .github/CONTRIBUTING.md (documented types)
+#   - commit-check workflow (which validates branch names)
+
+feature:
+  - head-branch: ["^feat/", "^feature/"]
+
+bug:
+  - head-branch: ["^fix/", "^bugfix/", "^hotfix/"]
+
+docs:
+  - head-branch: ["^docs/"]
+  - changed-files:
+      - any-glob-to-any-file:
+          - "README.md"
+          - "www/content/docs/**"
+
+ci:
+  - head-branch: ["^ci/", "^build/"]
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
+
+chore:
+  - head-branch: ["^chore/"]
+
+refactor:
+  - head-branch: ["^refactor/"]
+
+style:
+  - head-branch: ["^style/"]
+
+perf:
+  - head-branch: ["^perf/"]
+
+test:
+  - head-branch: ["^test/"]
+  - changed-files:
+      - any-glob-to-any-file:
+          - "test/**"
+          - "vitest.config.ts"
+
+framework:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/generators/frameworks/**"
+
+docs-engine:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/generators/docs/**"
+
+website:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "www/**"
