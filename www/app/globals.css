@@ -318,13 +318,16 @@
   .macbook-window-frame {
     position: relative;
     z-index: 1;
-    width: min(88%, 390px);
+    /* Fill the macbook screen interior — cap is just below the screen
+       width (which is 79.69% of the 1100px frame ≈ 876px) so the window
+       still has a bit of breathing room inside the bezel. */
+    width: min(94%, 820px);
     margin: 28px auto 0;
     filter: drop-shadow(0 24px 34px oklch(0.03 0.003 270 / 58%));
   }
 
   .macbook-terminal {
-    max-height: 252px;
+    max-height: 320px;
     border: 0;
     border-radius: 0.75rem;
     box-shadow: none;
