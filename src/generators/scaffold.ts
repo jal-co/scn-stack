@@ -26,7 +26,11 @@ import { generateTheme, addThemeInclude } from "./theme.js";
 import { generateV0 } from "./v0.js";
 import { generatePreview } from "./preview.js";
 import { generateConfig } from "./config.js";
-import { printSummaryBox, printFooter, labelValue } from "../brand.js";
+import {
+  labelValue,
+  printStepHeader,
+  note,
+} from "../brand.js";
 
 export async function scaffold(config: ProjectConfig): Promise<void> {
   const targetDir = resolve(process.cwd(), config.directory);
@@ -52,169 +56,207 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
     config.directory = targetDir;
   }
 
-  const s = p.spinner();
-
-  // 0. Generate monorepo root if needed
-  if (monorepoRoot) {
-    s.start("Setting up monorepo...");
-    ensureDir(monorepoRoot);
-    generateMonorepoRoot(config, monorepoRoot);
-    s.stop("Monorepo configured.");
-  }
-
-  // 1. Generate framework files
-  s.start("Generating project files...");
-
-  ensureDir(config.directory);
-
-  switch (config.framework) {
-    case "nextjs":
-      generateNextjs(config);
-      break;
-    case "vite":
-      generateVite(config);
-      break;
-    case "react-router":
-      generateReactRouter(config);
-      break;
-    case "tanstack-start":
-      generateTanstackStart(config);
-      break;
-  }
-
-  s.stop("Project files generated.");
-
-  // 2. Generate registry files
-  s.start("Setting up registry...");
-  generateRegistryJson(config);
-  generateComponentsJson(config);
-  s.stop("Registry configured.");
-
-  // 3. Generate component source files
-  if (config.starterComponents !== "none") {
-    s.start("Creating starter components...");
-    generateComponents(config);
-    s.stop("Starter components created.");
-  }
-
-  // 4. Generate docs
-  if (config.docsEngine !== "none") {
-    const docsLabel =
-      config.docsEngine === "fumadocs"
-        ? "Fumadocs"
-        : config.docsEngine === "mintlify"
-          ? "Mintlify"
-          : "Starlight";
-    s.start(`Setting up ${docsLabel} documentation...`);
-
-    switch (config.docsEngine) {
-      case "fumadocs":
-        if (config.framework !== "nextjs") {
-          p.log.warn(
-            "Fumadocs requires Next.js. Falling back to Starlight for non-Next.js frameworks."
-          );
-          generateStarlight(config);
-        } else {
-          generateFumadocs(config);
-        }
-        break;
-      case "mintlify":
-        generateMintlify(config);
-        break;
-      case "starlight":
-        generateStarlight(config);
-        break;
-    }
-
-    s.stop("Documentation configured.");
-  }
-
-  // 5. Generate skills
-  if (config.installRegistrySkill) {
-    s.start("Adding registry skill...");
-    generateSkill(config);
-    s.stop("Registry skill added.");
-  }
-
-  // 6. Generate llms.txt
-  s.start("Generating llms.txt...");
-  generateLlmsTxt(config);
-  s.stop("llms.txt generated.");
-
-  // 7. Generate theme scaffolding
-  s.start("Setting up theme...");
-  generateTheme(config);
-  addThemeInclude(config);
-  s.stop("Theme configured.");
-
-  // 8. Generate v0 integration
-  s.start("Adding v0 integration...");
-  generateV0(config);
-  s.stop("v0 integration added.");
-
-  // 9. Generate component preview system
-  if (config.framework === "nextjs") {
-    s.start("Setting up component previews...");
-    generatePreview(config);
-    s.stop("Component preview system added.");
-  }
-
-  // 10. Generate .scn-stack.json config
-  s.start("Writing config...");
-  generateConfig(config);
-  s.stop("Config saved.");
-
-  // 11. Generate README
-  s.start("Generating README...");
-  generateReadme(config);
-  s.stop("README generated.");
-
   // Allow CI / tests to scaffold files without the slow, networked steps
   // (dependency install, skill install, git init).
   const skipSideEffects = process.env.SCN_STACK_SKIP_INSTALL === "1";
-
-  // 12. Install dependencies
+  const startedAt = Date.now();
+  const totalPhases = skipSideEffects ? 3 : 4;
   const installDir = monorepoRoot || config.directory;
-  if (!skipSideEffects) {
-    s.start(`Installing dependencies with ${config.packageManager}...`);
-    try {
-      runCommand(getInstallCommand(config.packageManager), installDir, true);
-      s.stop("Dependencies installed.");
-    } catch {
-      s.stop("Failed to install dependencies. You can install them manually.");
-    }
+
+  // ── Phase 1: Project scaffold ───────────────────────────────────────
+  printStepHeader(
+    1,
+    totalPhases,
+    "Project scaffold",
+    `${labelText(config.framework)} · ${config.directory}`
+  );
+
+  await p.tasks([
+    {
+      title: "Setting up monorepo workspace",
+      enabled: monorepoRoot !== null,
+      task: async () => {
+        ensureDir(monorepoRoot!);
+        generateMonorepoRoot(config, monorepoRoot!);
+        return `Monorepo workspace ready — ${monorepoRoot}`;
+      },
+    },
+    {
+      title: `Generating ${labelText(config.framework)} project`,
+      task: async () => {
+        ensureDir(config.directory);
+        switch (config.framework) {
+          case "nextjs":
+            generateNextjs(config);
+            break;
+          case "vite":
+            generateVite(config);
+            break;
+          case "react-router":
+            generateReactRouter(config);
+            break;
+          case "tanstack-start":
+            generateTanstackStart(config);
+            break;
+        }
+        return `${labelText(config.framework)} project generated`;
+      },
+    },
+  ]);
+
+  // ── Phase 2: Registry + components ───────────────────────────────────
+  printStepHeader(
+    2,
+    totalPhases,
+    "Registry & components",
+    `style: ${config.style}` +
+      (config.useNamespace ? ` · namespace: ${config.namespace}` : "")
+  );
+
+  await p.tasks([
+    {
+      title: "Writing registry.json and components.json",
+      task: async () => {
+        generateRegistryJson(config);
+        generateComponentsJson(config);
+        return "Registry configured";
+      },
+    },
+    {
+      title: `Adding starter components (${labelText(config.starterComponents)})`,
+      enabled: config.starterComponents !== "none",
+      task: async () => {
+        generateComponents(config);
+        const list =
+          config.starterComponents === "essentials"
+            ? "Button, Card, Badge"
+            : "Button";
+        return `Starter components added: ${list}`;
+      },
+    },
+  ]);
+
+  if (config.starterComponents === "none") {
+    note("no starter components — empty registry");
   }
 
-  // 13. Install shadcn skill
-  if (!skipSideEffects && config.installShadcnSkill) {
-    s.start("Installing shadcn skill...");
-    try {
-      runCommand(
-        `${getDlxCommand(config.packageManager)} skills add shadcn/ui`,
-        installDir,
-        true
-      );
-      s.stop("shadcn skill installed.");
-    } catch {
-      s.stop("shadcn skill installation skipped (you can install later with: pnpm dlx skills add shadcn/ui).");
-    }
-  }
+  // ── Phase 3: Docs, theme, extras ──────────────────────────────────────
+  printStepHeader(
+    3,
+    totalPhases,
+    "Docs, theme & extras",
+    docsPhaseDescription(config)
+  );
 
-  // 14. Initialize git
-  if (!skipSideEffects) {
-    s.start("Initializing git repository...");
-    try {
-      runCommand("git init", installDir, true);
-      runCommand("git add -A", installDir, true);
-      runCommand(
-        'git commit -m "feat: initial scaffold from create-scn-stack"',
-        installDir,
-        true
-      );
-      s.stop("Git repository initialized.");
-    } catch {
-      s.stop("Git initialization skipped.");
-    }
+  // Resolve the docs decision up front so the task list reads cleanly.
+  const docsFellBackToStarlight =
+    config.docsEngine === "fumadocs" && config.framework !== "nextjs";
+  if (docsFellBackToStarlight) {
+    p.log.warn(
+      "Fumadocs requires Next.js. Using Starlight for this framework."
+    );
+  }
+  const effectiveDocs = docsFellBackToStarlight ? "starlight" : config.docsEngine;
+
+  await p.tasks([
+    {
+      title: `Setting up ${docsLabelOf(effectiveDocs)} documentation`,
+      enabled: effectiveDocs !== "none",
+      task: async () => {
+        switch (effectiveDocs) {
+          case "fumadocs":
+            generateFumadocs(config);
+            break;
+          case "mintlify":
+            generateMintlify(config);
+            break;
+          case "starlight":
+            generateStarlight(config);
+            break;
+        }
+        return `${docsLabelOf(effectiveDocs)} documentation configured`;
+      },
+    },
+    {
+      title: "Generating theme, llms.txt, v0, previews, config, README",
+      task: async () => {
+        generateLlmsTxt(config);
+        generateTheme(config);
+        addThemeInclude(config);
+        generateV0(config);
+        if (config.framework === "nextjs") generatePreview(config);
+        if (config.installRegistrySkill) generateSkill(config);
+        generateConfig(config);
+        generateReadme(config);
+        return "Extras ready (theme, llms.txt, v0, previews, config, README)";
+      },
+    },
+  ]);
+
+  // ── Phase 4: Install + git ───────────────────────────────────────────────
+  if (skipSideEffects) {
+    note(
+      "install / shadcn skill / git init skipped (SCN_STACK_SKIP_INSTALL=1)"
+    );
+  } else {
+    printStepHeader(
+      4,
+      totalPhases,
+      "Install & finalize",
+      `${config.packageManager} install · git init` +
+        (config.installShadcnSkill ? " · shadcn skill" : "")
+    );
+
+    await p.tasks([
+      {
+        title: `Installing dependencies with ${config.packageManager}`,
+        task: async () => {
+          try {
+            runCommand(
+              getInstallCommand(config.packageManager),
+              installDir,
+              true
+            );
+            return "Dependencies installed";
+          } catch {
+            return "Dependency install failed — you can run it manually later";
+          }
+        },
+      },
+      {
+        title: "Installing shadcn skill",
+        enabled: config.installShadcnSkill,
+        task: async () => {
+          try {
+            runCommand(
+              `${getDlxCommand(config.packageManager)} skills add shadcn/ui`,
+              installDir,
+              true
+            );
+            return "shadcn skill installed";
+          } catch {
+            return `shadcn skill skipped — install later with: ${getDlxCommand(config.packageManager)} skills add shadcn/ui`;
+          }
+        },
+      },
+      {
+        title: "Initializing git repository",
+        task: async () => {
+          try {
+            runCommand("git init", installDir, true);
+            runCommand("git add -A", installDir, true);
+            runCommand(
+              'git commit -m "feat: initial scaffold from create-scn-stack"',
+              installDir,
+              true
+            );
+            return "Git repository initialized";
+          } catch {
+            return "Git init skipped";
+          }
+        },
+      },
+    ]);
   }
 
   // Done! Show next steps
@@ -238,22 +280,101 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
           ? "Starlight"
           : "";
 
-  printSummaryBox(`${config.name} created`, [
+  const elapsed = Date.now() - startedAt;
+
+  // Summary lives inside clack's frame via p.note so it lines up with
+  // every other rendered block above it.
+  const summaryLines = [
     labelValue("Framework:", frameworkLabel),
     docsLabel ? labelValue("Docs:", docsLabel) : "",
-    config.useNamespace ? labelValue("Namespace:", pc.cyan(config.namespace)) : "",
+    config.useNamespace
+      ? labelValue("Namespace:", pc.cyan(config.namespace))
+      : "",
     "",
     `${pc.cyan("cd")} ${config.name}`,
     `${pc.cyan(runCmd)}`,
     "",
     labelValue("Registry:", "http://localhost:3000/r/registry.json"),
-    config.docsEngine !== "none" ? labelValue("Docs:", "http://localhost:3000/docs") : "",
+    config.docsEngine !== "none"
+      ? labelValue("Docs URL:", "http://localhost:3000/docs")
+      : "",
     "",
-    labelValue("Build:", pc.cyan(getRunCommand(config.packageManager, "registry:build"))),
-    labelValue("Add:", pc.cyan(`${dlx} shadcn@latest add http://localhost:3000/r/button.json`)),
-  ]);
+    labelValue(
+      "Build:",
+      pc.cyan(getRunCommand(config.packageManager, "registry:build"))
+    ),
+    labelValue(
+      "Add:",
+      pc.cyan(
+        `${dlx} shadcn@latest add http://localhost:3000/r/button.json`
+      )
+    ),
+  ].filter(Boolean);
 
-  printFooter(`${pc.bold(config.name)} ready with ${frameworkLabel}${docsLabel ? ` + ${docsLabel}` : ""}. Happy building! 🎉`);
+  p.note(summaryLines.join("\n"), `✓ ${config.name} created`);
+
+  // p.outro closes the prompt frame and prints the final line.
+  p.outro(
+    `${pc.bold(config.name)} ready with ${frameworkLabel}${docsLabel ? ` + ${docsLabel}` : ""} in ${pc.dim(formatDuration(elapsed))} 🎉`
+  );
+}
+
+function formatDuration(ms: number): string {
+  if (ms < 1000) return `${ms}ms`;
+  const s = ms / 1000;
+  if (s < 60) return `${s.toFixed(1)}s`;
+  const m = Math.floor(s / 60);
+  const r = Math.round(s % 60);
+  return `${m}m ${r}s`;
+}
+
+function labelText(value: string): string {
+  switch (value) {
+    case "nextjs":
+      return "Next.js";
+    case "vite":
+      return "Vite";
+    case "react-router":
+      return "React Router";
+    case "tanstack-start":
+      return "TanStack Start";
+    case "essentials":
+      return "Button, Card, Badge";
+    case "minimal":
+      return "Button only";
+    case "none":
+      return "none";
+    default:
+      return value;
+  }
+}
+
+function docsLabelOf(engine: string): string {
+  switch (engine) {
+    case "fumadocs":
+      return "Fumadocs";
+    case "mintlify":
+      return "Mintlify";
+    case "starlight":
+      return "Starlight";
+    default:
+      return "";
+  }
+}
+
+function docsPhaseDescription(config: ProjectConfig): string {
+  const parts: string[] = [];
+  if (config.docsEngine !== "none") {
+    parts.push(`${docsLabelOf(config.docsEngine).toLowerCase()} docs`);
+  } else {
+    parts.push("no docs");
+  }
+  parts.push("theme");
+  parts.push("v0");
+  if (config.framework === "nextjs") parts.push("previews");
+  if (config.installRegistrySkill) parts.push("registry skill");
+  parts.push("llms.txt");
+  return parts.join(" · ");
 }
 
 function generateMonorepoRoot(
