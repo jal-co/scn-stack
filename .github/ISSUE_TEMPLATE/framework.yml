@@ -1,0 +1,69 @@
+name: 📦 Framework / Docs Engine Support
+description: Request support for a new framework template or docs engine
+labels: ["feature", "framework"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Want scn-stack to support a new framework or docs engine? Tell us about it.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What are you requesting?
+      options:
+        - New framework template
+        - New docs engine integration
+    validations:
+      required: true
+
+  - type: input
+    id: name
+    attributes:
+      label: Name
+      placeholder: Astro / Nuxt / Docusaurus / etc.
+    validations:
+      required: true
+
+  - type: input
+    id: website
+    attributes:
+      label: Project website
+      placeholder: https://astro.build
+    validations:
+      required: true
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Why add this?
+      description: How does this fit shadcn registries? Who would use it?
+    validations:
+      required: true
+
+  - type: textarea
+    id: scaffold-shape
+    attributes:
+      label: What should the scaffold include?
+      description: |
+        For a framework: which files (config, entry, styles, registry serving route)?
+        For a docs engine: how should pages be generated for components / hooks / blocks?
+    validations:
+      required: false
+
+  - type: input
+    id: similar
+    attributes:
+      label: Similar existing template (if any)
+      description: e.g. the Next.js or Fumadocs generator in this repo to model after
+      placeholder: src/generators/frameworks/nextjs.ts
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Links, prior art, gotchas (e.g. server-side rendering requirements), reference projects
+    validations:
+      required: false
