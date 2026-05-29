@@ -112,9 +112,58 @@ function CustomCode({ children, className, ...props }: ComponentProps<"code">) {
   );
 }
 
+function CustomTable(props: ComponentProps<"table">) {
+  return (
+    <div className="not-prose my-6 w-full overflow-x-auto rounded-lg border border-border/60">
+      <table className="w-full border-collapse text-sm" {...props} />
+    </div>
+  );
+}
+
+function CustomThead(props: ComponentProps<"thead">) {
+  return (
+    <thead
+      className="border-b border-border/60 bg-muted/30"
+      {...props}
+    />
+  );
+}
+
+function CustomTr(props: ComponentProps<"tr">) {
+  return (
+    <tr
+      className="border-b border-border/40 last:border-b-0"
+      {...props}
+    />
+  );
+}
+
+function CustomTh(props: ComponentProps<"th">) {
+  return (
+    <th
+      className="px-4 py-2.5 text-left font-semibold text-foreground whitespace-nowrap"
+      {...props}
+    />
+  );
+}
+
+function CustomTd(props: ComponentProps<"td">) {
+  return (
+    <td
+      className="px-4 py-2.5 align-top text-muted-foreground"
+      {...props}
+    />
+  );
+}
+
 export const mdxComponents = {
   pre: CustomPre,
   code: CustomCode,
+  table: CustomTable,
+  thead: CustomThead,
+  tr: CustomTr,
+  th: CustomTh,
+  td: CustomTd,
   FileTree,
   CodeBlockCommand,
   CodeBlock,
