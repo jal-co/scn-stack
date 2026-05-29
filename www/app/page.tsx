@@ -152,7 +152,7 @@ export default function Home() {
             </div>
 
             {/* Terminal laptop */}
-            <div className="macbook-stage relative mt-10 w-full max-w-3xl text-left">
+            <div className="macbook-stage relative mt-10 w-full max-w-5xl text-left">
               <div className="macbook-glow" aria-hidden="true" />
               <div className="macbook-glow-grain" aria-hidden="true" />
               <div
@@ -163,7 +163,7 @@ export default function Home() {
                   ["--terminal-light-y" as string]: "42%",
                   isolation: "isolate",
                   marginInline: "auto",
-                  maxWidth: "920px",
+                  maxWidth: "1100px",
                   position: "relative",
                   transform:
                     "rotateX(var(--terminal-rotate-x, 0deg)) rotateY(var(--terminal-rotate-y, 0deg))",
@@ -221,7 +221,7 @@ export default function Home() {
                               <TerminalCopyButton className="size-6" />
                             </TerminalActions>
                           </TerminalHeader>
-                          <TerminalContent className="max-h-[214px] p-3 text-[11px] leading-relaxed" />
+                          <TerminalContent className="max-h-[260px] p-3 text-[11px] leading-relaxed" />
                         </Terminal>
                       </div>
                     </div>
