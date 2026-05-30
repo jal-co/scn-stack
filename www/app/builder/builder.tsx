@@ -64,20 +64,22 @@ function OptionCard({
     <button
       onClick={onClick}
       className={cn(
-        "flex flex-col gap-1 rounded-lg border px-4 py-3 text-left text-sm transition-all",
+        "flex min-w-0 flex-col gap-1 rounded-lg border px-4 py-3 text-left text-sm transition-all",
         selected
           ? "border-foreground bg-foreground/5 ring-1 ring-foreground/20"
           : "border-border hover:border-foreground/30 hover:bg-muted/50"
       )}
     >
-      <div className="flex items-center gap-2">
-        {icon && (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img src={icon} alt="" className="h-4 w-4 shrink-0" />
-        )}
-        <span className="font-medium">{title}</span>
+      <div className="flex min-w-0 flex-col-reverse items-start gap-1.5 sm:flex-row sm:items-center sm:gap-2">
+        <div className="flex min-w-0 items-center gap-2">
+          {icon && (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img src={icon} alt="" className="h-4 w-4 shrink-0" />
+          )}
+          <span className="min-w-0 truncate font-medium">{title}</span>
+        </div>
         {badge && (
-          <span className="rounded border border-border/60 bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+          <span className="shrink-0 rounded border border-border/60 bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
             {badge}
           </span>
         )}
