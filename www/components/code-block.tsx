@@ -1,6 +1,6 @@
 import * as React from "react"
 import { CodeBlockCopyButton, CodeBlockWrapper } from "@/components/code-block-client"
-import { highlightCode } from "@/lib/highlight-code"
+import { highlightCodeToReact } from "@/lib/highlight-code"
 import { cn } from "@/lib/utils"
 
 const languageTitleMap: Record<string, string> = {
@@ -89,7 +89,7 @@ export async function CodeBlock({
   className,
   ...props
 }: CodeBlockProps) {
-  const highlighted = await highlightCode(code, language, theme)
+  const highlighted = await highlightCodeToReact(code, language, theme)
 
   const resolvedIcon = icon !== undefined ? icon : (() => {
     const svg = getLanguageIcon(language)
@@ -174,8 +174,9 @@ export async function CodeBlock({
                 : "[&_pre]:bg-transparent",
               muted && "[&_code]:opacity-80"
             )}
-            dangerouslySetInnerHTML={{ __html: highlighted }}
-          />
+          >
+            {highlighted}
+          </div>
         </div>
       </CodeBlockWrapper>
     </div>
