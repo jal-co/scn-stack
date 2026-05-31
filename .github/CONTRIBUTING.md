@@ -14,6 +14,17 @@ npm run test:watch   # vitest in watch mode
 
 The CLI lives in `src/`. After `npm run build`, the entry point is `dist/index.js`, which is what `bin: create-scn-stack` points at in `package.json`.
 
+### Git hooks (optional, recommended)
+
+The repo ships a [`pre-commit`](https://pre-commit.com/) config that runs the same [commit-check](https://github.com/commit-check/commit-check) validation as CI — Conventional Commit messages and Conventional Branch names — so you catch problems before pushing. Install once:
+
+```bash
+pipx install pre-commit   # or: pip install pre-commit
+pre-commit install --hook-type commit-msg --hook-type pre-push
+```
+
+The shared policy lives in [`.github/cchk.toml`](cchk.toml), so local hooks and CI stay in sync.
+
 ## Branch naming
 
 Branches **must** follow [Conventional Branch](https://conventional-branch.github.io/) format. This is enforced in CI via [commit-check](https://github.com/commit-check/commit-check-action).

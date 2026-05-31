@@ -1,0 +1,15 @@
+# Local commit hooks. Mirrors the commit-check CI workflow so branch names
+# and commit messages are validated before they reach a pull request.
+#
+# Setup (one-time):
+#   pipx install pre-commit   # or: pip install pre-commit
+#   pre-commit install --hook-type commit-msg --hook-type pre-push
+#
+# Config is shared with CI via .github/cchk.toml.
+repos:
+  - repo: https://github.com/commit-check/commit-check
+    rev: v2.7.0
+    hooks:
+      - id: check-message   # Conventional Commits, runs at commit-msg
+      - id: check-branch    # Conventional Branch
+        stages: [pre-push]
