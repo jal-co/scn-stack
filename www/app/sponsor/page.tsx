@@ -262,7 +262,7 @@ export default async function SponsorPage() {
               Want to support the project?
             </h2>
             <p className="max-w-sm text-sm text-zinc-500">
-              Every bit helps — whether it&apos;s a sponsorship, a star, or
+              Every bit helps, whether it&apos;s a sponsorship, a star, or
               sharing something you found useful.
             </p>
           </div>

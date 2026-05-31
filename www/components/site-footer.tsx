@@ -46,7 +46,7 @@ function NpmIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-white/[0.06] bg-zinc-950 px-6 py-6">
+    <footer className="border-t border-white/[0.06] bg-zinc-950 p-6">
       <div className="mx-auto flex max-w-5xl flex-col items-start justify-between gap-4 text-xs text-zinc-600 sm:flex-row sm:items-center">
         <p>
           Made with{" "}

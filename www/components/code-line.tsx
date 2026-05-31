@@ -1,6 +1,6 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { highlightCode } from "@/lib/highlight-code"
+import { highlightCode, highlightCodeToReact } from "@/lib/highlight-code"
 import { CodeLineCopyButton } from "@/components/code-line-copy-button"
 
 interface CodeLineProps extends Omit<React.ComponentProps<"div">, "children"> {
@@ -25,11 +25,14 @@ async function CodeLine({
   className,
   ...props
 }: CodeLineProps) {
-  const highlighted = await highlightCode(code.trim(), language, theme)
+  const highlighted = await highlightCodeToReact(code.trim(), language, theme)
 
-  // Extract background color from shiki's inline theme output
+  // Extract background color from shiki's inline theme output. Only needed for
+  // single-theme rendering, so the extra HTML pass is skipped otherwise.
   const themeBg = theme
-    ? highlighted.match(/background-color:\s*([^;"]+)/)?.[1]
+    ? (await highlightCode(code.trim(), language, theme)).match(
+        /background-color:\s*([^;"]+)/
+      )?.[1]
     : undefined
 
   return (
@@ -55,8 +58,9 @@ async function CodeLine({
             "[&_pre]:m-0 [&_pre]:inline [&_pre]:bg-transparent [&_pre]:p-0",
             "[&_code]:font-mono [&_code]:text-[13px]"
           )}
-          dangerouslySetInnerHTML={{ __html: highlighted }}
-        />
+        >
+          {highlighted}
+        </div>
       </div>
       {!hideCopy && <CodeLineCopyButton value={code.trim()} />}
     </div>

@@ -10,7 +10,7 @@ export default async function Page(props: {
 
   if (!page) notFound();
 
-  const MDX = page.data.body;
+  const MdxContent = page.data.body;
   const toc = page.data.toc;
 
   return (
@@ -31,7 +31,7 @@ export default async function Page(props: {
 
           {/* MDX content */}
           <div className="prose prose-neutral dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-h2:text-xl prose-h2:font-semibold prose-h2:tracking-tight prose-h3:text-lg prose-h3:font-medium prose-code:before:content-[''] prose-code:after:content-[''] prose-pre:border-0 prose-pre:bg-transparent prose-pre:p-0 prose-pre:m-0 prose-a:text-foreground prose-a:underline prose-a:underline-offset-4">
-            <MDX components={mdxComponents} />
+            <MdxContent components={mdxComponents} />
           </div>
         </div>
       </div>

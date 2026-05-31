@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -21,17 +22,18 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+  // Close the mobile menu whenever the route changes. Using the pathname as a
+  // key on the menu lets React reset the open state without an effect chain.
+  const closeMenu = () => setOpen(false);
 
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = "";
-      };
+    if (!open) {
+      return;
     }
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   return (
@@ -55,10 +57,11 @@ export function SiteHeader() {
           href="/"
           className="rounded-md px-2 py-1.5 transition-colors hover:bg-white/[0.06]"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src="/brand/scn-stack-wordmark.svg"
             alt="scn-stack"
+            width={120}
+            height={20}
             className="h-5 w-auto invert"
           />
         </Link>
@@ -98,10 +101,10 @@ export function SiteHeader() {
       </nav>
 
       {open && (
-        <>
+        <div key={pathname}>
           <div
             className="fixed inset-0 top-14 z-40 bg-black/50 md:hidden"
-            onClick={() => setOpen(false)}
+            onClick={closeMenu}
             aria-hidden="true"
           />
           <nav className="fixed inset-x-0 top-14 z-50 border-b border-white/[0.08] bg-zinc-950 p-4 md:hidden">
@@ -113,7 +116,9 @@ export function SiteHeader() {
                   variant="ghost"
                   className="justify-start text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-100"
                 >
-                  <Link href={item.href}>{item.label}</Link>
+                  <Link href={item.href} onClick={closeMenu}>
+                    {item.label}
+                  </Link>
                 </Button>
               ))}
               <Button
@@ -125,13 +130,14 @@ export function SiteHeader() {
                   href="https://github.com/jal-co/scn-stack"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={closeMenu}
                 >
                   GitHub
                 </a>
               </Button>
             </div>
           </nav>
-        </>
+        </div>
       )}
     </header>
   );

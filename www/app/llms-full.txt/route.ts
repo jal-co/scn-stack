@@ -43,7 +43,9 @@ function stripJsxComponents(content: string): string {
     .trim();
 }
 
-export function GET() {
+// The docs are static, so build the full document once at module load instead
+// of re-reading every file from disk on every request.
+function buildDocsBody(): string {
   const sections: string[] = [];
 
   sections.push(`# scn-stack — Full Documentation
@@ -79,8 +81,12 @@ ${cleaned}
 ---`);
   }
 
-  const body = sections.join("\n\n");
+  return sections.join("\n\n");
+}
 
+const body = buildDocsBody();
+
+export function GET() {
   return new Response(body, {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",

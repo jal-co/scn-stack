@@ -1,0 +1,6 @@
+# Delay installs until releases are 7 days old.
+# Mitigates supply-chain attacks where malware is published and unpublished within hours.
+minimumReleaseAge: 10080
+
+# Reject packages whose trust signals (provenance, signatures) weaken between updates.
+trustPolicy: no-downgrade

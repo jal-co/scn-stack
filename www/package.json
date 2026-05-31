@@ -16,7 +16,7 @@
     "clsx": "^2.1.1",
     "fumadocs-core": "^16.8.0",
     "fumadocs-mdx": "^15.0.0",
-    "fumadocs-ui": "^16.8.0",
+    "hast-util-to-jsx-runtime": "^2.3.6",
     "lucide-react": "^0.487.0",
     "motion": "^12.40.0",
     "next": "^16.2.0",
