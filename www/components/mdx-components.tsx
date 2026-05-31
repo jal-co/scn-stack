@@ -2,11 +2,8 @@ import type { ComponentProps, ReactNode } from "react";
 import { CodeBlockCommand } from "@/components/code-block-command";
 import { CodeBlock } from "@/components/code-block";
 import { CodeLine } from "@/components/code-line";
-import { FileTree, type FileTreeNode } from "@/components/file-tree";
+import { FileTree } from "@/components/file-tree";
 import { convertNpmCommand } from "@/lib/convert-npm-command";
-
-export { CodeBlockCommand, CodeBlock, CodeLine, FileTree, convertNpmCommand };
-export type { FileTreeNode };
 
 function extractText(node: unknown): string {
   if (typeof node === "string") return node;

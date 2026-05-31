@@ -39,6 +39,8 @@ const defaultIcons: Record<PackageManager, string> = {
 
 type IconStyle = "none" | "colored" | "muted"
 
+const EMPTY_ICONS: Partial<Record<PackageManager, React.ReactNode>> = {}
+
 interface CodeBlockCommandProps extends Omit<React.ComponentProps<"div">, "children"> {
   pnpm?: string
   yarn?: string
@@ -86,13 +88,32 @@ function DefaultIcon({ svg, muted }: { svg: string; muted: boolean }) {
   )
 }
 
+function ManagerIcon({
+  manager,
+  iconStyle,
+  icons,
+}: {
+  manager: PackageManager
+  iconStyle: IconStyle
+  icons: Partial<Record<PackageManager, React.ReactNode>>
+}) {
+  if (iconStyle === "none") return null
+
+  const custom = icons[manager]
+  if (custom !== undefined) return <>{custom}</>
+
+  const svg = defaultIcons[manager]
+  if (!svg) return null
+  return <DefaultIcon svg={svg} muted={iconStyle === "muted"} />
+}
+
 export function CodeBlockCommand({
   pnpm,
   yarn,
   npm,
   bun,
   shadcn,
-  icons = {},
+  icons = EMPTY_ICONS,
   iconStyle = "colored",
   show,
   colorTheme,
@@ -135,18 +156,6 @@ export function CodeBlockCommand({
   }
 
   const currentCommand = commands[active] ?? ""
-  const isMuted = iconStyle === "muted"
-
-  function renderIcon(manager: PackageManager) {
-    if (iconStyle === "none") return null
-
-    const custom = icons[manager]
-    if (custom !== undefined) return custom
-
-    const svg = defaultIcons[manager]
-    if (!svg) return null
-    return <DefaultIcon svg={svg} muted={isMuted} />
-  }
 
   return (
     <div
@@ -173,7 +182,11 @@ export function CodeBlockCommand({
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
-              {renderIcon(manager)}
+              <ManagerIcon
+                manager={manager}
+                iconStyle={iconStyle}
+                icons={icons}
+              />
               {manager}
             </button>
           ))}

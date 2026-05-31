@@ -127,6 +127,7 @@ export function FileTree({
       )}
       role="tree"
       aria-label="File tree"
+      tabIndex={0}
       onKeyDown={handleKeyDown}
       {...props}
     >

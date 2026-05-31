@@ -62,6 +62,7 @@ function OptionCard({
 }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       className={cn(
         "flex min-w-0 flex-col gap-1 rounded-lg border px-4 py-3 text-left text-sm transition-all",
@@ -111,6 +112,7 @@ function CopyCommandButton({ command }: { command: string }) {
 
   return (
     <button
+      type="button"
       onClick={() => {
         navigator.clipboard.writeText(command);
         setCopied(true);
@@ -219,6 +221,7 @@ export function Builder() {
             <SectionHeader icon={Hash} title="Registry Name" />
             <input
               type="text"
+              aria-label="Registry name"
               value={config.name}
               onChange={(e) => update("name", e.target.value)}
               placeholder="my-ui"
@@ -345,6 +348,7 @@ export function Builder() {
             <SectionHeader icon={Globe} title="Homepage" />
             <input
               type="text"
+              aria-label="Homepage URL"
               value={config.homepage}
               onChange={(e) => update("homepage", e.target.value)}
               placeholder="https://my-ui.com"
@@ -357,6 +361,7 @@ export function Builder() {
             <SectionHeader icon={Hash} title="Namespace" />
             <input
               type="text"
+              aria-label="Namespace"
               value={config.namespace}
               onChange={(e) => update("namespace", e.target.value)}
               placeholder="@my-ui"
@@ -430,7 +435,7 @@ export function Builder() {
               </p>
               {config.framework !== "nextjs" && config.docsEngine === "fumadocs" && (
                 <p className="text-amber-600 dark:text-amber-400">
-                  ⚠ Fumadocs requires Next.js — will auto-switch framework.
+                  ⚠ Fumadocs requires Next.js; will auto-switch framework.
                 </p>
               )}
             </div>

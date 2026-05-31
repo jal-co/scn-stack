@@ -54,8 +54,6 @@ const docsNav: NavGroup[] = [
   },
 ];
 
-export { docsNav };
-
 export function DocsSidebar() {
   const pathname = usePathname();
 

@@ -8,6 +8,7 @@ export function CopyButton({ text }: { text: string }) {
 
   return (
     <button
+      type="button"
       className="inline-flex items-center gap-1.5 rounded-md border border-border/50 bg-background/50 px-2.5 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
       onClick={() => {
         navigator.clipboard.writeText(text);

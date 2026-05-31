@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { motion } from "motion/react";
+import { LazyMotion, domAnimation, m } from "motion/react";
 import Marquee from "react-fast-marquee";
 import {
   ArrowRightIcon,
@@ -114,6 +115,7 @@ export default function Home() {
   }, []);
 
   return (
+    <LazyMotion features={domAnimation} strict>
     <div className="flex min-h-svh flex-col">
       {/* Hero */}
       <section className="hero-bg relative overflow-x-clip pb-0">
@@ -226,21 +228,11 @@ export default function Home() {
                       </div>
                     </div>
                 </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/macbook-pro-m4-space-black.svg"
                   alt=""
                   className="macbook-photo-frame"
-                  style={{
-                    display: "block",
-                    filter:
-                      "drop-shadow(0 34px 52px oklch(0.03 0.003 270 / 62%))",
-                    height: "auto",
-                    pointerEvents: "none",
-                    position: "relative",
-                    userSelect: "none",
-                    width: "100%",
-                    zIndex: 1,
-                  }}
                   draggable={false}
                 />
                 <div className="macbook-photo-light" aria-hidden="true" />
@@ -268,7 +260,13 @@ export default function Home() {
                 <Tooltip key={logo.alt}>
                   <TooltipTrigger asChild>
                     <div className="mx-12 flex items-center justify-center">
-                      <img src={logo.src} alt={logo.alt} className="size-10 object-contain" />
+                      <Image
+                        src={logo.src}
+                        alt={logo.alt}
+                        width={40}
+                        height={40}
+                        className="size-10 object-contain"
+                      />
                     </div>
                   </TooltipTrigger>
                   <TooltipContent side="bottom" sideOffset={8}>
@@ -287,7 +285,13 @@ export default function Home() {
                 <Tooltip key={logo.alt}>
                   <TooltipTrigger asChild>
                     <div className="mx-12 flex items-center justify-center">
-                      <img src={logo.src} alt={logo.alt} className="size-10 object-contain" />
+                      <Image
+                        src={logo.src}
+                        alt={logo.alt}
+                        width={40}
+                        height={40}
+                        className="size-10 object-contain"
+                      />
                     </div>
                   </TooltipTrigger>
                   <TooltipContent side="bottom" sideOffset={8}>
@@ -305,7 +309,7 @@ export default function Home() {
       {/* CTA */}
       <section className="cta-section relative bg-zinc-950">
         <div className="cta-fade-overlay" aria-hidden="true" />
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
@@ -333,11 +337,12 @@ export default function Home() {
               <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
-        </motion.div>
+        </m.div>
       </section>
 
       {/* Footer */}
       <SiteFooter />
     </div>
+    </LazyMotion>
   );
 }
