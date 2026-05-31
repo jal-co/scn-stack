@@ -1,0 +1,72 @@
+# Dependabot configuration
+# Docs: https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+#
+# Three ecosystems are kept up to date:
+#   - npm (root)  — the create-scn-stack CLI
+#   - npm (/www)  — the scnstack.sh site (pnpm lockfile)
+#   - github-actions — workflow action versions
+#
+# Updates are grouped to reduce PR noise, use Conventional Commit prefixes so
+# they pass the commit-check CI, and carry labels from the project's label set.
+version: 2
+
+updates:
+  # --- CLI (root) ---
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "chore"
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
+    groups:
+      cli-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # --- Website (www, pnpm) ---
+  - package-ecosystem: "npm"
+    directory: "/www"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "chore"
+      - "website"
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
+    groups:
+      www-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # --- GitHub Actions ---
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "ci"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    groups:
+      actions:
+        patterns:
+          - "*"
