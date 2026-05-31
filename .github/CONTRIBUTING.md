@@ -14,6 +14,17 @@ npm run test:watch   # vitest in watch mode
 
 The CLI lives in `src/`. After `npm run build`, the entry point is `dist/index.js`, which is what `bin: create-scn-stack` points at in `package.json`.
 
+### Git hooks (optional, recommended)
+
+The repo ships a [`pre-commit`](https://pre-commit.com/) config that runs the same [commit-check](https://github.com/commit-check/commit-check) validation as CI — Conventional Commit messages and Conventional Branch names — so you catch problems before pushing. Install once:
+
+```bash
+pipx install pre-commit   # or: pip install pre-commit
+pre-commit install --hook-type commit-msg --hook-type pre-push
+```
+
+The shared policy lives in [`.github/cchk.toml`](cchk.toml), so local hooks and CI stay in sync.
+
 ## Branch naming
 
 Branches **must** follow [Conventional Branch](https://conventional-branch.github.io/) format. This is enforced in CI via [commit-check](https://github.com/commit-check/commit-check-action).
@@ -80,7 +91,7 @@ Commits **must** follow [Conventional Commits](https://www.conventionalcommits.o
 
 - Subject line max **80 characters**
 - Scope is optional but encouraged (e.g., `cli`, `scaffold`, `commands`, `init`)
-- Use `!` after the type/scope for breaking changes: `feat!: drop Node 18 support`
+- Signal breaking changes with `!` after the type/scope (`feat!: drop Node 18 support`) and/or a `BREAKING CHANGE:` footer
 - Merge, revert, and fixup commits are allowed as-is
 
 **Examples:**
@@ -94,6 +105,24 @@ ci: run vitest suite on pull requests
 test: add coverage for monorepo scaffold
 feat!: drop Node 18 support
 ```
+
+## Versioning
+
+Releases follow [Semantic Versioning 2.0.0](https://semver.org/): `MAJOR.MINOR.PATCH`.
+
+| Bump | When | Commit type |
+|------|------|-------------|
+| `MAJOR` | Breaking change to the CLI, flags, or generated output | `!` or `BREAKING CHANGE:` |
+| `MINOR` | Backwards-compatible new functionality | `feat` |
+| `PATCH` | Backwards-compatible bug fix | `fix`, `perf` |
+
+**Rules:**
+
+- The package is currently in **initial development** (`0.y.z`) — the public API is not yet stable, and minor bumps may carry breaking changes until `1.0.0`
+- A released version is never re-published; every release gets a new version and a matching `vX.Y.Z` git tag
+- Pre-releases use a hyphen suffix (`1.0.0-rc.1`); build metadata uses a plus suffix (`1.0.0+20250130`)
+
+Publishing is automated — creating a **GitHub Release** triggers the [publish workflow](workflows/publish.yml), which lints, builds, tests, and runs `npm publish` with provenance. Bump the version in `package.json` first, then publish the release; do not run `npm publish` manually.
 
 ## Issues
 
