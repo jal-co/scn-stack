@@ -1,13 +1,16 @@
-# scn-stack
+<div align="center">
 
-[![npm version](https://shieldcn.dev/npm/create-scn-stack.svg)](https://www.npmjs.com/package/create-scn-stack)
-[![npm downloads](https://shieldcn.dev/npm/dm/create-scn-stack.svg)](https://www.npmjs.com/package/create-scn-stack)
-[![stars](https://shieldcn.dev/github/stars/jal-co/scn-stack.svg)](https://github.com/jal-co/scn-stack)
-[![license](https://shieldcn.dev/github/license/jal-co/scn-stack.svg)](./LICENSE)
+[![scn-stack](https://raw.githubusercontent.com/jal-co/scn-stack/main/www/public/brand/repo-header.png)](https://scnstack.sh)
 
 Scaffold a complete [shadcn component registry](https://ui.shadcn.com/docs/registry) with documentation in minutes.
 
-🌐 [scnstack.sh](https://scnstack.sh)
+[Homepage](https://scnstack.sh) · [Docs](https://scnstack.sh/docs) · [Builder](https://scnstack.sh/builder) · [𝕏](https://x.com/jalcowastaken)
+
+[![scn-stack stats](https://shieldcn.dev/group/github/stars/jal-co/scn-stack+npm/create-scn-stack+npm/dm/create-scn-stack+github/license/jal-co/scn-stack.svg?variant=branded)](https://github.com/jal-co/scn-stack)
+
+[![built with shadcn](https://shieldcn.dev/badge/built%20with-shadcn-000000.svg?logo=shadcnui&logoColor=fff&variant=branded)](https://ui.shadcn.com) [![made by Justin Levine](https://shieldcn.dev/badge/made%20by-Justin%20Levine-171717.svg?variant=branded)](https://justinlevine.me)
+
+</div>
 
 ```bash
 npx create-scn-stack
