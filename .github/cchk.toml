@@ -31,6 +31,9 @@ ignore_authors = ["dependabot[bot]", "renovate[bot]", "copilot[bot]"]
 [branch]
 # https://conventional-branch.github.io/
 conventional_branch = true
+# Skip the branch-name check for bot authors. Dependabot opens PRs from
+# dependabot/* branches that do not match Conventional Branch types.
+ignore_authors = ["dependabot[bot]", "renovate[bot]", "copilot[bot]"]
 allow_branch_types = [
     "feat",
     "feature",
