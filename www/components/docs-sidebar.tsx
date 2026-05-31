@@ -60,7 +60,7 @@ export function DocsSidebar() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-col gap-0.5 px-6 py-6">
+    <nav className="flex flex-col gap-0.5 p-6">
       {docsNav.map((group, i) => (
         <div key={group.title} className="flex flex-col gap-0.5">
           <p

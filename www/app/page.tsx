@@ -141,7 +141,7 @@ export default function Home() {
                 className="group inline-flex items-center gap-2 rounded-md bg-zinc-50 px-5 py-2.5 text-sm font-medium text-zinc-950 transition-colors hover:bg-zinc-200"
               >
                 Get Started
-                <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
               <Link
                 href="/builder"
@@ -188,7 +188,7 @@ export default function Home() {
                     <div className="macbook-desktop">
                       <div className="macbook-menu-bar">
                         <div className="flex items-center gap-3">
-                          <svg className="h-3 w-3 text-zinc-100" viewBox="0 0 17 20" fill="currentColor"><path d="M12.57 10.412c-.02-2.132 1.74-3.152 1.82-3.203-.99-1.45-2.532-1.65-3.082-1.672-1.313-.133-2.563.773-3.23.773-.667 0-1.697-.753-2.787-.733-1.434.02-2.756.834-3.495 2.12-1.49 2.585-.381 6.414 1.07 8.513.71 1.026 1.557 2.18 2.67 2.138 1.07-.043 1.475-.693 2.77-.693 1.294 0 1.656.693 2.787.672 1.153-.02 1.887-1.047 2.593-2.076.818-1.191 1.154-2.345 1.174-2.404-.026-.012-2.252-.864-2.275-3.428l.005-.007zm-2.134-6.304C11.08 3.338 11.51 2.28 11.39 1.213c-.91.037-2.012.607-2.665 1.373-.586.678-1.1 1.762-.962 2.802 1.015.079 2.05-.516 2.673-1.28z"/></svg>
+                          <svg className="size-3 text-zinc-100" viewBox="0 0 17 20" fill="currentColor"><path d="M12.57 10.412c-.02-2.132 1.74-3.152 1.82-3.203-.99-1.45-2.532-1.65-3.082-1.672-1.313-.133-2.563.773-3.23.773-.667 0-1.697-.753-2.787-.733-1.434.02-2.756.834-3.495 2.12-1.49 2.585-.381 6.414 1.07 8.513.71 1.026 1.557 2.18 2.67 2.138 1.07-.043 1.475-.693 2.77-.693 1.294 0 1.656.693 2.787.672 1.153-.02 1.887-1.047 2.593-2.076.818-1.191 1.154-2.345 1.174-2.404-.026-.012-2.252-.864-2.275-3.428l.005-.007zm-2.134-6.304C11.08 3.338 11.51 2.28 11.39 1.213c-.91.037-2.012.607-2.665 1.373-.586.678-1.1 1.762-.962 2.802 1.015.079 2.05-.516 2.673-1.28z"/></svg>
                           <span className="font-medium text-zinc-100">Terminal</span>
                           <span>File</span>
                           <span>Edit</span>
@@ -210,9 +210,9 @@ export default function Home() {
                         >
                           <TerminalHeader className="grid grid-cols-3 items-center px-3 py-1.5">
                             <div className="flex items-center gap-1.5">
-                              <div className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
-                              <div className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
-                              <div className="h-2.5 w-2.5 rounded-full bg-[#27c93f]" />
+                              <div className="size-2.5 rounded-full bg-[#ff5f56]" />
+                              <div className="size-2.5 rounded-full bg-[#ffbd2e]" />
+                              <div className="size-2.5 rounded-full bg-[#27c93f]" />
                             </div>
                             <TerminalTitle className="justify-center text-xs">
                               create-scn-stack
@@ -268,7 +268,7 @@ export default function Home() {
                 <Tooltip key={logo.alt}>
                   <TooltipTrigger asChild>
                     <div className="mx-12 flex items-center justify-center">
-                      <img src={logo.src} alt={logo.alt} className="h-10 w-10 object-contain" />
+                      <img src={logo.src} alt={logo.alt} className="size-10 object-contain" />
                     </div>
                   </TooltipTrigger>
                   <TooltipContent side="bottom" sideOffset={8}>
@@ -287,7 +287,7 @@ export default function Home() {
                 <Tooltip key={logo.alt}>
                   <TooltipTrigger asChild>
                     <div className="mx-12 flex items-center justify-center">
-                      <img src={logo.src} alt={logo.alt} className="h-10 w-10 object-contain" />
+                      <img src={logo.src} alt={logo.alt} className="size-10 object-contain" />
                     </div>
                   </TooltipTrigger>
                   <TooltipContent side="bottom" sideOffset={8}>
@@ -330,7 +330,7 @@ export default function Home() {
               className="group inline-flex items-center gap-2 rounded-md bg-zinc-50 px-5 py-2.5 text-sm font-medium text-zinc-950 transition-colors hover:bg-zinc-200"
             >
               Get Started
-              <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
         </motion.div>

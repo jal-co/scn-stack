@@ -74,7 +74,7 @@ function OptionCard({
         <div className="flex min-w-0 items-center gap-2">
           {icon && (
             /* eslint-disable-next-line @next/next/no-img-element */
-            <img src={icon} alt="" className="h-4 w-4 shrink-0" />
+            <img src={icon} alt="" className="size-4 shrink-0" />
           )}
           <span className="min-w-0 truncate font-medium">{title}</span>
         </div>
@@ -100,7 +100,7 @@ function SectionHeader({
 }) {
   return (
     <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-      <Icon className="h-3.5 w-3.5" />
+      <Icon className="size-3.5" />
       {title}
     </div>
   );
@@ -120,11 +120,11 @@ function CopyCommandButton({ command }: { command: string }) {
     >
       {copied ? (
         <>
-          <Check className="h-3 w-3" /> Copied
+          <Check className="size-3" /> Copied
         </>
       ) : (
         <>
-          <Copy className="h-3 w-3" /> Copy
+          <Copy className="size-3" /> Copy
         </>
       )}
     </button>
@@ -203,7 +203,7 @@ export function Builder() {
               href="/"
               className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
-              <ArrowLeft className="h-3 w-3" />
+              <ArrowLeft className="size-3" />
               Back
             </Link>
             <h1 className="text-2xl font-bold tracking-tight">

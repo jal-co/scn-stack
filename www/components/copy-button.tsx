@@ -16,7 +16,7 @@ export function CopyButton({ text }: { text: string }) {
       }}
       title="Copy to clipboard"
     >
-      {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+      {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
     </button>
   );
 }
