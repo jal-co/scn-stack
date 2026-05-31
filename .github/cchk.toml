@@ -1,0 +1,49 @@
+# commit-check policy for scn-stack.
+#
+# Aligns commit-check with the conventions documented in
+# .github/CONTRIBUTING.md and the branch prefixes handled by
+# .github/labeler.yml. Without this, commit-check's built-in defaults reject
+# valid branch types such as docs/, refactor/, perf/, style/, test/, ci/, and
+# build/, even though the project documents them as allowed.
+
+[commit]
+# https://www.conventionalcommits.org
+conventional_commits = true
+subject_max_length = 80
+allow_commit_types = [
+    "feat",
+    "fix",
+    "docs",
+    "style",
+    "refactor",
+    "perf",
+    "test",
+    "build",
+    "ci",
+    "chore",
+    "revert",
+]
+allow_merge_commits = true
+allow_revert_commits = true
+# Skip checks for bot authors so automated PRs are not blocked.
+ignore_authors = ["dependabot[bot]", "renovate[bot]", "copilot[bot]"]
+
+[branch]
+# https://conventional-branch.github.io/
+conventional_branch = true
+allow_branch_types = [
+    "feat",
+    "feature",
+    "fix",
+    "bugfix",
+    "hotfix",
+    "docs",
+    "refactor",
+    "perf",
+    "style",
+    "test",
+    "ci",
+    "build",
+    "chore",
+    "release",
+]
