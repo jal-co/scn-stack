@@ -1,13 +1,17 @@
 # Dependabot configuration
 # Docs: https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 #
-# Three ecosystems are kept up to date:
+# Security-only mode: `open-pull-requests-limit: 0` disables routine version-
+# update PRs for each ecosystem, while Dependabot security updates (enabled in
+# the repo settings) still open PRs for actual advisories. This keeps the noise
+# down while preserving automated patching for real vulnerabilities.
+#
+# Three ecosystems are watched:
 #   - npm (root)  — the create-scn-stack CLI
 #   - npm (/www)  — the scnstack.sh site (pnpm lockfile)
 #   - github-actions — workflow action versions
 #
-# Updates are grouped to reduce PR noise, use Conventional Commit prefixes so
-# they pass the commit-check CI, and carry labels from the project's label set.
+# Commit prefixes / labels keep security PRs passing commit-check and labeled.
 version: 2
 
 updates:
@@ -17,20 +21,14 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
+    # Security updates only — no routine version-bump PRs.
+    open-pull-requests-limit: 0
     labels:
       - "chore"
     commit-message:
       prefix: "chore"
       prefix-development: "chore"
       include: "scope"
-    groups:
-      cli-dependencies:
-        patterns:
-          - "*"
-        update-types:
-          - "minor"
-          - "patch"
 
   # --- Website (www, pnpm) ---
   - package-ecosystem: "npm"
@@ -38,7 +36,8 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
+    # Security updates only — no routine version-bump PRs.
+    open-pull-requests-limit: 0
     labels:
       - "chore"
       - "website"
@@ -46,13 +45,6 @@ updates:
       prefix: "chore"
       prefix-development: "chore"
       include: "scope"
-    groups:
-      www-dependencies:
-        patterns:
-          - "*"
-        update-types:
-          - "minor"
-          - "patch"
 
   # --- GitHub Actions ---
   - package-ecosystem: "github-actions"
@@ -60,13 +52,10 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
+    # Security updates only — no routine version-bump PRs.
+    open-pull-requests-limit: 0
     labels:
       - "ci"
     commit-message:
       prefix: "ci"
       include: "scope"
-    groups:
-      actions:
-        patterns:
-          - "*"
