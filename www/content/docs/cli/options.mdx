@@ -12,6 +12,10 @@ description: All CLI prompts, flags, and commands.
 | `npx create-scn-stack add-component <name>` | Add a component to an existing registry |
 | `npx create-scn-stack add-hook <name>` | Add a hook to an existing registry |
 | `npx create-scn-stack add-block <name>` | Add a block to an existing registry |
+| `npx create-scn-stack add-theme <name>` | Add a theme to an existing registry |
+| `npx create-scn-stack remove <name>` | Remove an item (source + registry + docs) |
+| `npx create-scn-stack list` | List everything in the registry |
+| `npx create-scn-stack build` | Build the registry output (`public/r/`) |
 
 ## Prompts
 
@@ -116,6 +120,82 @@ This creates:
 | Flag | Description |
 |------|-------------|
 | `--description, -d` | Block description |
+
+## add-theme
+
+Add a distributable theme to an existing registry project:
+
+```bash
+npx create-scn-stack add-theme midnight
+npx create-scn-stack add-theme sunset -d "A warm, high-contrast theme."
+```
+
+This creates:
+- Theme CSS in `registry/<style>/themes/<name>.css` (light + dark tokens)
+- A `registry/<style>/themes/registry.json` (created if needed)
+- Updates root `registry.json` include array to reference the themes registry
+- Doc page in `content/docs/themes/<name>.mdx`
+- Updates `meta.json` navigation
+
+Themes are registered as `theme-<name>` (matching shadcn convention), so a
+theme named `midnight` installs with `npx shadcn add @you/theme-midnight`.
+
+| Flag | Description |
+|------|-------------|
+| `--description, -d` | Theme description |
+
+## remove
+
+Remove an item from an existing registry project. This is the full reverse
+of any `add-*` command:
+
+```bash
+npx create-scn-stack remove button
+npx create-scn-stack remove use-toggle --yes
+```
+
+It finds the item across the root registry and any `include`d per-directory
+registries, then:
+- Deletes the item's source file(s)
+- Removes the entry from the relevant `registry.json`
+- Deletes the matching doc page and prunes it from `meta.json`
+
+By default it prints exactly what will be deleted and asks for confirmation.
+Pass `--yes` to skip the prompt (useful in scripts).
+
+| Flag | Description |
+|------|-------------|
+| `-y, --yes` | Skip the confirmation prompt |
+
+## list
+
+List everything registered in the current project, grouped by kind:
+
+```bash
+npx create-scn-stack list
+npx create-scn-stack list --type hook
+npx create-scn-stack list --json
+```
+
+`--json` prints a machine-readable array (name, type, title, description)
+and suppresses all branding — ideal for piping into other tools.
+
+| Flag | Values |
+|------|--------|
+| `--type, -t <type>` | `ui` \| `hook` \| `block` \| `theme` |
+| `--json` | Output machine-readable JSON |
+
+## build
+
+Build the registry output to `public/r/`:
+
+```bash
+npx create-scn-stack build
+```
+
+A convenience passthrough that runs your project's `registry:build` script
+(or `shadcn build` directly if no script is defined). The package manager is
+detected from the project's lockfile.
 
 ## Framework Options
 
