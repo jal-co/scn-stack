@@ -99,15 +99,34 @@ my-registry/
 └── components.json                # shadcn config
 ```
 
-## Adding Components, Hooks & Blocks
+## Adding Components, Hooks, Blocks & Themes
 
 ```bash
 npx create-scn-stack add-component input -d "An input component."
 npx create-scn-stack add-hook use-toggle -d "A toggle state hook."
 npx create-scn-stack add-block login-form -d "A login form block."
+npx create-scn-stack add-theme midnight -d "A dark, dim theme."
 ```
 
 Each command creates the source file, updates `registry.json`, and generates a docs page.
+
+## Managing Your Registry
+
+```bash
+npx create-scn-stack list                 # everything in the registry
+npx create-scn-stack list --type hook     # filter by ui | hook | block | theme
+npx create-scn-stack list --json          # machine-readable output
+
+npx create-scn-stack remove button        # full reverse of any add: source +
+                                          # registry entry + docs page, gated
+                                          # behind a confirm (skip with --yes)
+
+npx create-scn-stack build                # build the registry output (public/r/)
+```
+
+`remove` finds the item across the root registry and any `include`d
+per-directory registries, deletes its source files, prunes the registry
+entry, and removes the matching docs page (and its `meta.json` entry).
 
 ## Users Install Your Components
 

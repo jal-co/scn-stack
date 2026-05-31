@@ -7,6 +7,10 @@ import {
 } from "./commands/add-component.js";
 import { addHook, parseAddHookArgs } from "./commands/add-hook.js";
 import { addBlock, parseAddBlockArgs } from "./commands/add-block.js";
+import { addTheme, parseAddThemeArgs } from "./commands/add-theme.js";
+import { remove, parseRemoveArgs } from "./commands/remove.js";
+import { list, parseListArgs } from "./commands/list.js";
+import { build } from "./commands/build.js";
 import { init, parseInitArgs } from "./commands/init.js";
 
 async function main() {
@@ -28,6 +32,29 @@ async function main() {
   if (command === "add-block") {
     const args = parseAddBlockArgs(process.argv);
     await addBlock(args);
+    return;
+  }
+
+  if (command === "add-theme") {
+    const args = parseAddThemeArgs(process.argv);
+    await addTheme(args);
+    return;
+  }
+
+  if (command === "remove") {
+    const args = parseRemoveArgs(process.argv);
+    await remove(args);
+    return;
+  }
+
+  if (command === "list") {
+    const args = parseListArgs(process.argv);
+    await list(args);
+    return;
+  }
+
+  if (command === "build") {
+    await build();
     return;
   }
 

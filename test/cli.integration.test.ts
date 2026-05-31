@@ -206,3 +206,85 @@ describe("add-component", () => {
     ).toThrow();
   });
 });
+
+describe("add-theme / remove / list", () => {
+  function scaffoldFixture(): string {
+    work = mkdtempSync(join(tmpdir(), "scn-cli-"));
+    runCli(["demo-ui", "--yes", "--framework", "nextjs"], work);
+    return join(work, "demo-ui");
+  }
+
+  const uiItems = (root: string) =>
+    JSON.parse(
+      readFileSync(join(root, "registry/new-york/ui/registry.json"), "utf-8")
+    ).items.map((i: { name: string }) => i.name);
+
+  it("add-theme registers a theme-<name> item and css file", () => {
+    const root = scaffoldFixture();
+    runCli(["add-theme", "midnight", "-d", "A dim theme."], root);
+
+    expect(
+      existsSync(join(root, "registry/new-york/themes/midnight.css"))
+    ).toBe(true);
+
+    const themes = JSON.parse(
+      readFileSync(
+        join(root, "registry/new-york/themes/registry.json"),
+        "utf-8"
+      )
+    ).items.map((i: { name: string }) => i.name);
+    expect(themes).toContain("theme-midnight");
+  });
+
+  it("list --json reports every registered item", () => {
+    const root = scaffoldFixture();
+    const out = runCli(["list", "--json"], root);
+    const names = JSON.parse(out).map((i: { name: string }) => i.name);
+    expect(names).toEqual(
+      expect.arrayContaining(["button", "card", "badge"])
+    );
+  });
+
+  it("list --type filters by kind", () => {
+    const root = scaffoldFixture();
+    runCli(["add-hook", "use-toggle", "-d", "x"], root);
+    const out = runCli(["list", "--type", "hook", "--json"], root);
+    const items = JSON.parse(out);
+    expect(items.every((i: { type: string }) => i.type === "registry:hook")).toBe(
+      true
+    );
+    expect(items.map((i: { name: string }) => i.name)).toContain("use-toggle");
+  });
+
+  it("remove --yes deletes source, registry entry, and docs page", () => {
+    const root = scaffoldFixture();
+    expect(uiItems(root)).toContain("button");
+
+    runCli(["remove", "button", "--yes"], root);
+
+    expect(existsSync(join(root, "registry/new-york/ui/button.tsx"))).toBe(
+      false
+    );
+    expect(uiItems(root)).not.toContain("button");
+
+    if (existsSync(join(root, "content/docs"))) {
+      expect(
+        existsSync(join(root, "content/docs/components/button.mdx"))
+      ).toBe(false);
+    }
+  });
+
+  it("remove fails for an unknown item", () => {
+    const root = scaffoldFixture();
+    expect(() => runCli(["remove", "nope", "--yes"], root)).toThrow();
+  });
+
+  it("add then remove round-trips back to the original item set", () => {
+    const root = scaffoldFixture();
+    const before = uiItems(root).sort();
+    runCli(["add-component", "slider", "-d", "A slider."], root);
+    expect(uiItems(root)).toContain("slider");
+    runCli(["remove", "slider", "--yes"], root);
+    expect(uiItems(root).sort()).toEqual(before);
+  });
+});

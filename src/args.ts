@@ -125,6 +125,10 @@ export function printHelp(): void {
     npx create-scn-stack add-component [name] [options]
     npx create-scn-stack add-hook [name] [options]
     npx create-scn-stack add-block [name] [options]
+    npx create-scn-stack add-theme [name] [options]
+    npx create-scn-stack remove [name] [options]
+    npx create-scn-stack list [options]
+    npx create-scn-stack build
 
   Commands:
     (default)               Scaffold a new registry project
@@ -132,6 +136,10 @@ export function printHelp(): void {
     add-component [name]    Add a component to an existing registry
     add-hook [name]         Add a hook to an existing registry
     add-block [name]        Add a block to an existing registry
+    add-theme [name]        Add a theme to an existing registry
+    remove [name]           Remove an item (source + registry + docs)
+    list                    List everything in the registry
+    build                   Build the registry output (public/r/)
 
   Scaffold Options:
     --name <name>           Registry name (e.g., my-ui)
@@ -160,8 +168,15 @@ export function printHelp(): void {
     --no-docs               Skip documentation
     -y, --yes               Skip prompts, use defaults
 
-  Add Component/Hook/Block Options:
+  Add Component/Hook/Block/Theme Options:
     --description, -d       Description
+
+  Remove Options:
+    -y, --yes               Skip the confirmation prompt
+
+  List Options:
+    --type, -t <type>       Filter: ui | hook | block | theme
+    --json                  Output machine-readable JSON
 
   Examples:
     npx create-scn-stack
@@ -173,5 +188,10 @@ export function printHelp(): void {
     npx create-scn-stack add-component dialog -d "A modal dialog component."
     npx create-scn-stack add-hook use-toggle -d "A toggle state hook."
     npx create-scn-stack add-block login-form -d "A login form block."
+    npx create-scn-stack add-theme midnight -d "A dark, dim theme."
+    npx create-scn-stack remove button
+    npx create-scn-stack list --type hook
+    npx create-scn-stack list --json
+    npx create-scn-stack build
 `);
 }
