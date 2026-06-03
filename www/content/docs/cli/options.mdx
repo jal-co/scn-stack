@@ -13,9 +13,11 @@ description: All CLI prompts, flags, and commands.
 | `npx create-scn-stack add-hook <name>` | Add a hook to an existing registry |
 | `npx create-scn-stack add-block <name>` | Add a block to an existing registry |
 | `npx create-scn-stack add-theme <name>` | Add a theme to an existing registry |
+| `npx create-scn-stack add-file <name>` | Add an arbitrary file item (conventions, CI, agent instructions) |
 | `npx create-scn-stack remove <name>` | Remove an item (source + registry + docs) |
 | `npx create-scn-stack list` | List everything in the registry |
 | `npx create-scn-stack build` | Build the registry output (`public/r/`) |
+| `npx create-scn-stack eject` | Inline `shadcn/tailwind.css`, drop the `shadcn` dependency |
 
 ## Prompts
 
@@ -25,9 +27,11 @@ When you run `npx create-scn-stack`, you'll be guided through these options:
 |--------|-------------|---------|
 | **Registry name** | Identifier for your registry (e.g., `my-ui`) | `my-ui` |
 | **Project location** | Folder to create the registry in | `./<registry-name>` |
+| **Distribution** | Hosted (build + host) or [GitHub source registry](/docs/cli/github-registries) | `Hosted` |
+| **GitHub repo** | `owner/repo` slug (GitHub target only) | — |
 | **Style** | shadcn/ui style variant | `New York` |
 | **Homepage** | URL where the registry will be hosted | `https://<name>.com` |
-| **Framework** | Web framework for the project | `Next.js` |
+| **Framework** | Web framework for the project (hosted only) | `Next.js` |
 | **Documentation** | Docs engine to include | `Fumadocs` |
 | **Starter components** | Pre-built example components | `Button, Card, Badge` |
 | **Namespace** | Registry namespace for `@name/component` installs | `@<name>` |
@@ -50,6 +54,9 @@ npx create-scn-stack my-ui --yes --no-skills
 | `--directory <path>` | Project location |
 | `--style <style>` | `new-york` \| `default` |
 | `--homepage <url>` | Registry homepage URL |
+| `--target <target>` | `hosted` \| `github` (default: `hosted`) |
+| `--github [owner/repo]` | Shorthand for `--target github` — see [GitHub registries](/docs/cli/github-registries) |
+| `--github-slug <slug>` | `owner/repo` for GitHub source registries |
 | `--framework <fw>` | `nextjs` \| `vite` \| `react-router` \| `tanstack-start` |
 | `--docs <engine>` | `fumadocs` \| `mintlify` \| `starlight` \| `none` |
 | `--components <set>` | `essentials` \| `minimal` \| `none` |

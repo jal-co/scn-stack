@@ -1,0 +1,49 @@
+---
+title: Eject
+description: Inline shadcn/tailwind.css and remove the shadcn dependency.
+---
+
+When shadcn added support for both Radix and Base UI, it introduced
+`shadcn/tailwind.css` — a small shared dependency holding custom Tailwind
+variants (`data-open`, `data-closed`) and utilities (`no-scrollbar`). `init`
+adds `@import "shadcn/tailwind.css"` to your global CSS. It's tree-shaken in
+production and resolved at build time, like `tw-animate-css`.
+
+`shadcn eject` inlines that CSS into your global stylesheet and removes the
+`shadcn` dependency, so your project no longer depends on the package for it.
+
+```bash
+npx create-scn-stack eject
+```
+
+This is a package-manager-aware passthrough to `shadcn@latest eject` with a
+confirmation step. Before:
+
+```css
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+```
+
+After:
+
+```css
+@import "tailwindcss";
+@import "tw-animate-css";
+/* ejected from shadcn@4.8.3 */
+@theme inline { /* … */ }
+@custom-variant data-open { /* … */ }
+```
+
+## Monorepos
+
+Run it from (or point it at) the workspace that holds your `components.json`
+and global CSS file:
+
+```bash
+npx create-scn-stack eject -c packages/ui
+```
+
+| Flag | Description |
+|------|-------------|
+| `-c, --cwd <workspace>` | Workspace containing `components.json` + global CSS. |
