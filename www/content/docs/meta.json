@@ -2,6 +2,8 @@
   "title": "scn-stack",
   "pages": [
     "index",
+    "---Distribution---",
+    "...distribution",
     "---CLI---",
     "...cli",
     "---Output---",

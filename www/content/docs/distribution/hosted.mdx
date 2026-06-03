@@ -1,0 +1,65 @@
+---
+title: Hosted Registry
+description: The classic shadcn build-and-host model — a framework app builds your registry JSON and serves it from a URL.
+---
+
+A **hosted registry** is the default distribution model. `create-scn-stack`
+scaffolds a framework app that builds your `registry.json` into static JSON
+files and serves them from a homepage URL. Users install via a namespace
+handle or the full registry URL.
+
+```bash
+# Default target — no extra flags needed
+npx create-scn-stack my-ui
+```
+
+Pick hosted when you want a branded docs site, live component previews, v0
+integration, and full control over where the registry lives. If you only want
+to share items from a public repo with no build step, use a
+[GitHub source registry](/docs/distribution/github-registries) instead.
+
+## How it works
+
+1. You author items in `registry/<style>/ui/` and declare them in
+   `registry.json` (via the `include` pattern).
+2. `shadcn build` (or the `registry:build` script) generates static JSON files
+   into `public/r/`.
+3. Your framework app serves those files from your homepage URL.
+4. Users install with the shadcn CLI.
+
+```bash
+# Build the registry output
+npm run registry:build
+
+# Users install via namespace…
+npx shadcn@latest add @my-ui/button
+
+# …or the full URL
+npx shadcn@latest add https://my-ui.com/r/button.json
+```
+
+## What you get
+
+A hosted scaffold wires up the pieces a GitHub source registry intentionally
+skips:
+
+- A **framework** app shell — see [Frameworks](/docs/frameworks)
+  (Next.js, Vite, React Router, TanStack Start).
+- A **docs engine** — see [Docs Engines](/docs/docs-engines)
+  (Fumadocs, Mintlify, Starlight).
+- A `registry:build` script and `public/r/` output.
+- A **namespace** (e.g. `@my-ui`) for short install handles.
+- Component previews, v0 integration, and `llms.txt`.
+
+See [Project Structure](/docs/project-structure) for the full layout, and the
+[options reference](/docs/cli/options) for every prompt and flag.
+
+## Publishing
+
+Deploy the app anywhere (Vercel, Netlify, Cloudflare, self-hosted). Each time
+you add or change an item, rebuild and redeploy so `public/r/` stays in sync.
+
+## Hosted vs GitHub
+
+For a side-by-side comparison of the two distribution models, see
+[Hosted vs GitHub](/docs/distribution/github-registries#hosted-vs-github).

@@ -27,7 +27,7 @@ When you run `npx create-scn-stack`, you'll be guided through these options:
 |--------|-------------|---------|
 | **Registry name** | Identifier for your registry (e.g., `my-ui`) | `my-ui` |
 | **Project location** | Folder to create the registry in | `./<registry-name>` |
-| **Distribution** | Hosted (build + host) or [GitHub source registry](/docs/cli/github-registries) | `Hosted` |
+| **Distribution** | [Hosted](/docs/distribution/hosted) (build + host) or [GitHub source registry](/docs/distribution/github-registries) | `Hosted` |
 | **GitHub repo** | `owner/repo` slug (GitHub target only) | — |
 | **Style** | shadcn/ui style variant | `New York` |
 | **Homepage** | URL where the registry will be hosted | `https://<name>.com` |
@@ -55,7 +55,7 @@ npx create-scn-stack my-ui --yes --no-skills
 | `--style <style>` | `new-york` \| `default` |
 | `--homepage <url>` | Registry homepage URL |
 | `--target <target>` | `hosted` \| `github` (default: `hosted`) |
-| `--github [owner/repo]` | Shorthand for `--target github` — see [GitHub registries](/docs/cli/github-registries) |
+| `--github [owner/repo]` | Shorthand for `--target github` — see [GitHub registries](/docs/distribution/github-registries) |
 | `--github-slug <slug>` | `owner/repo` for GitHub source registries |
 | `--framework <fw>` | `nextjs` \| `vite` \| `react-router` \| `tanstack-start` |
 | `--docs <engine>` | `fumadocs` \| `mintlify` \| `starlight` \| `none` |

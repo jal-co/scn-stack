@@ -59,7 +59,7 @@ Turn a public GitHub repo into a registry. Users install with `npx shadcn add <o
 npx create-scn-stack my-toolkit --github acme/toolkit
 ```
 
-Commit and push is the publish step. See [GitHub Registries](https://scnstack.sh/docs/cli/github-registries).
+Commit and push is the publish step. See [GitHub Registries](https://scnstack.sh/docs/distribution/github-registries).
 
 ### Add to an existing project
 
