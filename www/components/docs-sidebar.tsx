@@ -23,9 +23,21 @@ const docsNav: NavGroup[] = [
     ],
   },
   {
+    title: "Distribution",
+    items: [
+      { title: "Hosted Registry", href: "/docs/distribution/hosted" },
+      {
+        title: "GitHub Source Registry",
+        href: "/docs/distribution/github-registries",
+      },
+    ],
+  },
+  {
     title: "CLI",
     items: [
       { title: "Options Reference", href: "/docs/cli/options" },
+      { title: "Init Command", href: "/docs/cli/init" },
+      { title: "Eject", href: "/docs/cli/eject" },
       { title: "Using the Prompts", href: "/docs/cli/prompts" },
     ],
   },
