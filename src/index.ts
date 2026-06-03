@@ -8,6 +8,8 @@ import {
 import { addHook, parseAddHookArgs } from "./commands/add-hook.js";
 import { addBlock, parseAddBlockArgs } from "./commands/add-block.js";
 import { addTheme, parseAddThemeArgs } from "./commands/add-theme.js";
+import { addFile, parseAddFileArgs } from "./commands/add-file.js";
+import { eject, parseEjectArgs } from "./commands/eject.js";
 import { remove, parseRemoveArgs } from "./commands/remove.js";
 import { list, parseListArgs } from "./commands/list.js";
 import { build } from "./commands/build.js";
@@ -38,6 +40,18 @@ async function main() {
   if (command === "add-theme") {
     const args = parseAddThemeArgs(process.argv);
     await addTheme(args);
+    return;
+  }
+
+  if (command === "add-file") {
+    const args = parseAddFileArgs(process.argv);
+    await addFile(args);
+    return;
+  }
+
+  if (command === "eject") {
+    const args = parseEjectArgs(process.argv);
+    await eject(args);
     return;
   }
 

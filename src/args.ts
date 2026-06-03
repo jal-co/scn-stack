@@ -6,6 +6,7 @@ import type {
   PackageManager,
   Style,
   BaseLibrary,
+  RegistryTarget,
 } from "./types.js";
 
 export interface CliArgs {
@@ -13,6 +14,8 @@ export interface CliArgs {
   directory?: string;
   style?: Style;
   homepage?: string;
+  target?: RegistryTarget;
+  githubSlug?: string;
   framework?: Framework;
   docs?: DocsEngine;
   components?: StarterComponents;
@@ -31,6 +34,7 @@ const COMPONENTS = new Set(["essentials", "minimal", "none"]);
 const STYLES = new Set(["new-york", "default"]);
 const PMS = new Set(["pnpm", "npm", "yarn", "bun"]);
 const BASES = new Set(["radix", "base"]);
+const TARGETS = new Set(["hosted", "github"]);
 
 export function parseArgs(argv: string[]): CliArgs {
   const args: CliArgs = {};
@@ -64,6 +68,23 @@ export function parseArgs(argv: string[]): CliArgs {
         break;
       case "--homepage":
         args.homepage = next;
+        i++;
+        break;
+      case "--target":
+        if (next && TARGETS.has(next)) args.target = next as RegistryTarget;
+        i++;
+        break;
+      case "--github":
+        // Shorthand: --github [owner/repo]
+        args.target = "github";
+        if (next && !next.startsWith("-") && next.includes("/")) {
+          args.githubSlug = next;
+          i++;
+        }
+        break;
+      case "--github-slug":
+        args.githubSlug = next;
+        args.target = "github";
         i++;
         break;
       case "--framework":
@@ -128,7 +149,9 @@ export function printHelp(): void {
     npx create-scn-stack add-theme [name] [options]
     npx create-scn-stack remove [name] [options]
     npx create-scn-stack list [options]
+    npx create-scn-stack add-file [name] [options]
     npx create-scn-stack build
+    npx create-scn-stack eject [options]
 
   Commands:
     (default)               Scaffold a new registry project
@@ -137,15 +160,20 @@ export function printHelp(): void {
     add-hook [name]         Add a hook to an existing registry
     add-block [name]        Add a block to an existing registry
     add-theme [name]        Add a theme to an existing registry
+    add-file [name]         Add an arbitrary file item (conventions, CI, …)
     remove [name]           Remove an item (source + registry + docs)
     list                    List everything in the registry
     build                   Build the registry output (public/r/)
+    eject                   Inline shadcn/tailwind.css, drop the shadcn dep
 
   Scaffold Options:
     --name <name>           Registry name (e.g., my-ui)
     --directory <path>      Project location (default: ./<name>)
     --style <style>         new-york | default (default: new-york)
     --homepage <url>        Registry homepage URL
+    --target <target>       hosted | github (default: hosted)
+    --github [owner/repo]   Shorthand for --target github (no build/host)
+    --github-slug <slug>    owner/repo for GitHub source registries
     --framework <fw>        nextjs | vite | react-router | tanstack-start
     --docs <engine>         fumadocs | mintlify | starlight | none
     --components <set>      essentials | minimal | none
@@ -182,6 +210,7 @@ export function printHelp(): void {
     npx create-scn-stack
     npx create-scn-stack my-ui --yes
     npx create-scn-stack my-ui --framework nextjs --docs fumadocs
+    npx create-scn-stack my-ui --github acme/toolkit --yes
     npx create-scn-stack init
     npx create-scn-stack init --name my-ui --namespace @my-ui --yes
     npx create-scn-stack add-component input
@@ -189,6 +218,8 @@ export function printHelp(): void {
     npx create-scn-stack add-hook use-toggle -d "A toggle state hook."
     npx create-scn-stack add-block login-form -d "A login form block."
     npx create-scn-stack add-theme midnight -d "A dark, dim theme."
+    npx create-scn-stack add-file project-conventions --file AGENTS.md --target ~/AGENTS.md
+    npx create-scn-stack eject
     npx create-scn-stack remove button
     npx create-scn-stack list --type hook
     npx create-scn-stack list --json

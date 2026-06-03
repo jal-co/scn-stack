@@ -3,6 +3,7 @@ import pc from "picocolors";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { writeFile, ensureDir, titleCase, registryHasItem } from "../utils.js";
+import { githubSlugFromHomepage } from "../registry-item.js";
 import { printHeaderCompact, printSummaryBox, printFooter, labelValue } from "../brand.js";
 
 interface AddComponentArgs {
@@ -193,9 +194,15 @@ export type { ${componentName}Props }
       ? Object.keys(componentsJson.registries)[0]
       : null;
 
-    const installCmd = namespace
-      ? `npx shadcn@latest add ${namespace}/${name}`
-      : `npx shadcn@latest add https://${registryName}.com/r/${name}.json`;
+    const homepage =
+      (registry.homepage as string | undefined) ||
+      `https://${registryName}.com`;
+    const slug = githubSlugFromHomepage(homepage);
+    const installCmd = slug
+      ? `npx shadcn@latest add ${slug}/${name}`
+      : namespace
+        ? `npx shadcn@latest add ${namespace}/${name}`
+        : `npx shadcn@latest add ${homepage}/r/${name}.json`;
 
     const docContent = `---
 title: ${componentTitle}

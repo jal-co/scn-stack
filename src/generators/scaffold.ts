@@ -26,6 +26,7 @@ import { generateTheme, addThemeInclude } from "./theme.js";
 import { generateV0 } from "./v0.js";
 import { generatePreview } from "./preview.js";
 import { generateConfig } from "./config.js";
+import { generateGithubRegistry } from "./github-registry.js";
 import {
   labelValue,
   printStepHeader,
@@ -46,6 +47,15 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
       p.cancel("Setup cancelled.");
       process.exit(0);
     }
+  }
+
+  // GitHub source registries take a separate, minimal path: no framework
+  // app, no docs site, no build script, no dependency install. The repo
+  // itself is the registry.
+  if (config.target === "github") {
+    config.directory = targetDir;
+    await scaffoldGithubRegistry(config);
+    return;
   }
 
   // Update config with resolved directory
@@ -316,6 +326,84 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
   // p.outro closes the prompt frame and prints the final line.
   p.outro(
     `${pc.bold(config.name)} ready with ${frameworkLabel}${docsLabel ? ` + ${docsLabel}` : ""} in ${pc.dim(formatDuration(elapsed))} 🎉`
+  );
+}
+
+async function scaffoldGithubRegistry(config: ProjectConfig): Promise<void> {
+  const skipSideEffects = process.env.SCN_STACK_SKIP_INSTALL === "1";
+  const startedAt = Date.now();
+  const slug = config.githubSlug || `<owner>/${config.registryName}`;
+
+  printStepHeader(
+    1,
+    skipSideEffects ? 2 : 3,
+    "GitHub source registry",
+    `${config.directory} · no build, no host`
+  );
+
+  await p.tasks([
+    {
+      title: "Writing registry.json, components.json and source files",
+      task: async () => {
+        ensureDir(config.directory);
+        generateGithubRegistry(config);
+        return "Source registry generated";
+      },
+    },
+    {
+      title: "Generating theme, llms.txt, config, AI skill",
+      task: async () => {
+        generateTheme(config);
+        addThemeInclude(config);
+        generateLlmsTxt(config);
+        if (config.installRegistrySkill) generateSkill(config);
+        generateConfig(config);
+        return "Extras ready (theme, llms.txt, config)";
+      },
+    },
+  ]);
+
+  if (!skipSideEffects) {
+    printStepHeader(2, 3, "Finalize", "git init");
+    await p.tasks([
+      {
+        title: "Initializing git repository",
+        task: async () => {
+          try {
+            runCommand("git init", config.directory, true);
+            runCommand("git add -A", config.directory, true);
+            runCommand(
+              'git commit -m "feat: initial GitHub source registry from create-scn-stack"',
+              config.directory,
+              true
+            );
+            return "Git repository initialized";
+          } catch {
+            return "Git init skipped";
+          }
+        },
+      },
+    ]);
+  } else {
+    note("git init skipped (SCN_STACK_SKIP_INSTALL=1)");
+  }
+
+  const elapsed = Date.now() - startedAt;
+
+  const summaryLines = [
+    labelValue("Target:", "GitHub source registry"),
+    labelValue("Repo slug:", pc.cyan(slug)),
+    "",
+    pc.dim("Push this repo to GitHub, then users install with:"),
+    `${pc.cyan(`npx shadcn@latest add ${slug}/button`)}`,
+    "",
+    pc.dim("No build step. Commit + push is the publish step."),
+  ].filter(Boolean);
+
+  p.note(summaryLines.join("\n"), `✓ ${config.name} created`);
+
+  p.outro(
+    `${pc.bold(config.name)} ready as a GitHub source registry in ${pc.dim(formatDuration(elapsed))} 🎉`
   );
 }
 
