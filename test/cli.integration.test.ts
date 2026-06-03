@@ -120,6 +120,133 @@ describe("scaffold (--yes)", () => {
   });
 });
 
+describe("scaffold GitHub source registry (--github)", () => {
+  const root = () => join(work, "demo-ui");
+  const readJson = (rel: string) =>
+    JSON.parse(readFileSync(join(root(), rel), "utf-8"));
+
+  function scaffold() {
+    work = mkdtempSync(join(tmpdir(), "scn-cli-"));
+    runCli(["demo-ui", "--yes", "--github", "acme/toolkit"], work);
+  }
+
+  it("produces a minimal repo with no framework app or build script", () => {
+    scaffold();
+
+    // Core source-registry files exist
+    expect(existsSync(join(root(), "registry.json"))).toBe(true);
+    expect(existsSync(join(root(), "components.json"))).toBe(true);
+    expect(existsSync(join(root(), "README.md"))).toBe(true);
+    expect(existsSync(join(root(), "llms.txt"))).toBe(true);
+
+    // No framework app shell / build output
+    expect(existsSync(join(root(), "app/llms.txt/route.ts"))).toBe(false);
+    expect(existsSync(join(root(), "next.config.ts"))).toBe(false);
+    expect(existsSync(join(root(), "public/r"))).toBe(false);
+
+    // Homepage is the GitHub repo; no publishing registries block needed
+    const registry = readJson("registry.json");
+    expect(registry.homepage).toBe("https://github.com/acme/toolkit");
+    expect(registry.include).toContain("registry/new-york/ui/registry.json");
+
+    // No build script in package.json (there isn't even one to host with)
+    expect(existsSync(join(root(), "package.json"))).toBe(false);
+  });
+
+  it("ships a project-conventions file item with targets", () => {
+    scaffold();
+    const registry = readJson("registry.json");
+    const item = registry.items.find(
+      (i: { name: string }) => i.name === "project-conventions"
+    );
+    expect(item).toBeTruthy();
+    expect(item.type).toBe("registry:item");
+    const homeTarget = item.files.find(
+      (f: { target: string }) => f.target === "~/AGENTS.md"
+    );
+    expect(homeTarget).toBeTruthy();
+    expect(homeTarget.type).toBe("registry:file");
+    // The distributed files actually exist in the repo
+    expect(existsSync(join(root(), "conventions/AGENTS.md"))).toBe(true);
+  });
+
+  it("records the target + slug in .scn-stack.json", () => {
+    scaffold();
+    const cfg = readJson(".scn-stack.json");
+    expect(cfg.target).toBe("github");
+    expect(cfg.githubSlug).toBe("acme/toolkit");
+    expect(cfg.framework).toBeUndefined();
+  });
+
+  it("README shows the owner/repo/item install form", () => {
+    scaffold();
+    const readme = readFileSync(join(root(), "README.md"), "utf-8");
+    expect(readme).toContain("npx shadcn@latest add acme/toolkit/button");
+  });
+});
+
+describe("add-file", () => {
+  function githubFixture(): string {
+    work = mkdtempSync(join(tmpdir(), "scn-cli-"));
+    runCli(["demo-ui", "--yes", "--github", "acme/toolkit"], work);
+    return join(work, "demo-ui");
+  }
+
+  it("adds a registry:item with a file + target and creates the file", () => {
+    const root = githubFixture();
+    runCli(
+      [
+        "add-file",
+        "ci-workflow",
+        "--file",
+        ".github/workflows/ci.yml",
+        "--target",
+        ".github/workflows/ci.yml",
+        "-d",
+        "CI workflow",
+      ],
+      root
+    );
+
+    expect(existsSync(join(root, ".github/workflows/ci.yml"))).toBe(true);
+
+    const registry = JSON.parse(
+      readFileSync(join(root, "registry.json"), "utf-8")
+    );
+    const item = registry.items.find(
+      (i: { name: string }) => i.name === "ci-workflow"
+    );
+    expect(item).toMatchObject({ name: "ci-workflow", type: "registry:item" });
+    expect(item.files[0]).toMatchObject({
+      path: ".github/workflows/ci.yml",
+      type: "registry:file",
+      target: ".github/workflows/ci.yml",
+    });
+  });
+
+  it("supports the path:target inline form", () => {
+    const root = githubFixture();
+    runCli(
+      ["add-file", "agent-rules", "--file", "AGENTS.md:~/AGENTS.md"],
+      root
+    );
+    const registry = JSON.parse(
+      readFileSync(join(root, "registry.json"), "utf-8")
+    );
+    const item = registry.items.find(
+      (i: { name: string }) => i.name === "agent-rules"
+    );
+    expect(item.files[0].target).toBe("~/AGENTS.md");
+  });
+
+  it("rejects a duplicate item name", () => {
+    const root = githubFixture();
+    expect(() =>
+      runCli(["add-file", "project-conventions", "--file", "x.md"], root)
+    ).toThrow();
+  });
+});
+
 describe("add-component", () => {
   function scaffoldFixture(): string {
     work = mkdtempSync(join(tmpdir(), "scn-cli-"));

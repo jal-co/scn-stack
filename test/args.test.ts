@@ -112,4 +112,45 @@ describe("parseArgs", () => {
       yes: true,
     });
   });
+
+  describe("GitHub source registry target", () => {
+    it("parses --target github", () => {
+      expect(parseArgs(argv("--target", "github")).target).toBe("github");
+    });
+
+    it("parses --target hosted", () => {
+      expect(parseArgs(argv("--target", "hosted")).target).toBe("hosted");
+    });
+
+    it("ignores an unknown --target value", () => {
+      expect(parseArgs(argv("--target", "nope")).target).toBeUndefined();
+    });
+
+    it("--github sets the github target", () => {
+      expect(parseArgs(argv("--github")).target).toBe("github");
+    });
+
+    it("--github owner/repo captures the slug", () => {
+      const args = parseArgs(argv("--github", "acme/toolkit"));
+      expect(args.target).toBe("github");
+      expect(args.githubSlug).toBe("acme/toolkit");
+    });
+
+    it("--github does not consume a following flag as a slug", () => {
+      const args = parseArgs(argv("--github", "--yes"));
+      expect(args.target).toBe("github");
+      expect(args.githubSlug).toBeUndefined();
+      expect(args.yes).toBe(true);
+    });
+
+    it("--github-slug implies the github target", () => {
+      const args = parseArgs(argv("--github-slug", "acme/toolkit"));
+      expect(args.target).toBe("github");
+      expect(args.githubSlug).toBe("acme/toolkit");
+    });
+
+    it("leaves target undefined by default so prompts can decide", () => {
+      expect(parseArgs(argv("my-ui")).target).toBeUndefined();
+    });
+  });
 });
