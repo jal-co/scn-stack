@@ -187,19 +187,49 @@ export function resolveItemFiles(
 }
 
 /**
- * Build the public install command for an item, preferring the namespace
- * handle and falling back to the full registry URL.
+ * Derive the `<owner>/<repo>` slug for a GitHub source registry from the
+ * project's homepage, when that homepage points at github.com. Returns null
+ * for non-GitHub homepages so callers can fall back to the hosted form.
+ */
+export function githubSlugFromHomepage(
+  homepage: string | undefined
+): string | null {
+  if (!homepage) return null;
+  const match = homepage.match(
+    /github\.com\/([^/]+)\/([^/#?]+)/i
+  );
+  if (!match) return null;
+  const owner = match[1];
+  const repo = match[2].replace(/\.git$/, "");
+  if (!owner || !repo) return null;
+  return `${owner}/${repo}`;
+}
+
+/**
+ * Build the public install command for an item.
+ *
+ * Resolution order:
+ * 1. GitHub source registry — `npx shadcn add <owner>/<repo>/<item>` when the
+ *    homepage points at github.com (no build/host needed).
+ * 2. Namespace handle — `npx shadcn add @ns/<item>`.
+ * 3. Full registry URL — `npx shadcn add <homepage>/r/<item>.json`.
  */
 export function installCommand(
   ctx: Pick<RegistryContext, "namespace" | "registryName" | "registry">,
   name: string
 ): string {
-  if (ctx.namespace) {
-    return `npx shadcn@latest add ${ctx.namespace}/${name}`;
-  }
   const homepage =
     (ctx.registry.homepage as string | undefined) ||
     `https://${ctx.registryName}.com`;
+
+  const slug = githubSlugFromHomepage(homepage);
+  if (slug) {
+    return `npx shadcn@latest add ${slug}/${name}`;
+  }
+
+  if (ctx.namespace) {
+    return `npx shadcn@latest add ${ctx.namespace}/${name}`;
+  }
   return `npx shadcn@latest add ${homepage}/r/${name}.json`;
 }
 

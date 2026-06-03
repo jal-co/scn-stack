@@ -6,9 +6,11 @@ import type {
   Framework,
   PackageManager,
   ProjectConfig,
+  RegistryTarget,
   StarterComponents,
   Style,
 } from "./types.js";
+import { githubSlugFromHomepage } from "./registry-item.js";
 import type { CliArgs } from "./args.js";
 import { detectPackageManager } from "./utils.js";
 import {
@@ -81,6 +83,8 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
   // If --yes, fill everything from args + defaults
   if (args.yes) {
     const name = args.name || DEFAULTS.name;
+    const target: RegistryTarget = args.target || "hosted";
+    const isGithub = target === "github";
     const framework = args.framework || DEFAULTS.framework;
     let docsEngine = args.docs || DEFAULTS.docsEngine;
     // Fumadocs requires Next.js
@@ -89,20 +93,38 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
     }
     const namespace = args.namespace || `@${name}`;
 
+    // GitHub source registries derive their slug from the homepage when it
+    // points at github.com, else from --github-slug, else a placeholder.
+    const githubSlug = isGithub
+      ? args.githubSlug ||
+        githubSlugFromHomepage(args.homepage) ||
+        `<owner>/${name}`
+      : "";
+    // For a GitHub registry the canonical homepage is the repo URL.
+    const homepage = isGithub
+      ? args.homepage ||
+        (args.githubSlug
+          ? `https://github.com/${args.githubSlug}`
+          : `https://github.com/${githubSlug}`)
+      : args.homepage || `https://${name}.com`;
+
     const installSkills = args.skills !== false;
 
     const config: ProjectConfig = {
       name,
       registryName: name,
       style: args.style || DEFAULTS.style,
-      homepage: args.homepage || `https://${name}.com`,
+      homepage,
+      target,
+      githubSlug,
       framework,
-      docsEngine,
+      // GitHub source registries have no app shell, so no docs engine.
+      docsEngine: isGithub ? "none" : docsEngine,
       starterComponents: args.components || DEFAULTS.starterComponents,
       baseLibrary: args.base || "radix",
-      monorepo: args.monorepo || false,
-      useNamespace: true,
-      namespace,
+      monorepo: isGithub ? false : args.monorepo || false,
+      useNamespace: !isGithub,
+      namespace: isGithub ? "" : namespace,
       packageManager: args.pm || DEFAULTS.packageManager,
       directory: args.directory || `./${name}`,
       installShadcnSkill: installSkills,
@@ -110,18 +132,27 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
     };
 
     p.note(
-      [
-        labelValue("Directory:", config.directory),
-        labelValue("Style:", config.style),
-        labelValue("Base:", config.baseLibrary),
-        labelValue("Framework:", config.framework),
-        labelValue("Docs:", config.docsEngine),
-        labelValue("Components:", config.starterComponents),
-        labelValue("Monorepo:", config.monorepo ? "yes" : "no"),
-        labelValue("Namespace:", config.namespace),
-        labelValue("Package mgr:", config.packageManager),
-        labelValue("AI skills:", installSkills ? "yes" : "no"),
-      ].join("\n"),
+      isGithub
+        ? [
+            labelValue("Directory:", config.directory),
+            labelValue("Target:", "GitHub source registry"),
+            labelValue("Repo slug:", config.githubSlug),
+            labelValue("Style:", config.style),
+            labelValue("Components:", config.starterComponents),
+            labelValue("AI skills:", installSkills ? "yes" : "no"),
+          ].join("\n")
+        : [
+            labelValue("Directory:", config.directory),
+            labelValue("Style:", config.style),
+            labelValue("Base:", config.baseLibrary),
+            labelValue("Framework:", config.framework),
+            labelValue("Docs:", config.docsEngine),
+            labelValue("Components:", config.starterComponents),
+            labelValue("Monorepo:", config.monorepo ? "yes" : "no"),
+            labelValue("Namespace:", config.namespace),
+            labelValue("Package mgr:", config.packageManager),
+            labelValue("AI skills:", installSkills ? "yes" : "no"),
+          ].join("\n"),
       `Defaults applied (--yes) for ${config.name}`
     );
 
@@ -155,6 +186,57 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
           defaultValue: `./${results.name as string}`,
           validate: validateProjectLocation,
         });
+      },
+
+      target: () => {
+        if (args.target) return Promise.resolve(args.target);
+        printPromptHelp(
+          "How do you want to distribute this registry? GitHub source registries skip the framework app, build step, and hosting entirely — the repo itself is the registry.",
+          [
+            [
+              "Hosted",
+              "framework app + `shadcn build` + a homepage URL (classic)",
+            ],
+            [
+              "GitHub",
+              "a public repo is the registry, install via owner/repo/item",
+            ],
+          ],
+          "https://ui.shadcn.com/docs/registry/github"
+        );
+        return p.select({
+          message: "How should the registry be distributed?",
+          options: [
+            {
+              value: "hosted" as RegistryTarget,
+              label: "Hosted",
+              hint: "framework app + build + host",
+            },
+            {
+              value: "github" as RegistryTarget,
+              label: "GitHub source registry",
+              hint: "no build, no host · recommended for sharing",
+            },
+          ],
+        });
+      },
+
+      githubSlug: ({ results }) => {
+        if (results.target !== "github") return Promise.resolve("");
+        if (args.githubSlug) return Promise.resolve(args.githubSlug);
+        printPromptHelp(
+          "The owner/repo this registry will live at on GitHub. Used to build the install command users run: npx shadcn add <owner>/<repo>/<item>."
+        );
+        return p.text({
+          message: "GitHub repo (owner/repo)",
+          placeholder: `acme/${results.name as string}`,
+          validate: (v) => {
+            if (!v) return "owner/repo is required for a GitHub registry.";
+            if (!/^[\w.-]+\/[\w.-]+$/.test(v))
+              return "Must be in the form owner/repo.";
+            return undefined;
+          },
+        }) as Promise<string>;
       },
 
       style: () => {
@@ -223,7 +305,8 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
         });
       },
 
-      framework: () => {
+      framework: ({ results }) => {
+        if (results.target === "github") return Promise.resolve(undefined);
         if (args.framework) return Promise.resolve(args.framework);
         printPromptHelp(
           "The app shell that serves your registry JSON and docs. Pick the one that matches how your users build.",
@@ -263,6 +346,7 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
       },
 
       docsEngine: ({ results }) => {
+        if (results.target === "github") return Promise.resolve(undefined);
         if (args.docs) return Promise.resolve(args.docs);
         printPromptHelp(
           "How do you want to write component docs? Each option scaffolds a working docs site you can extend.",
@@ -339,7 +423,10 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
         });
       },
 
-      useNamespace: () => {
+      useNamespace: ({ results }) => {
+        // GitHub source registries install via owner/repo/item, not a
+        // namespace URL, so the namespace question doesn't apply.
+        if (results.target === "github") return Promise.resolve(false);
         if (args.namespace !== undefined) return Promise.resolve(true);
         printPromptHelp(
           "Namespaces let users install with a short handle like @my-ui/button instead of a full URL. Recommended.",
@@ -363,7 +450,8 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
         }) as Promise<string>;
       },
 
-      packageManager: () => {
+      packageManager: ({ results }) => {
+        if (results.target === "github") return Promise.resolve("pnpm");
         if (args.pm) return Promise.resolve(args.pm);
         printPromptHelp(
           "Which package manager should we use to install dependencies? Auto-detected from your shell when possible.",
@@ -402,7 +490,8 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
         });
       },
 
-      monorepo: () => {
+      monorepo: ({ results }) => {
+        if (results.target === "github") return Promise.resolve(false);
         if (args.monorepo !== undefined) return Promise.resolve(args.monorepo);
         printPromptHelp(
           "A monorepo puts the registry in packages/registry and gives you room for an example consuming app, docs site, etc.",
@@ -440,15 +529,24 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
   );
 
   const skills = project.installSkills as boolean;
+  const target = (project.target as RegistryTarget) || "hosted";
+  const isGithub = target === "github";
+  const githubSlug = isGithub
+    ? (project.githubSlug as string) || `<owner>/${project.name as string}`
+    : "";
 
   const config: ProjectConfig = {
     name: project.name as string,
     registryName: project.name as string,
     style: project.style as Style,
-    homepage:
-      (project.homepage as string) || `https://${project.name as string}.com`,
-    framework: project.framework as Framework,
-    docsEngine: project.docsEngine as DocsEngine,
+    homepage: isGithub
+      ? (project.homepage as string) || `https://github.com/${githubSlug}`
+      : (project.homepage as string) ||
+        `https://${project.name as string}.com`,
+    target,
+    githubSlug,
+    framework: (project.framework as Framework) || "nextjs",
+    docsEngine: isGithub ? "none" : (project.docsEngine as DocsEngine),
     starterComponents: project.starterComponents as StarterComponents,
     baseLibrary: project.baseLibrary as BaseLibrary,
     monorepo: project.monorepo as boolean,
@@ -467,22 +565,33 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
   // with the prompt gutter and doesn't render a phantom │ next to a
   // custom box drawn outside the gutter context.
   p.note(
-    [
-      labelValue("Name:", config.name),
-      labelValue("Directory:", config.directory),
-      labelValue("Style:", config.style),
-      labelValue("Base:", config.baseLibrary),
-      labelValue("Framework:", config.framework),
-      labelValue("Docs:", config.docsEngine),
-      labelValue("Components:", config.starterComponents),
-      labelValue("Monorepo:", config.monorepo ? "yes" : "no"),
-      labelValue(
-        "Namespace:",
-        config.useNamespace ? config.namespace : pc.dim("— none —")
-      ),
-      labelValue("Package mgr:", config.packageManager),
-      labelValue("AI skills:", skills ? "yes" : "no"),
-    ].join("\n"),
+    (isGithub
+      ? [
+          labelValue("Name:", config.name),
+          labelValue("Directory:", config.directory),
+          labelValue("Target:", "GitHub source registry"),
+          labelValue("Repo slug:", config.githubSlug),
+          labelValue("Style:", config.style),
+          labelValue("Components:", config.starterComponents),
+          labelValue("AI skills:", skills ? "yes" : "no"),
+        ]
+      : [
+          labelValue("Name:", config.name),
+          labelValue("Directory:", config.directory),
+          labelValue("Style:", config.style),
+          labelValue("Base:", config.baseLibrary),
+          labelValue("Framework:", config.framework),
+          labelValue("Docs:", config.docsEngine),
+          labelValue("Components:", config.starterComponents),
+          labelValue("Monorepo:", config.monorepo ? "yes" : "no"),
+          labelValue(
+            "Namespace:",
+            config.useNamespace ? config.namespace : pc.dim("— none —")
+          ),
+          labelValue("Package mgr:", config.packageManager),
+          labelValue("AI skills:", skills ? "yes" : "no"),
+        ]
+    ).join("\n"),
     "Ready to scaffold"
   );
 

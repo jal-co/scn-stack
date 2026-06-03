@@ -16,6 +16,7 @@ import {
   removeItemFromRegistry,
   resolveItemFiles,
   installCommand,
+  githubSlugFromHomepage,
   removeDocsPage,
 } from "../src/registry-item.js";
 
@@ -164,6 +165,43 @@ describe("installCommand", () => {
     expect(installCommand(ctx, "button")).toBe(
       "npx shadcn@latest add https://x.dev/r/button.json"
     );
+  });
+
+  it("prefers the GitHub source form when the homepage is a github repo", () => {
+    write("registry.json", {
+      name: "acme",
+      homepage: "https://github.com/acme/toolkit",
+      items: [],
+    });
+    const ctx = loadRegistryContext(dir)!;
+    expect(installCommand(ctx, "button")).toBe(
+      "npx shadcn@latest add acme/toolkit/button"
+    );
+  });
+});
+
+describe("githubSlugFromHomepage", () => {
+  it("extracts owner/repo from a github URL", () => {
+    expect(githubSlugFromHomepage("https://github.com/acme/toolkit")).toBe(
+      "acme/toolkit"
+    );
+  });
+
+  it("strips a trailing .git", () => {
+    expect(githubSlugFromHomepage("https://github.com/acme/toolkit.git")).toBe(
+      "acme/toolkit"
+    );
+  });
+
+  it("ignores extra path segments", () => {
+    expect(
+      githubSlugFromHomepage("https://github.com/acme/toolkit/tree/main")
+    ).toBe("acme/toolkit");
+  });
+
+  it("returns null for non-github homepages", () => {
+    expect(githubSlugFromHomepage("https://acme.dev")).toBeNull();
+    expect(githubSlugFromHomepage(undefined)).toBeNull();
   });
 });
 

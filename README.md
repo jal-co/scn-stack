@@ -27,6 +27,7 @@ Setting one up from scratch means wiring together a framework, registry config, 
 ## Features
 
 - 🏗️ **Interactive CLI** — guided setup with sensible defaults
+- 🐙 **GitHub source registries** — turn a public repo into a registry, no build/host/server
 - ⚡ **Framework choice** — Next.js, Vite, React Router, TanStack Start
 - 📖 **Docs engine** — Fumadocs (recommended), Starlight, or none
 - 🎨 **Style** — New York or Default shadcn style
@@ -39,6 +40,8 @@ Setting one up from scratch means wiring together a framework, registry config, 
 - 🖼️ **Component previews** — iframe preview system for docs
 - 🤖 **v0 integration** — "Open in v0" button + URL helpers
 - 📄 **llms.txt** — auto-generated for AI context
+- 📦 **Distribute anything** — `add-file` ships conventions, CI workflows, agent instructions, `~/`-targeted files
+- 🧹 **`eject`** — inline `shadcn/tailwind.css` and drop the `shadcn` dependency
 - ⚙️ **Config file** — `.scn-stack.json` for repeatable operations
 - 🚀 **Deploy anywhere** — Vercel, Netlify, Cloudflare, self-hosted
 
@@ -47,6 +50,16 @@ Setting one up from scratch means wiring together a framework, registry config, 
 ```bash
 npx create-scn-stack
 ```
+
+### GitHub source registry (no build, no host)
+
+Turn a public GitHub repo into a registry. Users install with `npx shadcn add <owner>/<repo>/<item>` — there's no build step, no published JSON, and no server.
+
+```bash
+npx create-scn-stack my-toolkit --github acme/toolkit
+```
+
+Commit and push is the publish step. See [GitHub Registries](https://scnstack.sh/docs/cli/github-registries).
 
 ### Add to an existing project
 

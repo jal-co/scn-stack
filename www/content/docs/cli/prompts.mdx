@@ -29,6 +29,21 @@ This becomes your registry's identifier — used in `registry.json`, the namespa
 
 The folder where your project will be created. Defaults to `./<registry-name>`. Use `.` to scaffold in the current directory.
 
+### Distribution
+
+```
+◆  How should the registry be distributed?
+│  ● Hosted (framework app + build + host)
+│  ○ GitHub source registry (no build, no host)
+```
+
+Choose how users install your items. **Hosted** scaffolds a framework app, a
+build step, and a homepage URL. **GitHub** produces a minimal repo that *is*
+the registry — users install with `npx shadcn add <owner>/<repo>/<item>` and
+there's no build or server. Picking GitHub asks for an `owner/repo` slug and
+skips the framework, docs, namespace, and monorepo prompts. See
+[GitHub Registries](/docs/cli/github-registries).
+
 ### Style
 
 ```

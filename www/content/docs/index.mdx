@@ -22,6 +22,12 @@ Follow the interactive prompts to configure your registry. Or skip prompts entir
 npx create-scn-stack my-ui --yes
 ```
 
+Want to share items straight from a public repo with **no build, no host, and no server**? Scaffold a [GitHub source registry](/docs/cli/github-registries) instead — users install with `npx shadcn add <owner>/<repo>/<item>`:
+
+```bash
+npx create-scn-stack my-toolkit --github acme/toolkit
+```
+
 The CLI will:
 
 1. Ask you for a registry name, framework, docs engine, and more

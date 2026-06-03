@@ -1,0 +1,122 @@
+---
+title: GitHub Registries
+description: Turn a public GitHub repo into a shadcn source registry — no build, no host, no server.
+---
+
+A **GitHub source registry** is a public GitHub repository with a root
+`registry.json`. The shadcn CLI reads that file directly, resolves `include`
+entries, finds the requested item, and installs its files.
+
+You do **not** run `shadcn build`, publish generated item JSON, or set up a
+registry server. Commit and push *is* the publish step.
+
+```bash
+npx shadcn@latest add <owner>/<repo>/<item>
+```
+
+## Scaffold one
+
+```bash
+# Interactive — pick "GitHub source registry" at the distribution prompt
+npx create-scn-stack
+
+# Non-interactive
+npx create-scn-stack my-toolkit --github acme/toolkit --yes
+```
+
+This produces a **minimal** repo — no framework app, no docs site, no build
+script:
+
+```
+my-toolkit/
+├── registry.json                 # the registry (root, with include)
+├── components.json               # aliases for contributors
+├── registry/new-york/ui/         # component source + per-dir registry.json
+├── conventions/                  # files for the project-conventions item
+├── llms.txt                      # static AI context
+├── tsconfig.json
+└── README.md
+```
+
+The `--github acme/toolkit` slug becomes the install command shown to your
+users: `npx shadcn@latest add acme/toolkit/button`.
+
+## Install, list, search, view
+
+GitHub registry addresses work with the same commands as any other registry:
+
+```bash
+npx shadcn@latest list acme/toolkit
+npx shadcn@latest search acme/toolkit --query conventions
+npx shadcn@latest view acme/toolkit/project-conventions
+npx shadcn@latest add acme/toolkit/project-conventions
+```
+
+## Distribute anything
+
+Registry items are not limited to components. A GitHub registry can distribute
+components, hooks, utilities, design tokens, feature kits, project conventions,
+agent instructions, testing setup, CI/release workflows, templates, codemods,
+migration kits, and other project files.
+
+Use `add-file` to register an arbitrary file item with a target:
+
+```bash
+# Distribute shared docs, editor config, and agent instructions
+npx create-scn-stack add-file project-conventions \
+  --file conventions/AGENTS.md:~/AGENTS.md \
+  --file conventions/.editorconfig:.editorconfig \
+  --file conventions/conventions.md:docs/conventions.md \
+  -d "Shared project conventions"
+```
+
+This writes a `registry:item` to `registry.json`:
+
+```json
+{
+  "name": "project-conventions",
+  "type": "registry:item",
+  "files": [
+    { "path": "conventions/AGENTS.md", "type": "registry:file", "target": "~/AGENTS.md" },
+    { "path": "conventions/.editorconfig", "type": "registry:file", "target": ".editorconfig" },
+    { "path": "conventions/conventions.md", "type": "registry:file", "target": "docs/conventions.md" }
+  ]
+}
+```
+
+A `~/` target installs into the consumer's home directory; a plain path installs
+relative to their project root.
+
+`add-file` flags:
+
+| Flag | Description |
+|------|-------------|
+| `--file <path>[:<target>]` | A file to distribute. Repeatable. Defaults the target to the same path. |
+| `--target <target>` | Sets the target for the most recent `--file`. |
+| `-d, --description` | Item description. |
+
+## Adding components
+
+`add-component`, `add-hook`, `add-block`, and `add-theme` all work in a GitHub
+registry exactly as they do in a hosted one. Because the homepage points at
+github.com, every generated install command uses the source form
+automatically:
+
+```bash
+npx create-scn-stack add-component input
+# → npx shadcn@latest add acme/toolkit/input
+```
+
+## Hosted vs GitHub
+
+| | Hosted | GitHub source |
+|---|---|---|
+| Framework app | yes | no |
+| `shadcn build` | yes | no |
+| Published JSON | `public/r/*.json` | none |
+| Server / host | required | none |
+| Install form | `@ns/item` or URL | `owner/repo/item` |
+| Publish step | deploy | `git push` |
+
+Pick **hosted** when you want docs, previews, and a branded site. Pick
+**GitHub** when you just want to share items from a repo.
