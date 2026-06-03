@@ -1,4 +1,4 @@
 {
   "title": "CLI",
-  "pages": ["options", "init", "github-registries", "eject", "prompts"]
+  "pages": ["options", "init", "eject", "prompts"]
 }
