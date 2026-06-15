@@ -32,7 +32,13 @@ function validateRegistryName(value: string | undefined): string | undefined {
 function validateProjectLocation(
   value: string | undefined
 ): string | undefined {
-  if (!value) return "Project location is required.";
+  // Optional: an empty value falls back to the default (./<name>). Only
+  // reject an absolute path, which would scaffold outside the user's
+  // current directory (and previously crashed with a raw mkdir ENOENT).
+  if (!value) return undefined;
+  if (value.startsWith("/") || /^[A-Za-z]:[\\/]/.test(value)) {
+    return "Use a relative path (e.g. ./my-ui), not an absolute one.";
+  }
   return undefined;
 }
 
@@ -230,10 +236,13 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
         return p.text({
           message: "GitHub repo (owner/repo)",
           placeholder: `acme/${results.name as string}`,
+          // Optional: leaving this blank scaffolds with a <owner>/<repo>
+          // placeholder so you can try the project and fill in the real
+          // slug later (it only affects the install command shown to users).
           validate: (v) => {
-            if (!v) return "owner/repo is required for a GitHub registry.";
+            if (!v) return undefined;
             if (!/^[\w.-]+\/[\w.-]+$/.test(v))
-              return "Must be in the form owner/repo.";
+              return "Must be in the form owner/repo (or leave blank for now).";
             return undefined;
           },
         }) as Promise<string>;
@@ -553,7 +562,7 @@ export async function runPrompts(args: CliArgs): Promise<ProjectConfig> {
     useNamespace: project.useNamespace as boolean,
     namespace: (project.namespace as string) || "",
     packageManager: project.packageManager as PackageManager,
-    directory: project.directory as string,
+    directory: (project.directory as string) || `./${project.name as string}`,
     installShadcnSkill: skills,
     installRegistrySkill: skills,
   };

@@ -183,6 +183,44 @@ describe("scaffold GitHub source registry (--github)", () => {
     const readme = readFileSync(join(root(), "README.md"), "utf-8");
     expect(readme).toContain("npx shadcn@latest add acme/toolkit/button");
   });
+
+  it("is optional: scaffolds with a placeholder slug when --github has no repo", () => {
+    work = mkdtempSync(join(tmpdir(), "scn-cli-"));
+    runCli(["demo-ui", "--yes", "--github"], work);
+
+    const cfg = readJson(".scn-stack.json");
+    expect(cfg.target).toBe("github");
+    expect(cfg.githubSlug).toBe("<owner>/demo-ui");
+
+    const readme = readFileSync(join(root(), "README.md"), "utf-8");
+    expect(readme).toContain("<owner>/demo-ui/button");
+  });
+});
+
+describe("scaffold directory safety", () => {
+  function runCliExpectFailure(args: string[], cwd: string) {
+    try {
+      runCli(args, cwd);
+      throw new Error("expected the CLI to exit non-zero");
+    } catch (err) {
+      const e = err as { status?: number; stdout?: string; stderr?: string };
+      return `${e.stdout ?? ""}${e.stderr ?? ""}`;
+    }
+  }
+
+  it("refuses a directory outside cwd instead of crashing with mkdir ENOENT", () => {
+    work = mkdtempSync(join(tmpdir(), "scn-cli-"));
+    // An absolute path outside the working directory — the scenario that
+    // previously surfaced as a raw `mkdir ENOENT '/orc'` stack trace.
+    const outside = join(tmpdir(), `scn-escape-${Date.now()}`, "orc");
+    const out = runCliExpectFailure(
+      ["orc", "--yes", "--directory", outside],
+      work
+    );
+    expect(out).toContain("outside the current directory");
+    expect(out).not.toContain("ENOENT");
+    expect(existsSync(outside)).toBe(false);
+  });
 });
 
 describe("add-file", () => {

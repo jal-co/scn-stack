@@ -27,7 +27,7 @@ This becomes your registry's identifier — used in `registry.json`, the namespa
 │  ./my-ui
 ```
 
-The folder where your project will be created. Defaults to `./<registry-name>`. Use `.` to scaffold in the current directory.
+The folder where your project will be created. Optional — press Enter to accept the default of `./<registry-name>`, or use `.` to scaffold in the current directory. The path must be inside your current directory.
 
 ### Distribution
 
@@ -40,9 +40,10 @@ The folder where your project will be created. Defaults to `./<registry-name>`. 
 Choose how users install your items. **Hosted** scaffolds a framework app, a
 build step, and a homepage URL. **GitHub** produces a minimal repo that *is*
 the registry — users install with `npx shadcn add <owner>/<repo>/<item>` and
-there's no build or server. Picking GitHub asks for an `owner/repo` slug and
-skips the framework, docs, namespace, and monorepo prompts. See
-[GitHub Registries](/docs/distribution/github-registries).
+there's no build or server. Picking GitHub asks for an `owner/repo` slug
+(optional — leave it blank to scaffold with a `<owner>/<name>` placeholder you
+can fill in later) and skips the framework, docs, namespace, and monorepo
+prompts. See [GitHub Registries](/docs/distribution/github-registries).
 
 ### Style
 

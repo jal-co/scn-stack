@@ -1,7 +1,8 @@
 import * as p from "@clack/prompts";
 import pc from "picocolors";
 import { existsSync } from "node:fs";
-import { join, resolve } from "node:path";
+import os from "node:os";
+import { isAbsolute, join, relative, resolve } from "node:path";
 import type { ProjectConfig } from "../types.js";
 import {
   ensureDir,
@@ -34,7 +35,31 @@ import {
 } from "../brand.js";
 
 export async function scaffold(config: ProjectConfig): Promise<void> {
-  const targetDir = resolve(process.cwd(), config.directory);
+  // Fall back to ./<name> when no directory was provided so an empty value
+  // never resolves to the current working directory or a bare root.
+  const requestedDir = config.directory?.trim() || `./${config.name}`;
+  const targetDir = resolve(process.cwd(), requestedDir);
+
+  // The project must land inside the current working directory ("." is
+  // allowed). resolve() treats an absolute segment (e.g. "/orc") as a new
+  // root, which previously surfaced as a raw `mkdir ENOENT` stack trace.
+  // Scaffolding into the home directory or filesystem root would also clobber
+  // existing files, so refuse those outright.
+  const cwd = resolve(process.cwd());
+  const relativeToCwd = relative(cwd, targetDir);
+  const escapesCwd =
+    relativeToCwd.startsWith("..") || isAbsolute(relativeToCwd);
+  const isHomeOrRoot =
+    targetDir === resolve("/") || targetDir === resolve(os.homedir());
+  if (escapesCwd || isHomeOrRoot) {
+    p.cancel(
+      `Can't scaffold into ${pc.cyan(targetDir)} — it's outside the current ` +
+        `directory. Use a relative path like ${pc.cyan(`./${config.name}`)}.`
+    );
+    process.exit(1);
+  }
+
+  config.directory = requestedDir;
 
   // Check if directory already exists
   if (existsSync(targetDir)) {
