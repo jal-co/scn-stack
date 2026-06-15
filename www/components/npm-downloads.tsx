@@ -59,12 +59,12 @@ export function NpmDownloads({
       rel="noopener noreferrer"
       aria-label={`${packageName} on npm — ${downloads.toLocaleString("en-US")} weekly downloads`}
       className={cn(
-        "inline-flex h-7 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md border border-white/[0.08] bg-white/[0.04] px-2.5 text-xs font-medium text-zinc-200 shadow-xs transition-colors hover:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-white/20",
+        "inline-flex h-7 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md border border-border bg-card/60 px-2.5 text-xs font-medium text-foreground shadow-xs transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20",
         className
       )}
     >
       <NpmIcon className="size-3.5 shrink-0" />
-      <span className="tabular-nums text-zinc-500">
+      <span className="tabular-nums text-muted-foreground">
         {formatCount(downloads)}/wk
       </span>
     </a>

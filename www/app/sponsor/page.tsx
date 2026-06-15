@@ -86,30 +86,30 @@ export default async function SponsorPage() {
   const stargazers = await getStargazers();
 
   return (
-    <main className="flex min-h-svh flex-col bg-zinc-950">
+    <main className="flex min-h-svh flex-col bg-background">
       <SiteHeader />
-      <div className="mx-auto w-full max-w-3xl flex-1 border-x border-dashed border-white/[0.06]">
+      <div className="mx-auto w-full max-w-3xl flex-1 border-x border-dashed border-border/60">
         {/* Hero */}
-        <section className="flex flex-col gap-6 border-b border-white/[0.06] px-6 py-14 sm:px-10">
+        <section className="flex flex-col gap-6 border-b border-border/60 px-6 py-14 sm:px-10">
           <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-zinc-500">
+            <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
               <Heart className="size-3.5" />
               Sponsor
             </div>
-            <h1 className="text-3xl font-bold tracking-tight text-zinc-100 sm:text-4xl">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               I&apos;ll never charge, but if you want to help
             </h1>
-            <p className="max-w-xl text-base leading-relaxed text-zinc-400">
+            <p className="max-w-xl text-base leading-relaxed text-muted-foreground">
               scn-stack is an open-source CLI that scaffolds complete shadcn
               registries. Every feature is free and that&apos;s not changing.
             </p>
-            <p className="max-w-xl text-sm leading-relaxed text-zinc-500">
+            <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">
               If scn-stack saved you time setting up a registry, or you just
               like that this exists in the open, sponsoring is a nice way to say
               so. It helps me justify spending real time on it instead of
               treating it like a side-of-desk thing.
             </p>
-            <p className="max-w-xl text-sm leading-relaxed text-zinc-500">
+            <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">
               Any amount is genuinely appreciated. And if money&apos;s not your
               thing, starring the repo or sharing a project you built with it
               works too.
@@ -123,7 +123,7 @@ export default async function SponsorPage() {
           >
             <Button
               size="lg"
-              className="gap-2 bg-zinc-50 text-zinc-950 hover:bg-zinc-200"
+              className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
             >
               <Heart className="size-4" />
               Sponsor on GitHub
@@ -141,7 +141,7 @@ export default async function SponsorPage() {
             return (
               <div
                 key={tier.name}
-                className="flex flex-col gap-3 border-b border-white/[0.06] px-6 py-6 sm:px-10"
+                className="flex flex-col gap-3 border-b border-border/60 px-6 py-6 sm:px-10"
               >
                 <div
                   className="relative flex items-center justify-center rounded-md px-8 py-2.5"
@@ -192,7 +192,7 @@ export default async function SponsorPage() {
                         borderColor: tier.colors.slotBorder,
                       }}
                     >
-                      <span className="text-sm font-medium text-zinc-200">
+                      <span className="text-sm font-medium text-foreground">
                         {sponsor.name}
                       </span>
                     </a>
@@ -221,17 +221,17 @@ export default async function SponsorPage() {
 
         {/* Stargazers */}
         {stargazers.length > 0 && (
-          <section className="flex flex-col border-b border-white/[0.06]">
+          <section className="flex flex-col border-b border-border/60">
             <div className="flex items-center gap-3 px-6 py-3 sm:px-10">
-              <h3 className="text-xs font-bold uppercase tracking-wide text-zinc-300">
+              <h3 className="text-xs font-bold uppercase tracking-wide text-foreground">
                 Stargazers
               </h3>
-              <span className="text-xs tabular-nums text-zinc-600">
+              <span className="text-xs tabular-nums text-muted-foreground">
                 {stargazers.length}
               </span>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-0 border-t border-white/[0.06] py-4">
+            <div className="flex flex-wrap justify-center gap-0 border-t border-border/60 py-4">
               {stargazers.map((user) => (
                 <a
                   key={user.login}
@@ -239,14 +239,14 @@ export default async function SponsorPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   title={user.login}
-                  className="group relative p-1.5 transition-colors hover:bg-white/[0.04]"
+                  className="group relative p-1.5 transition-colors hover:bg-accent"
                 >
                   <Image
                     src={user.avatar_url}
                     alt={user.login}
                     width={36}
                     height={36}
-                    className="rounded-full ring-1 ring-white/[0.08] transition-all group-hover:scale-110 group-hover:ring-white/20"
+                    className="rounded-full ring-1 ring-border transition-all group-hover:scale-110 group-hover:ring-foreground/30"
                     unoptimized
                   />
                 </a>
@@ -258,10 +258,10 @@ export default async function SponsorPage() {
         {/* CTA */}
         <section className="flex flex-col items-center gap-5 px-6 py-14 sm:px-10">
           <div className="flex flex-col items-center gap-2 text-center">
-            <h2 className="text-lg font-bold tracking-tight text-zinc-100">
+            <h2 className="text-lg font-bold tracking-tight text-foreground">
               Want to support the project?
             </h2>
-            <p className="max-w-sm text-sm text-zinc-500">
+            <p className="max-w-sm text-sm text-muted-foreground">
               Every bit helps, whether it&apos;s a sponsorship, a star, or
               sharing something you found useful.
             </p>
@@ -275,7 +275,7 @@ export default async function SponsorPage() {
             >
               <Button
                 size="default"
-                className="gap-2 bg-zinc-50 text-zinc-950 hover:bg-zinc-200"
+                className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 <Heart className="size-4" />
                 Become a Sponsor
@@ -289,7 +289,7 @@ export default async function SponsorPage() {
               <Button
                 variant="outline"
                 size="default"
-                className="gap-2 border-white/[0.08] text-zinc-300 hover:bg-white/[0.06]"
+                className="gap-2"
               >
                 <Star className="size-4" />
                 Star on GitHub
