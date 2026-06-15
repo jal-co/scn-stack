@@ -12,7 +12,7 @@ function SocialIcon({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-zinc-600 transition-colors hover:text-zinc-400"
+      className="text-muted-foreground/70 transition-colors hover:text-foreground"
       aria-label={label}
     >
       {children}
@@ -46,8 +46,8 @@ function NpmIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-white/[0.06] bg-zinc-950 p-6">
-      <div className="mx-auto flex max-w-5xl flex-col items-start justify-between gap-4 text-xs text-zinc-600 sm:flex-row sm:items-center">
+    <footer className="border-t border-border/60 bg-background p-6">
+      <div className="mx-auto flex max-w-5xl flex-col items-start justify-between gap-4 text-xs text-muted-foreground/70 sm:flex-row sm:items-center">
         <p>
           Made with{" "}
           <svg
@@ -97,7 +97,7 @@ export function SiteFooter() {
             href="https://justinlevine.me"
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-zinc-400"
+            className="transition-colors hover:text-foreground"
           >
             Justin Levine
           </a>

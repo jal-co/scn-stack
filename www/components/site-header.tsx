@@ -8,6 +8,7 @@ import { useScroll } from "@/hooks/use-scroll";
 import { Button } from "@/components/ui/button";
 import { GitHubStarsButtonClient } from "./github-stars-client";
 import { NpmDownloads } from "./npm-downloads";
+import { ThemeToggle } from "./theme-toggle";
 import { XIcon, MenuIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -41,7 +42,7 @@ export function SiteHeader() {
       className={cn(
         "sticky top-0 z-50 mx-auto w-full max-w-4xl md:rounded-md md:transition-all md:ease-out",
         scrolled
-          ? "border border-white/[0.08] bg-zinc-950/80 backdrop-blur-md md:top-2 md:max-w-3xl md:shadow-lg md:shadow-black/20"
+          ? "border border-border/60 bg-background/80 backdrop-blur-md md:top-2 md:max-w-3xl md:shadow-lg md:shadow-black/20"
           : "border border-transparent"
       )}
     >
@@ -55,14 +56,14 @@ export function SiteHeader() {
       >
         <Link
           href="/"
-          className="rounded-md px-2 py-1.5 transition-colors hover:bg-white/[0.06]"
+          className="rounded-md px-2 py-1.5 transition-colors hover:bg-accent"
         >
           <Image
             src="/brand/scn-stack-wordmark.svg"
             alt="scn-stack"
             width={120}
             height={20}
-            className="h-5 w-auto invert"
+            className="h-5 w-auto dark:invert"
           />
         </Link>
 
@@ -74,8 +75,8 @@ export function SiteHeader() {
               size="sm"
               variant="ghost"
               className={cn(
-                "text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-100",
-                pathname.startsWith(item.href) && "text-zinc-100"
+                "text-muted-foreground hover:bg-accent hover:text-foreground",
+                pathname.startsWith(item.href) && "text-foreground"
               )}
             >
               <Link href={item.href}>{item.label}</Link>
@@ -83,21 +84,25 @@ export function SiteHeader() {
           ))}
           <NpmDownloads />
           <GitHubStarsButtonClient owner="jal-co" repo="scn-stack" />
+          <ThemeToggle />
         </div>
 
-        <Button
-          aria-label={open ? "Close" : "Menu"}
-          className="text-zinc-400 md:hidden"
-          onClick={() => setOpen(!open)}
-          size="icon"
-          variant="ghost"
-        >
-          {open ? (
-            <XIcon className="size-4" />
-          ) : (
-            <MenuIcon className="size-4" />
-          )}
-        </Button>
+        <div className="flex items-center gap-1 md:hidden">
+          <ThemeToggle />
+          <Button
+            aria-label={open ? "Close" : "Menu"}
+            className="text-muted-foreground"
+            onClick={() => setOpen(!open)}
+            size="icon"
+            variant="ghost"
+          >
+            {open ? (
+              <XIcon className="size-4" />
+            ) : (
+              <MenuIcon className="size-4" />
+            )}
+          </Button>
+        </div>
       </nav>
 
       {open && (
@@ -107,14 +112,14 @@ export function SiteHeader() {
             onClick={closeMenu}
             aria-hidden="true"
           />
-          <nav className="fixed inset-x-0 top-14 z-50 border-b border-white/[0.08] bg-zinc-950 p-4 md:hidden">
+          <nav className="fixed inset-x-0 top-14 z-50 border-b border-border/60 bg-background p-4 md:hidden">
             <div className="flex flex-col gap-1">
               {[{ href: "/", label: "Home" }, ...navItems].map((item) => (
                 <Button
                   asChild
                   key={item.label}
                   variant="ghost"
-                  className="justify-start text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-100"
+                  className="justify-start text-muted-foreground hover:bg-accent hover:text-foreground"
                 >
                   <Link href={item.href} onClick={closeMenu}>
                     {item.label}
@@ -124,7 +129,7 @@ export function SiteHeader() {
               <Button
                 asChild
                 variant="ghost"
-                className="justify-start text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-100"
+                className="justify-start text-muted-foreground hover:bg-accent hover:text-foreground"
               >
                 <a
                   href="https://github.com/jal-co/scn-stack"

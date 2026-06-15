@@ -16,6 +16,7 @@ import {
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { cn } from "@/lib/utils";
+import { copyToClipboard } from "@/lib/copy-to-clipboard";
 
 type Framework = "nextjs" | "vite" | "react-router" | "tanstack-start";
 type DocsEngine = "fumadocs" | "mintlify" | "starlight" | "none";
@@ -107,29 +108,68 @@ function SectionHeader({
   );
 }
 
-function CopyCommandButton({ command }: { command: string }) {
+function useCopy() {
   const [copied, setCopied] = useState(false);
 
+  const copy = async (text: string) => {
+    const ok = await copyToClipboard(text);
+    if (!ok) {
+      return;
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return { copied, copy };
+}
+
+function CommandCard({ command }: { command: string }) {
+  const { copied, copy } = useCopy();
+  const flatCommand = command.replace(/\s*\\\n\s*/g, " ");
+
   return (
-    <button
-      type="button"
-      onClick={() => {
-        navigator.clipboard.writeText(command);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      }}
-      className="inline-flex items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-    >
-      {copied ? (
-        <>
-          <Check className="size-3" /> Copied
-        </>
-      ) : (
-        <>
-          <Copy className="size-3" /> Copy
-        </>
-      )}
-    </button>
+    <>
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-medium">Command</span>
+        <span className="text-xs text-muted-foreground">Click to copy</span>
+      </div>
+
+      {/* The command box itself is the primary copy target. */}
+      <button
+        type="button"
+        onClick={() => copy(flatCommand)}
+        title="Copy command"
+        className="group relative w-full overflow-x-auto rounded-md border border-border bg-muted/70 p-4 text-left transition-colors hover:border-ring/50 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+      >
+        <pre className="font-mono text-xs leading-relaxed text-foreground">
+          {command}
+        </pre>
+        <span className="pointer-events-none absolute right-2 top-2 text-muted-foreground opacity-60 transition-opacity group-hover:opacity-100">
+          {copied ? (
+            <Check className="size-3.5 text-emerald-500" />
+          ) : (
+            <Copy className="size-3.5" />
+          )}
+        </span>
+      </button>
+
+      {/* Explicit, unmissable primary action. */}
+      <button
+        type="button"
+        onClick={() => copy(flatCommand)}
+        className="inline-flex w-full items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+      >
+        {copied ? (
+          <>
+            <Check className="size-4" /> Copied!
+          </>
+        ) : (
+          <>
+            <Copy className="size-4" /> Copy command
+          </>
+        )}
+      </button>
+    </>
   );
 }
 
@@ -394,15 +434,7 @@ export function Builder() {
         {/* Command output — sticky sidebar on desktop */}
         <div className="lg:sticky lg:top-[calc(3.5rem+2rem)] lg:h-fit lg:w-80">
           <div className="flex flex-col gap-4 rounded-xl border bg-card p-5 shadow-sm">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Command</span>
-              <CopyCommandButton command={command.replace(/\s*\\\n\s*/g, " ")} />
-            </div>
-            <div className="overflow-x-auto rounded-md bg-muted/70 p-4">
-              <pre className="font-mono text-xs leading-relaxed text-foreground">
-                {command}
-              </pre>
-            </div>
+            <CommandCard command={command} />
             <div className="space-y-2 text-xs text-muted-foreground">
               <p>
                 <span className="font-medium text-foreground">

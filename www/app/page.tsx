@@ -123,31 +123,31 @@ export default function Home() {
 
         <div className="relative z-10 mx-auto max-w-5xl px-6 py-20 md:py-24">
           <div className="flex flex-col items-center text-center">
-            <h1 className="max-w-3xl text-4xl font-bold tracking-tight text-zinc-50 md:text-6xl">
+            <h1 className="max-w-3xl text-4xl font-bold tracking-tight text-foreground md:text-6xl">
               Scaffold a complete shadcn registry.
             </h1>
 
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-zinc-400">
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
               One command. Framework, docs, starter components, live previews,
               AI skills, ready to develop and deploy.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-              <div className="inline-flex items-center gap-3 rounded-md border border-white/10 bg-white/[0.06] px-4 py-2 font-mono text-sm text-zinc-100 shadow-sm shadow-black/20">
-                <span className="text-zinc-500">$</span>
+              <div className="inline-flex items-center gap-3 rounded-md border border-border bg-card/60 px-4 py-2 font-mono text-sm text-foreground shadow-sm shadow-black/10">
+                <span className="text-muted-foreground">$</span>
                 <code>npx create-scn-stack</code>
                 <CopyButton text="npx create-scn-stack" />
               </div>
               <Link
                 href="/docs"
-                className="group inline-flex items-center gap-2 rounded-md bg-zinc-50 px-5 py-2.5 text-sm font-medium text-zinc-950 transition-colors hover:bg-zinc-200"
+                className="group inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
               >
                 Get Started
                 <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
               <Link
                 href="/builder"
-                className="inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/[0.06] px-5 py-2.5 text-sm font-medium text-zinc-100 transition-colors hover:bg-white/[0.09]"
+                className="inline-flex items-center gap-2 rounded-md border border-border bg-card/60 px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent"
               >
                 Builder
               </Link>
@@ -245,10 +245,10 @@ export default function Home() {
       {/* Stack logos */}
       <section className="hero-features relative overflow-hidden py-20">
         <div className="mx-auto mb-12 max-w-5xl px-6 text-center">
-          <h2 className="text-xl font-semibold tracking-tight text-zinc-100 md:text-2xl">
+          <h2 className="text-xl font-semibold tracking-tight text-foreground md:text-2xl">
             Built on the best
           </h2>
-          <p className="mt-2 text-sm text-zinc-500">
+          <p className="mt-2 text-sm text-muted-foreground">
             The frameworks, docs engines, and AI tools that power modern registries.
           </p>
         </div>
@@ -275,8 +275,8 @@ export default function Home() {
                 </Tooltip>
               ))}
             </Marquee>
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-[oklch(0.04_0.002_270)] to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-[oklch(0.04_0.002_270)] to-transparent" />
+            <div className="hero-marquee-fade-left pointer-events-none absolute inset-y-0 left-0 z-10 w-24" />
+            <div className="hero-marquee-fade-right pointer-events-none absolute inset-y-0 right-0 z-10 w-24" />
           </div>
 
           <div className="relative">
@@ -300,14 +300,14 @@ export default function Home() {
                 </Tooltip>
               ))}
             </Marquee>
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-[oklch(0.04_0.002_270)] to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-[oklch(0.04_0.002_270)] to-transparent" />
+            <div className="hero-marquee-fade-left pointer-events-none absolute inset-y-0 left-0 z-10 w-24" />
+            <div className="hero-marquee-fade-right pointer-events-none absolute inset-y-0 right-0 z-10 w-24" />
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="cta-section relative bg-zinc-950">
+      <section className="cta-section relative bg-background">
         <div className="cta-fade-overlay" aria-hidden="true" />
         <m.div
           initial={{ opacity: 0, y: 32 }}
@@ -316,22 +316,22 @@ export default function Home() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="relative z-10 mx-auto max-w-2xl px-6 py-24 text-center"
         >
-          <h2 className="text-3xl font-bold tracking-tight text-zinc-100 md:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
             Ready to build?
           </h2>
-          <p className="mt-3 text-zinc-500">
+          <p className="mt-3 text-muted-foreground">
             Spin up your registry in under a minute.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <div className="inline-flex items-center gap-3 rounded-md border border-white/[0.08] bg-white/[0.04] px-4 py-2 font-mono text-sm text-zinc-200">
-              <span className="text-zinc-600">$</span>
+            <div className="inline-flex items-center gap-3 rounded-md border border-border bg-card/60 px-4 py-2 font-mono text-sm text-foreground">
+              <span className="text-muted-foreground">$</span>
               <code>npx create-scn-stack</code>
               <CopyButton text="npx create-scn-stack" />
             </div>
             <Link
               href="/docs"
-              className="group inline-flex items-center gap-2 rounded-md bg-zinc-50 px-5 py-2.5 text-sm font-medium text-zinc-950 transition-colors hover:bg-zinc-200"
+              className="group inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
               Get Started
               <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
